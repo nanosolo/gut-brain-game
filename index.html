@@ -3,35 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Gut-Brain | Nano-G</title>
+<title>Gut–Brain // Vagus Protocol</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap');
 
   :root {
-    --gut-bg: #1a0a08;
-    --brain-bg: #030818;
-    --nerve-color: #7cffd4;
-    --nerve-glow: rgba(124,255,212,0.4);
-    --good-gaba: #4ade80;
-    --good-ach: #facc15;
-    --bad-cyto: #f87171;
-    --nano-blue: #3b82f6;
-    --deep-flow: #fbbf24;
-    --brain-dim: #0f172a;
-    --brain-lit: #7c3aed;
-    --brain-gold: #f59e0b;
-    --score-color: #7cffd4;
+    --ink: #f4ebdc;
+    --ink-dim: rgba(244,235,220,0.55);
+    --ink-fade: rgba(244,235,220,0.25);
+
+    --coral:   #e87a5d;
+    --mucosa:  #c64a6e;
+    --vagus:   #f4c24a;
+    --vagus-glow: #ffd868;
+
+    --brain-deep: #1a2148;
+    --brain-rim:  #6c5ce7;
+
+    --gaba:    #6ee087;   /* Lactobacillus — green rod */
+    --ach:     #e8c040;   /* Bifidobacterium — yellow Y */
+    --cyto:    #d9483f;   /* Candida — red cluster */
   }
 
-  * { margin:0; padding:0; box-sizing:border-box; touch-action:none; }
+  * { margin:0; padding:0; box-sizing:border-box; touch-action:none; -webkit-tap-highlight-color: transparent; }
 
-  body {
-    font-family: 'Space Mono', monospace;
-    background: #000;
+  html, body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: #0a0608;
     overflow: hidden;
     width: 100vw;
     height: 100vh;
     user-select: none;
+    color: var(--ink);
   }
 
   /* ── SCREENS ── */
@@ -44,374 +47,914 @@
     justify-content: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.6s ease;
+    transition: opacity 0.7s cubic-bezier(.4,0,.2,1);
   }
-  .screen.active {
-    opacity: 1;
-    pointer-events: all;
-  }
+  .screen.active { opacity: 1; pointer-events: all; }
 
-  /* ── INTRO ── */
+  /* ═══════════════════════════════════
+     INTRO
+     ═══════════════════════════════════ */
   #screen-intro {
-    background: radial-gradient(ellipse at 50% 60%, #0a0f2e 0%, #000 70%);
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 30%, #2a1520 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 50% 85%, #3a1a28 0%, transparent 60%),
+      #0a0608;
   }
-  .intro-stars {
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.6) 0%, transparent 100%),
-      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.4) 0%, transparent 100%),
-      radial-gradient(1px 1px at 50% 70%, rgba(255,255,255,0.5) 0%, transparent 100%),
-      radial-gradient(1px 1px at 10% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
-      radial-gradient(1px 1px at 90% 60%, rgba(255,255,255,0.5) 0%, transparent 100%),
-      radial-gradient(1px 1px at 35% 50%, rgba(255,255,255,0.4) 0%, transparent 100%),
-      radial-gradient(1px 1px at 65% 90%, rgba(255,255,255,0.6) 0%, transparent 100%);
+  .intro-grain {
+    position: absolute; inset: 0; opacity: 0.35; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 0.9  0 0 0 0 0.8  0 0 0 0.11 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    mix-blend-mode: overlay;
   }
-  .intro-content {
+  .intro-vagus-bg {
+    position: absolute; inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+  .intro-wrap {
     position: relative;
     z-index: 2;
-    text-align: center;
-    max-width: 640px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: auto auto;
+    gap: 0 4rem;
+    max-width: 1100px;
+    width: 92vw;
     padding: 2rem;
+    align-items: center;
   }
-  .intro-badge {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.3em;
-    color: var(--nerve-color);
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-    opacity: 0.7;
-  }
-  .intro-title {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(2rem, 6vw, 3.5rem);
-    font-weight: 900;
-    color: #fff;
-    line-height: 1.1;
-    margin-bottom: 0.5rem;
-    text-shadow: 0 0 40px rgba(124,255,212,0.5);
-  }
-  .intro-sub {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(0.8rem, 2vw, 1rem);
-    color: var(--nerve-color);
-    letter-spacing: 0.15em;
-    margin-bottom: 2.5rem;
-  }
-  .intro-divider {
-    width: 60px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--nerve-color), transparent);
-    margin: 0 auto 2rem;
-  }
-  .intro-text {
-    font-size: clamp(0.75rem, 1.8vw, 0.9rem);
-    line-height: 1.9;
-    color: rgba(255,255,255,0.75);
-    margin-bottom: 2.5rem;
-  }
-  .intro-facts {
+  .intro-meta {
+    grid-column: 1 / 4;
     display: flex;
-    gap: 1.5rem;
-    justify-content: center;
-    margin-bottom: 2.5rem;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.12em;
   }
-  .intro-fact {
-    background: rgba(124,255,212,0.07);
-    border: 1px solid rgba(124,255,212,0.2);
-    border-radius: 12px;
-    padding: 0.8rem 1.2rem;
-    text-align: center;
-    min-width: 120px;
+  .intro-meta b { color: var(--vagus); font-weight: 500; }
+  .intro-tag { display: flex; align-items: center; gap: 0.5rem; }
+  .intro-tag .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--vagus);
+    box-shadow: 0 0 12px var(--vagus-glow);
+    animation: pulse 1.6s ease-in-out infinite;
   }
-  .intro-fact-num {
-    font-family: 'Orbitron', monospace;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--nerve-color);
-  }
-  .intro-fact-label {
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  .intro-left { text-align: right; }
+  .intro-right { text-align: left; }
+  .intro-label {
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.65rem;
-    color: rgba(255,255,255,0.5);
-    margin-top: 0.2rem;
-    letter-spacing: 0.05em;
-  }
-  .btn-start {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    color: #000;
-    background: var(--nerve-color);
-    border: none;
-    border-radius: 50px;
-    padding: 1rem 3rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    color: var(--ink-fade);
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    box-shadow: 0 0 30px rgba(124,255,212,0.5);
+    margin-bottom: 0.6rem;
   }
-  .btn-start:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 50px rgba(124,255,212,0.8);
+  .intro-word {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+  .intro-word em {
+    font-style: italic;
+    color: var(--vagus);
+  }
+  .intro-left .intro-word { color: #f6b4a0; }
+  .intro-right .intro-word { color: #b9c6ff; }
+
+  .intro-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.5rem;
+  }
+  .intro-bridge {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    margin-bottom: 0.6rem;
+  }
+  .intro-bridge svg { width: 100%; height: 100%; overflow: visible; }
+  .intro-amp {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--vagus);
+    text-shadow: 0 0 30px rgba(244,194,74,0.4);
   }
 
-  /* ── GAME ── */
-  #screen-game {
-    background: #000;
+  .intro-body {
+    grid-column: 1 / 4;
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 3rem;
+    align-items: start;
   }
+  .intro-copy {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: rgba(244,235,220,0.78);
+    max-width: 460px;
+  }
+  .intro-copy .drop {
+    font-family: 'Instrument Serif', serif;
+    font-size: 2.6rem;
+    font-style: italic;
+    color: var(--vagus);
+    float: left;
+    line-height: 0.8;
+    margin: 0.25rem 0.5rem 0 0;
+  }
+  .intro-copy strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .intro-copy .u { color: var(--vagus); font-weight: 500; }
+  .intro-copy .b { color: #b9c6ff; font-weight: 500; }
+  .intro-copy .r { color: #f6b4a0; font-weight: 500; }
+
+  .intro-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-left: 1px solid rgba(244,235,220,0.1);
+    padding-left: 2rem;
+  }
+  .intro-stat {
+    padding: 0.9rem 0;
+    border-bottom: 1px dashed rgba(244,235,220,0.08);
+  }
+  .intro-stat:last-child { border-bottom: none; }
+  .intro-stat-num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 2.2rem;
+    line-height: 1;
+    color: var(--vagus);
+    font-weight: 400;
+  }
+  .intro-stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 0.35rem;
+  }
+
+  .intro-cta {
+    grid-column: 1 / 4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(244,235,220,0.08);
+  }
+  .intro-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.1em;
+  }
+  .intro-role b { color: var(--ink); font-weight: 500; }
+
+  .btn-start {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: #1a0a08;
+    background: var(--vagus);
+    border: none;
+    border-radius: 2px;
+    padding: 1rem 2.4rem;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(.4,0,.2,1);
+    text-transform: uppercase;
+    box-shadow: 0 0 0 1px var(--vagus), 0 10px 40px rgba(244,194,74,0.3);
+    position: relative;
+  }
+  .btn-start::after {
+    content: '→';
+    margin-left: 0.8rem;
+    display: inline-block;
+    transition: transform 0.3s;
+  }
+  .btn-start:hover { box-shadow: 0 0 0 1px var(--vagus), 0 12px 60px rgba(244,194,74,0.6); }
+  .btn-start:hover::after { transform: translateX(6px); }
+
+  /* ═══════════════════════════════════
+     GAME
+     ═══════════════════════════════════ */
+  #screen-game { background: #0a0608; }
   #gameCanvas {
     display: block;
     width: 100%;
     height: 100%;
   }
 
-  /* ── HUD ── */
+  /* HUD */
   #hud {
     position: absolute;
     top: 0; left: 0; right: 0;
-    padding: 0.8rem 1.2rem;
+    padding: 1rem 1.4rem;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     z-index: 10;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.55), transparent);
   }
-  .hud-score {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(0.8rem, 2vw, 1rem);
-    color: var(--score-color);
-    font-weight: 700;
+  .hud-cell { display: flex; flex-direction: column; gap: 0.15rem; }
+  .hud-cell.right { text-align: right; }
+  .hud-cell.center { text-align: center; flex: 0 0 auto; }
+  .hud-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    color: var(--ink-fade);
+    text-transform: uppercase;
   }
-  .hud-timer {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(1rem, 3vw, 1.4rem);
-    color: #fff;
-    font-weight: 900;
-    text-shadow: 0 0 20px rgba(255,255,255,0.5);
+  .hud-val {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    color: var(--ink);
   }
-  .hud-combo {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(0.7rem, 1.8vw, 0.9rem);
-    color: var(--deep-flow);
-    font-weight: 700;
-    text-align: right;
+  .hud-score .hud-val { font-size: 1.4rem; color: #b9c6ff; }
+  .hud-timer .hud-val {
+    font-size: 2rem;
+    line-height: 1;
+    text-shadow: 0 0 30px rgba(244,194,74,0.4);
   }
-  #deep-flow-banner {
+  .hud-combo .hud-val { font-size: 1.4rem; color: var(--vagus); font-style: italic; }
+
+  /* Brain health rail */
+  #brainRail {
     position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(1.2rem, 4vw, 2rem);
-    font-weight: 900;
-    color: var(--deep-flow);
-    text-shadow: 0 0 40px rgba(251,191,36,0.8);
+    right: 2rem;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 28vh;
+    background: rgba(244,235,220,0.08);
+    border-radius: 2px;
+    z-index: 10;
+  }
+  #brainRail .fill {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    border-radius: 2px;
+    background: linear-gradient(to top, #d9483f, #e8c040, #6ee087);
+    box-shadow: 0 0 16px rgba(110,224,135,0.5);
+    transition: height 0.3s, background 0.4s;
+  }
+  #brainRail .cap {
+    position: absolute;
+    top: -30px;
+    right: -8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem;
     letter-spacing: 0.2em;
+    color: var(--ink-fade);
+    white-space: nowrap;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+  #brainRail .val {
+    position: absolute;
+    bottom: -28px;
+    right: -14px;
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.1rem;
+    color: var(--ink);
+  }
+
+  #deep-flow-banner {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(0.9);
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    color: var(--vagus);
+    text-shadow:
+      0 0 40px rgba(244,194,74,0.9),
+      0 0 80px rgba(244,194,74,0.5);
+    letter-spacing: -0.01em;
     pointer-events: none;
     opacity: 0;
     z-index: 20;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(.34,1.56,.64,1);
     text-align: center;
+  }
+  #deep-flow-banner .sub {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-style: normal;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--ink-dim);
+    margin-top: 0.5rem;
   }
   #deep-flow-banner.show {
     opacity: 1;
+    transform: translate(-50%,-50%) scale(1);
   }
 
-  /* ── LEGEND ── */
+  /* Legend */
   #legend {
     position: absolute;
     bottom: 1rem;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 1rem;
+    gap: 1.8rem;
     z-index: 10;
     flex-wrap: wrap;
     justify-content: center;
+    background: rgba(10,6,8,0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(244,235,220,0.08);
+    border-radius: 999px;
+    padding: 0.55rem 1.4rem;
   }
   .legend-item {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    font-size: 0.6rem;
-    color: rgba(255,255,255,0.6);
-    letter-spacing: 0.05em;
+    gap: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.06em;
   }
+  .legend-item b { color: var(--ink); font-weight: 500; }
   .legend-dot {
     width: 10px;
     height: 10px;
     border-radius: 50%;
   }
 
-  /* ── END ── */
+  /* ═══════════════════════════════════
+     END SCREEN
+     ═══════════════════════════════════ */
   #screen-end {
-    background: radial-gradient(ellipse at 50% 40%, #0d1f0d 0%, #000 70%);
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 40%, #15112e 0%, transparent 65%),
+      radial-gradient(ellipse 60% 50% at 50% 90%, #2a1028 0%, transparent 60%),
+      #0a0608;
   }
-  .end-content {
+  .end-wrap {
     position: relative;
     z-index: 2;
-    text-align: center;
+    max-width: 880px;
+    width: 90vw;
     padding: 2rem;
-    max-width: 500px;
   }
-  .end-status {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.3em;
-    color: var(--good-gaba);
-    margin-bottom: 1rem;
-    opacity: 0.8;
+  .end-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--ink-fade);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .end-head .line {
+    flex: 1;
+    height: 1px;
+    background: rgba(244,235,220,0.1);
+    margin: 0 1rem;
+  }
+  .end-card {
+    border: 1px solid rgba(244,235,220,0.1);
+    border-radius: 4px;
+    padding: 3rem 2.5rem;
+    background:
+      linear-gradient(180deg, rgba(244,235,220,0.02) 0%, transparent 100%);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .end-status-row {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .end-status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gaba);
+    box-shadow: 0 0 14px var(--gaba);
   }
   .end-title {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(1.5rem, 5vw, 2.5rem);
-    font-weight: 900;
-    color: #fff;
-    margin-bottom: 0.5rem;
-    text-shadow: 0 0 30px rgba(74,222,128,0.6);
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: clamp(2.2rem, 5.5vw, 4rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.3rem;
   }
-  .end-score-big {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(2.5rem, 8vw, 5rem);
-    font-weight: 900;
-    color: var(--nerve-color);
-    text-shadow: 0 0 40px rgba(124,255,212,0.7);
-    margin: 1rem 0;
+  .end-title em { font-style: italic; color: var(--vagus); }
+  .end-tagline {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--ink-dim);
+    margin-bottom: 2.5rem;
   }
-  .end-stats {
-    display: flex;
+
+  .end-metrics {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
     gap: 1.5rem;
-    justify-content: center;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
+    padding: 1.8rem 0;
+    border-top: 1px solid rgba(244,235,220,0.1);
+    border-bottom: 1px solid rgba(244,235,220,0.1);
   }
-  .end-stat {
-    text-align: center;
+  .end-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
   }
-  .end-stat-val {
-    font-family: 'Orbitron', monospace;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #fff;
+  .end-metric-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    color: var(--ink-fade);
+    text-transform: uppercase;
   }
-  .end-stat-label {
-    font-size: 0.6rem;
-    color: rgba(255,255,255,0.4);
+  .end-metric-val {
+    font-family: 'Instrument Serif', serif;
+    font-size: 2.4rem;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .end-metric.hero .end-metric-val {
+    font-size: 3.8rem;
+    color: var(--vagus);
+  }
+  .end-metric-unit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ink-dim);
     letter-spacing: 0.1em;
-    margin-top: 0.2rem;
   }
-  .end-message {
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.6);
-    margin-bottom: 2rem;
+
+  .end-readout {
+    margin-top: 2rem;
+    font-size: 0.92rem;
     line-height: 1.7;
+    color: rgba(244,235,220,0.72);
+    max-width: 560px;
+  }
+  .end-readout .key {
+    display: inline-flex;
+    gap: 0.4rem;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink-fade);
+    margin-right: 0.9rem;
+  }
+  .end-readout .key b { color: var(--ink); font-weight: 500; }
+
+  .end-actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 2.2rem;
+    justify-content: flex-end;
+    align-items: center;
   }
   .btn-restart {
-    font-family: 'Orbitron', monospace;
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    color: #000;
-    background: var(--good-gaba);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: #1a0a08;
+    background: var(--vagus);
     border: none;
-    border-radius: 50px;
-    padding: 0.9rem 2.5rem;
+    border-radius: 2px;
+    padding: 0.9rem 2rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s;
     text-transform: uppercase;
-    box-shadow: 0 0 30px rgba(74,222,128,0.5);
+    box-shadow: 0 0 0 1px var(--vagus), 0 8px 30px rgba(244,194,74,0.25);
   }
-  .btn-restart:hover { transform: scale(1.05); }
+  .btn-restart::after { content: ' ↻'; }
+  .btn-restart:hover { box-shadow: 0 0 0 1px var(--vagus), 0 10px 44px rgba(244,194,74,0.5); }
+
+  .btn-ghost {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--ink-dim);
+    background: transparent;
+    border: 1px solid rgba(244,235,220,0.15);
+    border-radius: 2px;
+    padding: 0.9rem 1.4rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+  .btn-ghost:hover { color: var(--ink); border-color: rgba(244,235,220,0.35); }
+
+  /* ═══════════════════════════════════
+     TWEAKS PANEL
+     ═══════════════════════════════════ */
+  #tweaks-panel {
+    position: absolute;
+    bottom: 4.5rem;
+    right: 1rem;
+    z-index: 50;
+    background: rgba(14,8,10,0.92);
+    border: 1px solid rgba(244,235,220,0.12);
+    border-radius: 6px;
+    padding: 0.9rem 1rem 1rem;
+    min-width: 200px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    display: none;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--ink);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  #tweaks-panel.show { display: block; }
+  #tweaks-panel .title {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    color: var(--ink-fade);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  #tweaks-panel .title .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--vagus);
+    box-shadow: 0 0 8px var(--vagus);
+  }
+  #tweaks-panel .group { margin-bottom: 0.9rem; }
+  #tweaks-panel .group:last-child { margin-bottom: 0; }
+  #tweaks-panel .lbl {
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  #tweaks-panel .opts {
+    display: flex;
+    gap: 4px;
+  }
+  #tweaks-panel .opt {
+    flex: 1;
+    padding: 0.42rem 0.5rem;
+    background: rgba(244,235,220,0.04);
+    border: 1px solid rgba(244,235,220,0.08);
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--ink-dim);
+    cursor: pointer;
+    text-align: center;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  #tweaks-panel .opt:hover { color: var(--ink); border-color: rgba(244,235,220,0.2); }
+  #tweaks-panel .opt.active {
+    background: var(--vagus);
+    color: #1a0a08;
+    border-color: var(--vagus);
+    font-weight: 600;
+  }
+
+  @media (max-width: 720px) {
+    .intro-wrap { grid-template-columns: 1fr; gap: 1rem; }
+    .intro-left, .intro-right { text-align: center; }
+    .intro-body { grid-template-columns: 1fr; gap: 2rem; }
+    .intro-stats { border-left: none; border-top: 1px solid rgba(244,235,220,0.1); padding-left: 0; padding-top: 1rem; }
+    .intro-cta { flex-direction: column; gap: 1.2rem; }
+    .end-metrics { grid-template-columns: 1fr 1fr; }
+    #brainRail { right: 0.8rem; height: 24vh; }
+    #legend { gap: 0.8rem; padding: 0.45rem 0.9rem; }
+    .legend-item { font-size: 0.55rem; }
+  }
 </style>
 </head>
 <body>
 
-<!-- INTRO SCREEN -->
+<!-- ═══════ INTRO ═══════ -->
 <div id="screen-intro" class="screen active">
-  <div class="intro-stars"></div>
-  <div class="intro-content">
-    <div class="intro-badge">Nano-G // Mission Briefing</div>
-    <h1 class="intro-title">GUT–BRAIN<br>CONNECTION</h1>
-    <div class="intro-sub">The Vagus Nerve Protocol</div>
-    <div class="intro-divider"></div>
-    <p class="intro-text">
-      Your gut and brain are in constant communication via the <strong style="color:var(--nerve-color)">Vagus Nerve</strong> — 
-      a living cable transmitting billions of biochemical signals daily. 
-      80% of those signals travel <em>upward</em>: from gut to brain.<br><br>
-      When harmful cytokines flood this channel, mood drops, focus fades, and anxiety rises. 
-      You are <strong style="color:var(--nano-blue)">Nano-G</strong> — the gatekeeper. 
-      Block the bad. Let the good through.
-    </p>
-    <div class="intro-facts">
-      <div class="intro-fact">
-        <div class="intro-fact-num">90%</div>
-        <div class="intro-fact-label">of serotonin<br>made in gut</div>
+  <div class="intro-grain"></div>
+  <svg class="intro-vagus-bg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <linearGradient id="nervebg" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#f4c24a" stop-opacity="0"/>
+        <stop offset="0.5" stop-color="#f4c24a" stop-opacity="0.5"/>
+        <stop offset="1" stop-color="#f4c24a" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <path d="M -50 400 Q 300 250, 600 400 T 1250 400" stroke="url(#nervebg)" stroke-width="2" fill="none" opacity="0.6"/>
+    <path d="M -50 400 Q 300 250, 600 400 T 1250 400" stroke="#f4c24a" stroke-width="0.5" fill="none" opacity="0.25" stroke-dasharray="3 8"/>
+  </svg>
+
+  <div class="intro-wrap">
+    <div class="intro-meta">
+      <div class="intro-tag"><span class="dot"></span>NANO-G // GUT–BRAIN PROTOCOL</div>
+      <div>CH.01 · <b>VAGUS</b></div>
+    </div>
+
+    <div class="intro-left">
+      <div class="intro-label">Source</div>
+      <div class="intro-word">Gut.</div>
+    </div>
+
+    <div class="intro-center">
+      <div class="intro-bridge">
+        <svg viewBox="0 0 80 80">
+          <defs>
+            <radialGradient id="orb" cx="0.35" cy="0.35">
+              <stop offset="0" stop-color="#ffd868"/>
+              <stop offset="0.5" stop-color="#f4c24a"/>
+              <stop offset="1" stop-color="#8c6a1f"/>
+            </radialGradient>
+          </defs>
+          <path d="M 5 40 Q 25 15, 40 40 T 75 40"
+                stroke="#f4c24a" stroke-width="1.4" fill="none" opacity="0.55"/>
+          <path d="M 5 40 Q 25 15, 40 40 T 75 40"
+                stroke="#ffd868" stroke-width="0.6" fill="none"/>
+          <circle cx="40" cy="40" r="7" fill="url(#orb)">
+            <animate attributeName="r" values="6.5;7.8;6.5" dur="2.2s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="40" cy="40" r="14" fill="none" stroke="#f4c24a" stroke-width="0.6" opacity="0.3">
+            <animate attributeName="r" values="8;22;8" dur="2.2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.6;0;0.6" dur="2.2s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
       </div>
-      <div class="intro-fact">
-        <div class="intro-fact-num">500M</div>
-        <div class="intro-fact-label">neurons in<br>your gut</div>
-      </div>
-      <div class="intro-fact">
-        <div class="intro-fact-num">100T</div>
-        <div class="intro-fact-label">gut bacteria<br>species</div>
+      <div class="intro-amp">↔</div>
+    </div>
+
+    <div class="intro-right">
+      <div class="intro-label">Target</div>
+      <div class="intro-word">Brain.</div>
+    </div>
+
+    <div class="intro-body">
+      <p class="intro-copy">
+        <span class="drop">T</span>he <span class="u">Vagus Nerve</span> is a living cable, ~100 000 fibers thick, running from brainstem to colon. Roughly <strong>80% of traffic moves upward</strong> — from the gut's microbial factory toward the mind.<br><br>
+        When <span class="r">inflammatory cytokines</span> hijack this channel, mood flattens, focus fades, anxiety rises. When <span class="b">GABA</span> and <span class="u">acetylcholine</span> flow clean, the brain lights up.<br><br>
+        You are <strong>Nano-G</strong> — the gatekeeper stationed on the nerve. Pass the signal. Block the toxin.
+      </p>
+      <div class="intro-stats">
+        <div class="intro-stat">
+          <div class="intro-stat-num">500<span style="font-size:0.55em;">M</span></div>
+          <div class="intro-stat-label">Enteric neurons<br>in the gut wall</div>
+        </div>
+        <div class="intro-stat">
+          <div class="intro-stat-num">90<span style="font-size:0.55em;">%</span></div>
+          <div class="intro-stat-label">Of serotonin is<br>produced in the gut</div>
+        </div>
+        <div class="intro-stat">
+          <div class="intro-stat-num">100<span style="font-size:0.55em;">T</span></div>
+          <div class="intro-stat-label">Microbes colonizing<br>the intestinal flora</div>
+        </div>
       </div>
     </div>
-    <button class="btn-start" onclick="startGame()">DEPLOY NANO-G</button>
+
+    <div class="intro-cta">
+      <div class="intro-role">
+        ROLE / <b>Gatekeeper</b> &nbsp;·&nbsp; OBJECTIVE / <b>Restore neural sync in 60s</b>
+      </div>
+      <button class="btn-start" onclick="startGame()">Deploy Nano-G</button>
+    </div>
   </div>
 </div>
 
-<!-- GAME SCREEN -->
+<!-- ═══════ GAME ═══════ -->
 <div id="screen-game" class="screen">
   <canvas id="gameCanvas"></canvas>
+
   <div id="hud">
-    <div class="hud-score">SCORE: <span id="scoreVal">0</span></div>
-    <div class="hud-timer" id="timerVal">60</div>
-    <div class="hud-combo">COMBO: <span id="comboVal">0</span>x</div>
+    <div class="hud-cell hud-score">
+      <div class="hud-label">Score</div>
+      <div class="hud-val" id="scoreVal">0</div>
+    </div>
+    <div class="hud-cell hud-timer center">
+      <div class="hud-label">TIME</div>
+      <div class="hud-val" id="timerVal">60</div>
+    </div>
+    <div class="hud-cell hud-combo right">
+      <div class="hud-label">Combo</div>
+      <div class="hud-val"><span id="comboVal">0</span>×</div>
+    </div>
   </div>
-  <div id="deep-flow-banner">⚡ DEEP FLOW ⚡</div>
+
+  <div id="brainRail">
+    <div class="fill" id="brainFill" style="height: 5%;"></div>
+    <div class="cap">BRAIN HEALTH</div>
+    <div class="val" id="brainVal">5</div>
+  </div>
+
+  <div id="deep-flow-banner">
+    <span>Deep Flow</span>
+    <span class="sub">neural sync engaged</span>
+  </div>
+
   <div id="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#4ade80"></div>GABA (calm)</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#facc15"></div>ACh (focus)</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#f87171"></div>CYTOKINE (block!)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#6ee087"></div><b>Lactobacillus</b> → GABA &nbsp;pass</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e8c040"></div><b>Bifidobacterium</b> → ACh &nbsp;pass</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#d9483f"></div><b>Candida</b> → Cytokine &nbsp;block</div>
   </div>
 </div>
 
-<!-- END SCREEN -->
+<!-- ═══════ END ═══════ -->
 <div id="screen-end" class="screen">
-  <div class="end-content">
-    <div class="end-status" id="endStatus">BALANCE RESTORED</div>
-    <h2 class="end-title" id="endTitle">Neural Sync<br>Complete</h2>
-    <div class="end-score-big" id="endScore">0</div>
-    <div class="end-stats">
-      <div class="end-stat">
-        <div class="end-stat-val" id="endGood">0</div>
-        <div class="end-stat-label">SIGNALS PASSED</div>
+  <div class="end-wrap">
+    <div class="end-head">
+      <span>NANO-G // <b style="color:var(--vagus);">SESSION COMPLETE</b></span>
+      <span class="line"></span>
+      <span id="endTimestamp">T+60s</span>
+    </div>
+
+    <div class="end-card">
+      <div class="end-status-row">
+        <div class="end-status-dot" id="endStatusDot"></div>
+        <span id="endStatus">Balance Restored</span>
       </div>
-      <div class="end-stat">
-        <div class="end-stat-val" id="endBad">0</div>
-        <div class="end-stat-label">BLOCKED</div>
+
+      <h2 class="end-title" id="endTitle">Neural Sync <em>Complete</em></h2>
+      <div class="end-tagline" id="endTagline">The vagus channel is clear. The brain is listening.</div>
+
+      <div class="end-metrics">
+        <div class="end-metric hero">
+          <div class="end-metric-label">Final Score</div>
+          <div class="end-metric-val" id="endScore">0</div>
+        </div>
+        <div class="end-metric">
+          <div class="end-metric-label">Brain Health</div>
+          <div class="end-metric-val" id="endHealth">0<span style="font-size:0.45em; color:var(--ink-dim);">%</span></div>
+        </div>
+        <div class="end-metric">
+          <div class="end-metric-label">Blocked</div>
+          <div class="end-metric-val" id="endBad">0</div>
+        </div>
+        <div class="end-metric">
+          <div class="end-metric-label">Max Combo</div>
+          <div class="end-metric-val" id="endMaxCombo">0<span style="font-size:0.45em; color:var(--ink-dim);">×</span></div>
+        </div>
       </div>
-      <div class="end-stat">
-        <div class="end-stat-val" id="endMaxCombo">0</div>
-        <div class="end-stat-label">MAX COMBO</div>
+
+      <p class="end-readout" id="endReadout">
+        <span class="key"><b>▲</b> signals passed:</span><span id="endGoodLine">0</span>
+        &nbsp;·&nbsp;
+        <span class="key"><b>✕</b> cytokines blocked:</span><span id="endBadLine">0</span>
+        <br><br>
+        <span id="endMessage">Mood index optimal. Cognitive functions in-band. Microbiome thriving.</span>
+      </p>
+
+      <div class="end-actions">
+        <button class="btn-ghost" onclick="backToIntro()">Briefing</button>
+        <button class="btn-restart" onclick="restartGame()">Run Again</button>
       </div>
     </div>
-    <p class="end-message" id="endMessage">Mood: 100% · Cognitive Functions: Optimal</p>
-    <button class="btn-restart" onclick="restartGame()">RUN AGAIN</button>
+  </div>
+</div>
+
+<!-- TWEAKS PANEL -->
+<div id="tweaks-panel">
+  <div class="title"><span class="dot"></span>Tweaks</div>
+  <div class="group">
+    <div class="lbl">Gut Mucosa</div>
+    <div class="opts" data-knob="mucosa">
+      <div class="opt" data-val="warm">Warm</div>
+      <div class="opt" data-val="coral">Coral</div>
+      <div class="opt" data-val="deep">Deep</div>
+    </div>
+  </div>
+  <div class="group">
+    <div class="lbl">Brain Dome</div>
+    <div class="opts" data-knob="brain">
+      <div class="opt" data-val="sapphire">Sapphire</div>
+      <div class="opt" data-val="violet">Violet</div>
+      <div class="opt" data-val="teal">Teal</div>
+    </div>
+  </div>
+  <div class="group">
+    <div class="lbl">Bacteria</div>
+    <div class="opts" data-knob="bacteria">
+      <div class="opt" data-val="micro">Microscope</div>
+      <div class="opt" data-val="stylized">Stylized</div>
+    </div>
+  </div>
+  <div class="group">
+    <div class="lbl">Nerve Intensity</div>
+    <div class="opts" data-knob="nerve">
+      <div class="opt" data-val="soft">Soft</div>
+      <div class="opt" data-val="bold">Bold</div>
+      <div class="opt" data-val="electric">Electric</div>
+    </div>
   </div>
 </div>
 
 <script>
-// ── SCREEN MANAGER ──
+// ═══════════════════════════════════════
+// TWEAKS (persisted defaults)
+// ═══════════════════════════════════════
+const TWEAKS = /*EDITMODE-BEGIN*/{
+  "mucosa": "deep",
+  "brain": "violet",
+  "bacteria": "micro",
+  "nerve": "electric"
+}/*EDITMODE-END*/;
+
+const TWEAKS_ACTIVE = { ...TWEAKS };
+
+// Edit mode plumbing
+window.addEventListener('message', (e) => {
+  if (!e.data) return;
+  if (e.data.type === '__activate_edit_mode') {
+    document.getElementById('tweaks-panel').classList.add('show');
+  } else if (e.data.type === '__deactivate_edit_mode') {
+    document.getElementById('tweaks-panel').classList.remove('show');
+  }
+});
+// Register listener before announcing — required by protocol
+setTimeout(() => {
+  window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+}, 50);
+
+// Wire tweak buttons
+function syncTweakButtons() {
+  document.querySelectorAll('#tweaks-panel .opts').forEach(group => {
+    const knob = group.dataset.knob;
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.val === TWEAKS_ACTIVE[knob]);
+    });
+  });
+}
+document.querySelectorAll('#tweaks-panel .opt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const knob = btn.parentElement.dataset.knob;
+    const val = btn.dataset.val;
+    TWEAKS_ACTIVE[knob] = val;
+    syncTweakButtons();
+    if (typeof rebuildBgGradients === 'function' && (knob === 'mucosa' || knob === 'brain')) {
+      rebuildBgGradients();
+    }
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [knob]: val } }, '*');
+  });
+});
+syncTweakButtons();
+
+// ═══════════════════════════════════════
+// PALETTES
+// ═══════════════════════════════════════
+const MUCOSA_PRESETS = {
+  warm:  { base: [66, 22, 32], mid: [120, 38, 58], tip: [230, 130, 150], glow: [255, 180, 170] },
+  coral: { base: [58, 20, 20], mid: [165, 62, 62], tip: [250, 160, 150], glow: [255, 180, 155] },
+  deep:  { base: [40, 12, 30], mid: [95, 28, 60], tip: [210, 110, 150], glow: [240, 150, 180] },
+};
+const BRAIN_PRESETS = {
+  sapphire: { top: [24, 34, 88], bot: [10, 14, 38], rim: [110, 120, 230], neuron: [180, 200, 255] },
+  violet:   { top: [42, 20, 80], bot: [16, 8, 38], rim: [160, 110, 240], neuron: [210, 180, 255] },
+  teal:     { top: [12, 48, 70], bot: [6, 20, 36], rim: [90, 200, 220], neuron: [170, 230, 240] },
+};
+const NERVE_PRESETS = {
+  soft:     { layers: [[44, 0.04], [24, 0.12], [11, 0.38], [4, 0.75]], fiber: 0.35 },
+  bold:     { layers: [[48, 0.06], [26, 0.16], [12, 0.5],  [4, 0.9] ], fiber: 0.55 },
+  electric: { layers: [[54, 0.08], [28, 0.22], [14, 0.62], [5, 1.0] ], fiber: 0.8  },
+};
+
+// ═══════════════════════════════════════
+// SCREEN MANAGER
+// ═══════════════════════════════════════
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-// ── GAME STATE ──
+// ═══════════════════════════════════════
+// GAME
+// ═══════════════════════════════════════
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -424,57 +967,65 @@ let deepFlow = false;
 let deepFlowTimer = 0;
 let timerInterval;
 
-// Nano-G
 let nano = { x: 0, y: 0, targetX: 0, targetY: 0, size: 20 };
-
-// Nerve path (bezier points, recomputed on resize)
-let nervePath = [];
-let nerveY = 0; // center Y of nerve (vertical midpoint)
-
-// Bubbles
+let nerveY = 0;
 let bubbles = [];
 let spawnTimer = 0;
-let spawnInterval = 90; // frames
-
-// Brain neurons
+let spawnInterval = 38;
 let neurons = [];
-let brainHealth = 0; // 0-100
-let brainFlashes = [];
+let brainHealth = 0;
+let brainRedFlash = 0;
 
-// Particles
 let particles = [];
+let floatingTexts = [];
+let nerveSignals = [];
+let villiData = [];
+let nerveFibers = [];
+let pulsePhase = 0;
 
-// Nano-G logo — exact paths from logo.svg (295x250 viewBox)
-// Organic: slow breathing scale + wobble rotation via nanoTime
+// Cached gradient objects (rebuilt on resize / palette change)
+let _gutGradCached = null;
+let _brainGradCached = null;
+let _lastMucosaKey = null;
+let _lastBrainKey = null;
+function rebuildBgGradients() {
+  const mu = MUCOSA_PRESETS[TWEAKS_ACTIVE.mucosa] || MUCOSA_PRESETS.warm;
+  const gutGrad = ctx.createLinearGradient(0, 0, 0, nerveY);
+  // flipped: darkest at top (deep tissue), lighter toward nerve
+  gutGrad.addColorStop(0,    `rgb(${mu.base[0]},${mu.base[1]},${mu.base[2]})`);
+  gutGrad.addColorStop(0.65, `rgb(${mu.base[0]+30},${mu.base[1]+20},${mu.base[2]+15})`);
+  gutGrad.addColorStop(1,    `rgb(${mu.mid[0]},${mu.mid[1]},${mu.mid[2]})`);
+  _gutGradCached = gutGrad;
+
+  const br = BRAIN_PRESETS[TWEAKS_ACTIVE.brain] || BRAIN_PRESETS.sapphire;
+  const brainGrad = ctx.createLinearGradient(0, nerveY, 0, H);
+  // flipped: lighter near nerve, darkest at bottom (deep brain)
+  brainGrad.addColorStop(0, `rgb(${br.top[0]},${br.top[1]},${br.top[2]})`);
+  brainGrad.addColorStop(1, `rgb(${br.bot[0]-5},${br.bot[1]-5},${br.bot[2]-3})`);
+  _brainGradCached = brainGrad;
+
+  _lastMucosaKey = TWEAKS_ACTIVE.mucosa;
+  _lastBrainKey = TWEAKS_ACTIVE.brain;
+}
+
+// ── Nano-G logo ──
 let nanoTime = 0;
-
 function drawNanoG(x, y, size, glowing) {
   nanoTime += 0.018;
-
-  // Organic "breathing": subtle non-uniform scale
   const breathX = 1 + Math.sin(nanoTime * 1.1) * 0.04;
   const breathY = 1 + Math.sin(nanoTime * 0.8 + 1.2) * 0.04;
-  // Gentle tilt sway
   const sway = Math.sin(nanoTime * 0.6) * 0.06;
 
   ctx.save();
+  const color     = deepFlow ? '#f4c24a' : '#4a6cf7';
+  const colorMid  = deepFlow ? '#e8a82e' : '#3856d8';
+  const colorDark = deepFlow ? '#8c5a10' : '#1a2464';
 
-  // Outer glow (deep shadow layer)
-  const color     = deepFlow ? '#fbbf24' : '#3b82f6';
-  const colorMid  = deepFlow ? '#f59e0b' : '#2563eb';
-  const colorDark = deepFlow ? '#92400e' : '#1e3a8a';
-  const highlight = 'rgba(255,255,255,0.55)';
+  if (glowing) { ctx.shadowColor = color; ctx.shadowBlur = size * 1.6; }
 
-  if (glowing) {
-    ctx.shadowColor = color;
-    ctx.shadowBlur = size * 1.4;
-  }
-
-  // Position + organic transform
   ctx.translate(x, y);
   ctx.rotate(sway);
   ctx.scale(breathX, breathY);
-
   const s = (size * 2) / 250;
   ctx.scale(s, s);
   ctx.translate(-147.5, -125);
@@ -485,50 +1036,26 @@ function drawNanoG(x, y, size, glowing) {
   const p1 = new Path2D(PATH_BODY);
   const p2 = new Path2D(PATH_DOT);
 
-  // ── Layer 1: base fill with vertical gradient (dark bottom = depth) ──
   const grad = ctx.createLinearGradient(147, -10, 147, 260);
-  grad.addColorStop(0,   colorMid);
+  grad.addColorStop(0, colorMid);
   grad.addColorStop(0.45, color);
-  grad.addColorStop(1,   colorDark);
+  grad.addColorStop(1, colorDark);
   ctx.fillStyle = grad;
-  ctx.fill(p1);
-  ctx.fill(p2);
+  ctx.fill(p1); ctx.fill(p2);
 
-  // ── Layer 2: radial highlight — top-left "light source" ──
   ctx.save();
   ctx.clip(p1);
   const hg = ctx.createRadialGradient(90, 40, 5, 120, 80, 160);
-  hg.addColorStop(0,   'rgba(255,255,255,0.38)');
-  hg.addColorStop(0.4, 'rgba(255,255,255,0.10)');
-  hg.addColorStop(1,   'rgba(0,0,0,0)');
+  hg.addColorStop(0, 'rgba(255,255,255,0.4)');
+  hg.addColorStop(0.4, 'rgba(255,255,255,0.1)');
+  hg.addColorStop(1, 'rgba(0,0,0,0)');
   ctx.fillStyle = hg;
   ctx.fillRect(-10, -10, 310, 270);
   ctx.restore();
 
-  // Same highlight on dot
-  ctx.save();
-  ctx.clip(p2);
-  const hg2 = ctx.createRadialGradient(20, 190, 2, 30, 205, 40);
-  hg2.addColorStop(0,   'rgba(255,255,255,0.35)');
-  hg2.addColorStop(1,   'rgba(0,0,0,0)');
-  ctx.fillStyle = hg2;
-  ctx.fillRect(-10, 170, 100, 100);
-  ctx.restore();
-
-  // ── Layer 3: soft inner shadow at bottom edge (adds roundness) ──
   ctx.save();
   ctx.clip(p1);
-  const sg = ctx.createLinearGradient(147, 180, 147, 260);
-  sg.addColorStop(0,   'rgba(0,0,0,0)');
-  sg.addColorStop(1,   'rgba(0,0,0,0.28)');
-  ctx.fillStyle = sg;
-  ctx.fillRect(-10, 150, 310, 120);
-  ctx.restore();
-
-  // ── Layer 4: thin bright rim at top (specular edge) ──
-  ctx.save();
-  ctx.clip(p1);
-  ctx.strokeStyle = 'rgba(255,255,255,0.22)';
+  ctx.strokeStyle = 'rgba(255,255,255,0.25)';
   ctx.lineWidth = 6;
   ctx.stroke(p1);
   ctx.restore();
@@ -536,157 +1063,404 @@ function drawNanoG(x, y, size, glowing) {
   ctx.restore();
 }
 
+// ═══════════════════════════════════════
+// RESIZE + BUILD
+// ═══════════════════════════════════════
 function resize() {
   W = canvas.width = canvas.offsetWidth;
   H = canvas.height = canvas.offsetHeight;
-  nerveY = H * 0.5;
+  nerveY = H * 0.54;
   buildNeurons();
+  buildVilli();
+  buildNerveFibers();
+  rebuildBgGradients();
 }
 
 function buildNeurons() {
   neurons = [];
-  const cols = 8, rows = 3;
-  const bw = W * 0.6, bh = H * 0.28;
-  const bx = W * 0.2, by = H * 0.04;
+  const cols = 9, rows = 4;
+  const bw = W * 0.7, bh = H * 0.36;
+  const bx = W * 0.15, by = H * 0.60;  // bottom half (brain below nerve)
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
+      const jitterX = (Math.random() - 0.5) * bw / cols * 0.7;
+      const jitterY = (Math.random() - 0.5) * bh / rows * 0.7;
       neurons.push({
-        x: bx + (c / (cols - 1)) * bw,
-        y: by + (r / (rows - 1)) * bh,
-        lit: 0, // 0-1
-        flash: 0,
+        x: bx + (c / (cols - 1)) * bw + jitterX,
+        y: by + (r / (rows - 1)) * bh + jitterY,
+        lit: 0, flash: 0,
+        baseR: 2 + Math.random() * 1.5,
+        phase: Math.random() * Math.PI * 2,
       });
     }
   }
 }
 
-// ── NERVE PATH ──
-function getNerveX(t) {
-  // Sine wave along horizontal
-  return t * W;
-}
-function getNerveY(t) {
-  return nerveY + Math.sin(t * Math.PI * 3) * (H * 0.03);
+function buildVilli() {
+  villiData = [];
+  const count = Math.max(18, Math.floor(W / 26));
+  for (let i = 0; i < count; i++) {
+    const x = (i / count) * W + (W / count) * 0.5 + (Math.random() - 0.5) * (W/count) * 0.4;
+    villiData.push({
+      x,
+      h: 0.09 + Math.random() * 0.08,
+      w: 9 + Math.random() * 8,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.35 + Math.random() * 0.5,
+      layer: Math.random() < 0.4 ? 0 : 1,
+    });
+  }
+  villiData.sort((a,b) => a.layer - b.layer);
 }
 
+function buildNerveFibers() {
+  nerveFibers = [];
+  const count = 7;
+  for (let i = 0; i < count; i++) {
+    nerveFibers.push({
+      offset: (i - (count - 1) / 2) * 2.2,
+      phase: Math.random() * Math.PI * 2,
+      wav: 0.8 + Math.random() * 0.6,
+      thickness: 0.5 + Math.random() * 0.9,
+    });
+  }
+}
+
+// Nerve curve
+function getNerveX(t) { return t * W; }
+function getNerveY(t) {
+  return nerveY + Math.sin(t * Math.PI * 3 + pulsePhase * 0.2) * (H * 0.025);
+}
+
+// ═══════════════════════════════════════
+// VAGUS NERVE (anatomical, fibrous)
+// ═══════════════════════════════════════
 function drawNerve() {
-  const segments = 120;
-  // Glow layers
-  [16, 8, 3].forEach((lw, i) => {
+  const segs = 64;
+  const preset = NERVE_PRESETS[TWEAKS_ACTIVE.nerve] || NERVE_PRESETS.bold;
+  const glow = deepFlow ? [255, 216, 104] : [244, 194, 74];
+  const pulse = 1 + Math.sin(pulsePhase) * 0.05;
+
+  // Outer diffuse halos
+  preset.layers.forEach(([lw, a]) => {
     ctx.beginPath();
     ctx.moveTo(getNerveX(0), getNerveY(0));
-    for (let j = 1; j <= segments; j++) {
-      const t = j / segments;
+    for (let j = 1; j <= segs; j++) {
+      const t = j / segs;
       ctx.lineTo(getNerveX(t), getNerveY(t));
     }
-    ctx.strokeStyle = deepFlow
-      ? `rgba(251,191,36,${[0.08,0.15,0.6][i]})`
-      : `rgba(124,255,212,${[0.06,0.12,0.5][i]})`;
-    ctx.lineWidth = lw;
+    ctx.strokeStyle = `rgba(${glow[0]},${glow[1]},${glow[2]},${a})`;
+    ctx.lineWidth = lw * pulse;
+    ctx.lineCap = 'round';
     ctx.stroke();
   });
+
+  // Fiber bundle — parallel strands
+  ctx.globalAlpha = preset.fiber;
+  nerveFibers.forEach((f, idx) => {
+    ctx.beginPath();
+    for (let j = 0; j <= segs; j++) {
+      const t = j / segs;
+      const x = getNerveX(t);
+      const baseY = getNerveY(t);
+      // Each fiber weaves slightly around the core axis
+      const fx = Math.sin(t * Math.PI * 4 * f.wav + f.phase + pulsePhase * 0.3) * 3;
+      const y = baseY + f.offset + fx * 0.3;
+      if (j === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    const alpha = 0.35 + (idx % 2 === 0 ? 0.15 : 0);
+    ctx.strokeStyle = deepFlow
+      ? `rgba(255, 240, 180, ${alpha})`
+      : `rgba(255, 220, 130, ${alpha})`;
+    ctx.lineWidth = f.thickness;
+    ctx.stroke();
+  });
+  ctx.globalAlpha = 1;
+
+  // Crisp core highlight
+  ctx.beginPath();
+  ctx.moveTo(getNerveX(0), getNerveY(0) - 1);
+  for (let j = 1; j <= segs; j++) {
+    const t = j / segs;
+    ctx.lineTo(getNerveX(t), getNerveY(t) - 1);
+  }
+  ctx.strokeStyle = deepFlow ? 'rgba(255,255,220,0.7)' : 'rgba(255,245,200,0.55)';
+  ctx.lineWidth = 1.2;
+  ctx.stroke();
+
+  // Perineurium "nodes of Ranvier" — small ring markers
+  const nodeCount = 14;
+  for (let i = 0; i < nodeCount; i++) {
+    const t = (i + 0.5) / nodeCount;
+    const x = getNerveX(t);
+    const y = getNerveY(t);
+    const r = 3 + Math.sin(pulsePhase * 2 + i) * 0.6;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255, 240, 180, ${0.12 + 0.08 * Math.sin(pulsePhase + i)})`;
+    ctx.fill();
+  }
 }
 
-// Signal particles moving along nerve
-let nerveSignals = [];
+// Travelling signals along nerve
 function spawnNerveSignal() {
-  nerveSignals.push({ t: 0, speed: 0.004 + Math.random() * 0.003 });
+  nerveSignals.push({ t: 0, speed: 0.004 + Math.random() * 0.003, size: 2 + Math.random() * 2 });
 }
-
 function updateNerveSignals() {
   for (let i = nerveSignals.length - 1; i >= 0; i--) {
     nerveSignals[i].t += nerveSignals[i].speed;
     if (nerveSignals[i].t > 1) nerveSignals.splice(i, 1);
   }
 }
-
 function drawNerveSignals() {
   nerveSignals.forEach(s => {
     const x = getNerveX(s.t);
     const y = getNerveY(s.t);
     ctx.beginPath();
-    ctx.arc(x, y, 3, 0, Math.PI * 2);
-    ctx.fillStyle = deepFlow ? '#fbbf24' : '#7cffd4';
-    ctx.shadowColor = deepFlow ? '#fbbf24' : '#7cffd4';
-    ctx.shadowBlur = 10;
+    ctx.arc(x, y, s.size, 0, Math.PI * 2);
+    ctx.fillStyle = deepFlow ? '#fff4cc' : '#fff0c0';
+    ctx.shadowColor = deepFlow ? '#f4c24a' : '#ffd868';
+    ctx.shadowBlur = 14;
     ctx.fill();
     ctx.shadowBlur = 0;
   });
 }
 
-// ── BACKGROUND ZONES ──
+// ═══════════════════════════════════════
+// BACKGROUND
+// ═══════════════════════════════════════
 function drawBackground(ts) {
-  // Gut zone (bottom half) - warm organic
-  const gutGrad = ctx.createLinearGradient(0, nerveY - 20, 0, H);
-  gutGrad.addColorStop(0, '#1a0a08');
-  gutGrad.addColorStop(0.4, '#2d1008');
-  gutGrad.addColorStop(1, '#3d1505');
-  ctx.fillStyle = gutGrad;
-  ctx.fillRect(0, nerveY - 20, W, H - nerveY + 20);
+  const t = ts * 0.001;
 
-  // Animated gut texture blobs
-  const t = ts * 0.0003;
-  for (let i = 0; i < 5; i++) {
-    const bx = W * (0.1 + i * 0.2) + Math.sin(t + i) * 20;
-    const by = nerveY + H * (0.15 + (i % 2) * 0.2);
-    const r = 40 + i * 15 + Math.sin(t * 1.5 + i) * 10;
-    const g = ctx.createRadialGradient(bx, by, 0, bx, by, r);
-    g.addColorStop(0, 'rgba(100,40,20,0.15)');
-    g.addColorStop(1, 'transparent');
-    ctx.fillStyle = g;
+  // ── GUT ZONE (TOP: 0 → nerveY) ──
+  const mu = MUCOSA_PRESETS[TWEAKS_ACTIVE.mucosa] || MUCOSA_PRESETS.warm;
+
+  // Use cached gut gradient if valid
+  if (_gutGradCached) {
+    ctx.fillStyle = _gutGradCached;
+    ctx.fillRect(0, 0, W, nerveY);
+  }
+
+  // Undulating light domes simulating mucosal sheen (fewer, cached-style)
+  for (let i = 0; i < 3; i++) {
+    const cx = W * 0.5 + Math.sin(t * 0.25 + i * 1.3) * W * 0.3;
+    const cy = nerveY * (0.75 - i * 0.18);
+    const rr = W * (0.3 + i * 0.05);
+    const rg = ctx.createRadialGradient(cx, cy, 0, cx, cy, rr);
+    rg.addColorStop(0, `rgba(${mu.tip[0]},${mu.tip[1]},${mu.tip[2]},${0.08 + 0.02*i})`);
+    rg.addColorStop(1, 'transparent');
+    ctx.fillStyle = rg;
+    ctx.fillRect(0, 0, W, nerveY);
+  }
+
+  // Villi — background layer (smaller, farther)
+  villiData.filter(v => v.layer === 0).forEach(v => {
+    drawVillus(v, t, 0.6, mu);
+  });
+  // Villi — foreground layer
+  villiData.filter(v => v.layer === 1).forEach(v => {
+    drawVillus(v, t, 1, mu);
+  });
+
+  // Scatter ambient microbiome (reduced 22→12)
+  for (let i = 0; i < 12; i++) {
+    const bx = ((i * 137.5 + t * 10) % W);
+    const by = 30 + ((i * 73 + t * 5) % (nerveY - 40));
+    const br = 1 + (i % 3) * 0.7;
+    const colors = ['rgba(110,224,135,0.18)', 'rgba(232,192,64,0.15)', 'rgba(217,72,63,0.12)', `rgba(${mu.tip[0]},${mu.tip[1]},${mu.tip[2]},0.12)`];
     ctx.beginPath();
-    ctx.arc(bx, by, r, 0, Math.PI * 2);
+    ctx.arc(bx, by, br, 0, Math.PI * 2);
+    ctx.fillStyle = colors[i % colors.length];
     ctx.fill();
   }
 
-  // Brain zone (top half) - dark neuro
-  const brainGrad = ctx.createLinearGradient(0, 0, 0, nerveY + 20);
-  const litFactor = brainHealth / 100;
-  const r1 = Math.floor(3 + litFactor * 30);
-  const g1 = Math.floor(8 + litFactor * 10);
-  const b1 = Math.floor(24 + litFactor * 20);
-  brainGrad.addColorStop(0, `rgb(${r1},${g1},${b1})`);
-  brainGrad.addColorStop(1, '#030818');
-  ctx.fillStyle = brainGrad;
-  ctx.fillRect(0, 0, W, nerveY + 20);
+  // ── BRAIN ZONE (BOTTOM: nerveY → H) ──
+  const br = BRAIN_PRESETS[TWEAKS_ACTIVE.brain] || BRAIN_PRESETS.sapphire;
+  const lf = brainHealth / 100;
+  const df = deepFlow ? 1 : 0;
 
-  // Labels
-  ctx.font = '600 ' + Math.max(9, W * 0.013) + 'px Orbitron, monospace';
-  ctx.fillStyle = 'rgba(124,255,212,0.25)';
-  ctx.fillText('BIOME', 12, nerveY + 30);
-  ctx.fillStyle = 'rgba(124,200,255,0.2)';
-  ctx.fillText('NEURAL NETWORK', 12, nerveY - 14);
+  // Use cached brain gradient if valid
+  if (_brainGradCached) {
+    ctx.fillStyle = _brainGradCached;
+    ctx.fillRect(0, nerveY, W, H - nerveY);
+  }
+
+  // 3D brain dome — render as layered radial gradients (bottom)
+  drawBrainDome(t, lf, df, br);
+
+  // Zone labels
+  ctx.font = '500 ' + Math.max(10, W * 0.011) + 'px "JetBrains Mono", monospace';
+  ctx.fillStyle = `rgba(${mu.tip[0]},${mu.tip[1]},${mu.tip[2]},0.38)`;
+  ctx.fillText('⏶  GUT  MICROBIOME', 16, 22);
+  ctx.fillStyle = `rgba(${br.neuron[0]},${br.neuron[1]},${br.neuron[2]},0.38)`;
+  ctx.textAlign = 'right';
+  ctx.fillText('NEURAL  NETWORK  ⏷', W - 16, H - 14);
+  ctx.textAlign = 'left';
 }
 
-// ── NEURONS ──
+function drawVillus(v, t, opacity, mu) {
+  const sway = Math.sin(t * v.speed + v.phase) * 4;
+  const vh = nerveY * v.h;
+  // Base (attached to top of viewport), tip hanging DOWN toward nerve
+  const baseY = 0;
+  const tipY = vh;  // villi finger tip hangs down
+  const vw = v.w * (v.layer === 0 ? 0.7 : 1);
+
+  // Finger-shape gradient (top=base/solid, bottom=tip/glow)
+  const vg = ctx.createLinearGradient(v.x, baseY, v.x, tipY);
+  vg.addColorStop(0,    `rgba(${mu.base[0]},${mu.base[1]},${mu.base[2]},0)`);
+  vg.addColorStop(0.25, `rgba(${mu.mid[0]+30},${mu.mid[1]+15},${mu.mid[2]+25},${0.35 * opacity})`);
+  vg.addColorStop(0.65, `rgba(${mu.tip[0]},${mu.tip[1]},${mu.tip[2]},${0.55 * opacity})`);
+  vg.addColorStop(1,    `rgba(${mu.glow[0]},${mu.glow[1]},${mu.glow[2]},${0.7 * opacity})`);
+
+  ctx.fillStyle = vg;
+  ctx.beginPath();
+  const topX = v.x + sway * 0.4;
+  const baseL = v.x - vw * 0.5;
+  const baseR = v.x + vw * 0.5;
+  // base at top (y=0), tip rounded at bottom (y=tipY)
+  ctx.moveTo(baseL, baseY);
+  ctx.quadraticCurveTo(baseL + sway * 0.2, baseY + vh * 0.6, topX - vw * 0.15, tipY);
+  ctx.quadraticCurveTo(topX, tipY + 4, topX + vw * 0.15, tipY);
+  ctx.quadraticCurveTo(baseR + sway * 0.2, baseY + vh * 0.6, baseR, baseY);
+  ctx.closePath();
+  ctx.fill();
+
+  // Tip sheen (bottom of villus now)
+  ctx.beginPath();
+  ctx.arc(topX, tipY - 2, vw * 0.3, 0, Math.PI * 2);
+  const sg = ctx.createRadialGradient(topX, tipY - 2, 0, topX, tipY - 2, vw * 0.4);
+  sg.addColorStop(0, `rgba(255,220,220,${0.28 * opacity})`);
+  sg.addColorStop(1, 'transparent');
+  ctx.fillStyle = sg;
+  ctx.fill();
+
+  // Side shadow stroke
+  ctx.strokeStyle = `rgba(${mu.base[0]-10},${Math.max(0,mu.base[1]-10)},${Math.max(0,mu.base[2]-5)},${0.25 * opacity})`;
+  ctx.lineWidth = 0.6;
+  ctx.beginPath();
+  ctx.moveTo(baseR - 1, baseY);
+  ctx.quadraticCurveTo(baseR + sway * 0.2 - 2, baseY + vh * 0.55, topX + vw * 0.15 - 1, tipY - 2);
+  ctx.stroke();
+}
+
+function drawBrainDome(t, lf, df, br) {
+  // 3D dome sitting at BOTTOM — a "half orb" filling lower area, top of dome near nerve line
+  const cx = W * 0.5;
+  const brainH = H - nerveY;
+  const cy = H + brainH * 0.25; // center BELOW viewport
+  const rx = W * 0.75;
+  const ry = brainH * 1.1;
+
+  ctx.save();
+  // Master clip to lower half
+  ctx.beginPath();
+  ctx.rect(0, nerveY, W, brainH);
+  ctx.clip();
+
+  // Shadow halo (outermost)
+  const h0 = ctx.createRadialGradient(cx, cy - ry * 0.6, ry * 0.3, cx, cy - ry * 0.6, ry * 1.2);
+  h0.addColorStop(0, `rgba(${br.top[0]+20},${br.top[1]+15},${br.top[2]+30}, ${0.45 + lf * 0.2})`);
+  h0.addColorStop(0.7, `rgba(${br.top[0]},${br.top[1]},${br.top[2]},0)`);
+  h0.addColorStop(1, 'transparent');
+  ctx.fillStyle = h0;
+  ctx.fillRect(0, nerveY, W, brainH);
+
+  // Dome body — radial highlight top-left = light source (light now comes from upper-left near nerve)
+  const domeGrad = ctx.createRadialGradient(
+    cx - rx * 0.3, cy - ry * 0.15, rx * 0.05,
+    cx, cy - ry * 0.5, rx
+  );
+  const rimR = br.rim[0], rimG = br.rim[1], rimB = br.rim[2];
+  const warmth = df ? 0.6 : 0;
+  domeGrad.addColorStop(0,    `rgba(${rimR + 30 * warmth}, ${rimG + 20 * warmth}, ${rimB}, ${0.42 + lf * 0.25})`);
+  domeGrad.addColorStop(0.35, `rgba(${rimR - 20}, ${rimG - 30}, ${rimB - 20}, ${0.28 + lf * 0.18})`);
+  domeGrad.addColorStop(0.75, `rgba(${br.top[0] + 5}, ${br.top[1]}, ${br.top[2] + 15}, ${0.15 + lf * 0.12})`);
+  domeGrad.addColorStop(1,    'rgba(0,0,0,0)');
+  ctx.fillStyle = domeGrad;
+  ctx.beginPath();
+  ctx.ellipse(cx, cy - ry * 0.5, rx, ry, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Gyri-like fold curves on dome surface
+  const foldColor = df
+    ? `rgba(255, 215, 150, ${0.10 + lf * 0.08})`
+    : `rgba(${rimR + 60}, ${rimG + 40}, ${rimB + 30}, ${0.09 + lf * 0.08})`;
+  ctx.strokeStyle = foldColor;
+  ctx.lineWidth = 1.2;
+  for (let i = 0; i < 6; i++) {
+    ctx.beginPath();
+    const yBase = H - brainH * (0.12 + i * 0.13);
+    const amp = W * 0.04 + i * 4;
+    ctx.moveTo(-10, yBase);
+    for (let x = 0; x <= W; x += 6) {
+      const domeShade = Math.sin((x / W) * Math.PI);
+      const y = yBase
+        + Math.sin(x * 0.013 + i * 1.4 + t * 0.1) * amp
+        + domeShade * (brainH * 0.02);
+      ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  // Thicker sulci (deeper folds) — darker
+  ctx.strokeStyle = `rgba(0,0,0, ${0.12 + lf * 0.06})`;
+  ctx.lineWidth = 2.2;
+  for (let i = 0; i < 3; i++) {
+    ctx.beginPath();
+    const yBase = H - brainH * (0.2 + i * 0.2);
+    const amp = W * 0.055;
+    ctx.moveTo(-10, yBase);
+    for (let x = 0; x <= W; x += 8) {
+      const y = yBase + Math.sin(x * 0.009 + i * 2.1 + t * 0.06) * amp;
+      ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  // Specular highlight spot (glassy) — near top of dome (just below nerve)
+  const spec = ctx.createRadialGradient(W * 0.3, nerveY + brainH * 0.2, 0, W * 0.3, nerveY + brainH * 0.2, W * 0.25);
+  spec.addColorStop(0, `rgba(255,255,255,${0.07 + lf * 0.08 + df * 0.1})`);
+  spec.addColorStop(1, 'transparent');
+  ctx.fillStyle = spec;
+  ctx.fillRect(0, nerveY, W, brainH);
+
+  // Top-shadow of dome (just beneath nerve — implies dome sits below)
+  const bshd = ctx.createLinearGradient(0, nerveY, 0, nerveY + 60);
+  bshd.addColorStop(0, `rgba(0,0,0,${0.35})`);
+  bshd.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = bshd;
+  ctx.fillRect(0, nerveY, W, 60);
+
+  // Red pulse if damaged
+  if (brainRedFlash > 0) {
+    ctx.fillStyle = `rgba(217, 72, 63, ${brainRedFlash * 0.25})`;
+    ctx.fillRect(0, nerveY, W, brainH);
+    brainRedFlash -= 0.04;
+  }
+
+  ctx.restore();
+}
+
+// ═══════════════════════════════════════
+// NEURONS
+// ═══════════════════════════════════════
 function drawNeurons(ts) {
   const t = ts * 0.001;
-  neurons.forEach((n, i) => {
-    if (n.flash > 0) n.flash -= 0.04;
-    const base = (brainHealth / 100) * 0.5;
-    const pulse = base + Math.sin(t * 2 + i * 0.7) * base * 0.3;
-    const alpha = Math.max(0.05, pulse + n.flash);
+  const lf = brainHealth / 100;
+  const br = BRAIN_PRESETS[TWEAKS_ACTIVE.brain] || BRAIN_PRESETS.sapphire;
+  const nc = deepFlow ? [255, 220, 140] : br.neuron;
 
-    ctx.beginPath();
-    ctx.arc(n.x, n.y, 4 + n.flash * 4, 0, Math.PI * 2);
-    const color = deepFlow ? `rgba(251,191,36,${alpha})` : `rgba(124,100,255,${alpha})`;
-    ctx.fillStyle = color;
-    if (n.flash > 0.3) {
-      ctx.shadowColor = deepFlow ? '#fbbf24' : '#7c3aed';
-      ctx.shadowBlur = 12;
-    }
-    ctx.fill();
-    ctx.shadowBlur = 0;
-  });
-
-  // Draw connections between nearby neurons
-  ctx.strokeStyle = deepFlow ? 'rgba(251,191,36,0.06)' : 'rgba(100,80,255,0.06)';
-  ctx.lineWidth = 0.5;
+  // Connections
   for (let i = 0; i < neurons.length; i++) {
     for (let j = i + 1; j < neurons.length; j++) {
       const dx = neurons[i].x - neurons[j].x;
       const dy = neurons[i].y - neurons[j].y;
-      if (Math.sqrt(dx*dx + dy*dy) < W * 0.12) {
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < W * 0.13) {
+        const alpha = lf * 0.22 * (1 - dist / (W * 0.13));
+        ctx.strokeStyle = `rgba(${nc[0]},${nc[1]},${nc[2]},${alpha})`;
+        ctx.lineWidth = 0.7;
         ctx.beginPath();
         ctx.moveTo(neurons[i].x, neurons[i].y);
         ctx.lineTo(neurons[j].x, neurons[j].y);
@@ -694,36 +1468,66 @@ function drawNeurons(ts) {
       }
     }
   }
+
+  neurons.forEach((n, i) => {
+    if (n.flash > 0) n.flash -= 0.035;
+    const base = lf * 0.55;
+    const pulse = base + Math.sin(t * 1.8 + n.phase) * base * 0.25;
+    const alpha = Math.max(0.05, Math.min(1, pulse + n.flash * 0.9));
+    const r = n.baseR + n.flash * 5 + lf * 1.2;
+
+    if (n.flash > 0.2) {
+      ctx.shadowColor = `rgb(${nc[0]},${nc[1]},${nc[2]})`;
+      ctx.shadowBlur = 18;
+    }
+
+    const gr = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, r * 2.8);
+    gr.addColorStop(0, `rgba(${nc[0]},${nc[1]},${nc[2]},${alpha})`);
+    gr.addColorStop(1, 'transparent');
+    ctx.fillStyle = gr;
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, r * 2.8, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = `rgba(${Math.min(255,nc[0]+40)},${Math.min(255,nc[1]+40)},${Math.min(255,nc[2]+40)},${Math.min(1, alpha * 1.5)})`;
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  });
 }
 
-// ── BUBBLES ──
+// ═══════════════════════════════════════
+// BACTERIA (microscopic + stylized)
+// ═══════════════════════════════════════
 const TYPES = [
-  { type: 'gaba',  label: 'GABA',  color: '#4ade80', glow: 'rgba(74,222,128,0.5)',  good: true,  r: 16 },
-  { type: 'ach',   label: 'ACh',   color: '#facc15', glow: 'rgba(250,204,21,0.5)',   good: true,  r: 16 },
-  { type: 'cyto',  label: '⚠',     color: '#f87171', glow: 'rgba(248,113,113,0.5)', good: false, r: 18 },
+  { type: 'gaba',  label: 'GABA',  color: '#6ee087', glow: 'rgba(110,224,135,0.6)', good: true,  shape: 'rod',     r: 15 },
+  { type: 'ach',   label: 'ACh',   color: '#e8c040', glow: 'rgba(232,192,64,0.6)',  good: true,  shape: 'bifido',  r: 14 },
+  { type: 'cyto',  label: '⚠',     color: '#d9483f', glow: 'rgba(217,72,63,0.6)',   good: false, shape: 'cluster', r: 14 },
 ];
 
 function spawnBubble() {
-  const def = TYPES[Math.floor(Math.random() * (deepFlow ? 2 : TYPES.length))];
-  // Weighted: more bad when health is high, fewer when low
-  let pick;
   const rand = Math.random();
-  if (rand < 0.35) pick = TYPES[0]; // GABA
-  else if (rand < 0.65) pick = TYPES[1]; // ACh
-  else pick = TYPES[2]; // Cytokine
-  
-  // Bubbles rise from gut (bottom) toward nerve
-  const x = W * 0.1 + Math.random() * W * 0.8;
+  let pick;
+  if (rand < 0.36) pick = TYPES[0];
+  else if (rand < 0.68) pick = TYPES[1];
+  else pick = TYPES[2];
+
+  const x = W * 0.08 + Math.random() * W * 0.84;
   bubbles.push({
     ...pick,
-    x, y: H - 20,
-    vy: -(1.2 + Math.random() * 1.2),
-    vx: (Math.random() - 0.5) * 0.5,
+    x, y: -10,
+    vy: 3.2 + Math.random() * 1.8,
+    vx: (Math.random() - 0.5) * 0.8,
     wobble: Math.random() * Math.PI * 2,
+    rot: Math.random() * Math.PI * 2,
+    rotSpeed: (Math.random() - 0.5) * 0.055,
     scale: 0.3,
     opacity: 0,
     alive: true,
-    id: Math.random(),
+    pulsePhase: Math.random() * Math.PI * 2,
+    pulseRate: 0.09 + Math.random() * 0.06,
+    flagellaPhase: Math.random() * Math.PI * 2,
   });
 }
 
@@ -732,86 +1536,78 @@ function updateBubbles() {
   const si = deepFlow ? spawnInterval * 0.6 : spawnInterval;
   if (spawnTimer >= si) {
     spawnBubble();
-    if (Math.random() < 0.4) spawnBubble();
+    if (Math.random() < 0.45) spawnBubble();
     spawnTimer = 0;
   }
 
   for (let i = bubbles.length - 1; i >= 0; i--) {
     const b = bubbles[i];
     if (!b.alive) { bubbles.splice(i, 1); continue; }
-    b.wobble += 0.04;
-    b.x += b.vx + Math.sin(b.wobble) * 0.3;
+    b.wobble += 0.09;
+    b.rot += b.rotSpeed;
+    b.pulsePhase += b.pulseRate;
+    b.flagellaPhase += 0.35;
+    b.x += b.vx + Math.sin(b.wobble) * 0.45;
     b.y += b.vy * (deepFlow ? 1.4 : 1);
     b.scale = Math.min(1, b.scale + 0.05);
     b.opacity = Math.min(1, b.opacity + 0.06);
 
-    // Check collision with nano-G (at nerve level)
-    const nx = nano.x, ny = nano.y;
-    const dx = b.x - nx, dy = b.y - ny;
+    const dx = b.x - nano.x, dy = b.y - nano.y;
     const dist = Math.sqrt(dx*dx + dy*dy);
-    const collideR = (b.r * b.scale) + nano.size;
+    const collideR = (b.r * b.scale) + nano.size * 1.2;
 
-    if (dist < collideR) {
-      handleCollision(b);
-      b.alive = false;
-      continue;
-    }
+    if (dist < collideR) { handleCollision(b); b.alive = false; continue; }
 
-    // Passed through nerve going up (missed by nano) - apply effect
-    if (b.y < nerveY - 30) {
+    if (b.y > nerveY + 35) {
       if (b.good) {
-        // Good signal reached brain
-        brainHealth = Math.min(100, brainHealth + 3);
+        brainHealth = Math.min(100, brainHealth + 4);
         lightNeurons(2);
         score += 10;
         goodPassed++;
         combo++;
         if (combo > maxCombo) maxCombo = combo;
         checkDeepFlow();
-        spawnParticles(b.x, nerveY - 20, b.color, 6);
+        spawnParticles(b.x, nerveY + 20, b.color, 6);
+        spawnText(b.x, nerveY + 10, '+10 PASSED', b.color);
       } else {
-        // Bad signal reached brain - penalty
-        brainHealth = Math.max(0, brainHealth - 8);
+        brainHealth = Math.max(0, brainHealth - 10);
         combo = 0;
         deepFlow = false;
         document.getElementById('deep-flow-banner').classList.remove('show');
-        flashBrainRed();
+        spawnText(b.x, nerveY + 10, 'CYTOKINE!', '#d9483f');
+        brainRedFlash = 1;
       }
       b.alive = false;
     }
 
-    // Off-screen bottom
     if (b.y > H + 40) b.alive = false;
   }
 }
 
 function handleCollision(b) {
   if (!b.good) {
-    // Good! Blocked cytokine
     score += 15;
     badBlocked++;
     combo++;
     if (combo > maxCombo) maxCombo = combo;
     checkDeepFlow();
-    spawnParticles(b.x, b.y, '#f87171', 8);
-    spawnText(b.x, b.y, '+15 BLOCKED!', '#f87171');
+    spawnParticles(b.x, b.y, b.color, 12);
+    spawnText(b.x, b.y - 10, '+15 BLOCKED', '#d9483f');
   } else {
-    // Bad! Caught good signal (shouldn't block it)
-    // In gate-keeper mode, nano lets good pass - collision with good means nano deflected it
-    // Let's make it so nano BLOCKS good signals = penalty
+    brainHealth = Math.max(0, brainHealth - 4);
     combo = 0;
-    brainHealth = Math.max(0, brainHealth - 5);
-    spawnText(b.x, b.y, 'MISS!', '#888');
+    spawnParticles(b.x, b.y, '#888', 4);
+    spawnText(b.x, b.y - 10, 'DEFLECTED', '#888');
   }
 }
 
 function checkDeepFlow() {
   if (combo >= 5 && !deepFlow) {
     deepFlow = true;
-    deepFlowTimer = 300;
+    deepFlowTimer = 320;
     const banner = document.getElementById('deep-flow-banner');
     banner.classList.add('show');
-    setTimeout(() => banner.classList.remove('show'), 2500);
+    setTimeout(() => banner.classList.remove('show'), 2400);
   }
 }
 
@@ -823,10 +1619,355 @@ function lightNeurons(count) {
   });
 }
 
-let brainRedFlash = 0;
-function flashBrainRed() { brainRedFlash = 1; }
+// ── BACTERIA DRAWING ──
 
-// ── PARTICLES ──
+function lighten(hex, amt) {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgb(${Math.min(255,(n>>16)+amt)},${Math.min(255,((n>>8)&0xff)+amt)},${Math.min(255,(n&0xff)+amt)})`;
+}
+function darken(hex, amt) {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgb(${Math.max(0,(n>>16)-amt)},${Math.max(0,((n>>8)&0xff)-amt)},${Math.max(0,(n&0xff)-amt)})`;
+}
+
+// MICROSCOPE — realistic SEM-style rendering
+function drawRodMicro(color, r) {
+  // Lactobacillus: elongated capsule with cell wall striations, segmented bands
+  const w = r * 0.58, h = r * 1.75;
+  ctx.save();
+
+  // Drop shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.35)';
+  ctx.beginPath();
+  ctx.roundRect(-w + 1.5, -h + 2.5, w*2, h*2, w);
+  ctx.fill();
+
+  // Body gradient (SEM look — lit from top-left)
+  const grad = ctx.createLinearGradient(-w*0.8, -h*0.8, w*0.6, h*0.8);
+  grad.addColorStop(0,    lighten(color, 80));
+  grad.addColorStop(0.2,  lighten(color, 50));
+  grad.addColorStop(0.55, color);
+  grad.addColorStop(0.85, darken(color, 45));
+  grad.addColorStop(1,    darken(color, 75));
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.roundRect(-w, -h, w*2, h*2, w);
+  ctx.fill();
+
+  // Cell wall ripples / segmentation bands (characteristic of lacto)
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(-w, -h, w*2, h*2, w);
+  ctx.clip();
+  ctx.strokeStyle = `rgba(0,0,0,0.18)`;
+  ctx.lineWidth = 0.6;
+  const bands = 9;
+  for (let i = 1; i < bands; i++) {
+    const y = -h + (2 * h * i / bands);
+    ctx.beginPath();
+    ctx.moveTo(-w - 1, y);
+    ctx.quadraticCurveTo(0, y - 1.5, w + 1, y);
+    ctx.stroke();
+  }
+  // Subtle longitudinal highlight
+  ctx.strokeStyle = `rgba(255,255,255,0.25)`;
+  ctx.lineWidth = 0.7;
+  ctx.beginPath();
+  ctx.moveTo(-w * 0.5, -h * 0.9);
+  ctx.quadraticCurveTo(-w * 0.3, 0, -w * 0.5, h * 0.9);
+  ctx.stroke();
+  ctx.restore();
+
+  // Specular highlight
+  ctx.fillStyle = 'rgba(255,255,255,0.45)';
+  ctx.beginPath();
+  ctx.ellipse(-w * 0.3, -h * 0.55, w * 0.3, h * 0.28, -0.3, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Rim shadow
+  ctx.strokeStyle = `rgba(0,0,0,0.25)`;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.roundRect(-w, -h, w*2, h*2, w);
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+function drawBifidoMicro(color, r) {
+  // Bifidobacterium: characteristic Y/bifurcating rod. Realistic → branching cell body.
+  const lw = r * 0.52;
+  const len = r * 1.35;
+  ctx.save();
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  // Shadow
+  ctx.strokeStyle = 'rgba(0,0,0,0.35)';
+  ctx.lineWidth = lw;
+  ctx.beginPath();
+  ctx.moveTo(1.5, len + 2);                       ctx.lineTo(1.5, 1.5);  // stem
+  ctx.moveTo(1.5, 1.5);                           ctx.lineTo(-len * 0.9 + 1.5, -len * 1.15 + 2);  // left arm
+  ctx.moveTo(1.5, 1.5);                           ctx.lineTo( len * 0.9 + 1.5, -len * 1.15 + 2);  // right arm
+  ctx.stroke();
+
+  // Body gradient stroke
+  const grad = ctx.createLinearGradient(-len, -len*1.2, len, len);
+  grad.addColorStop(0,    lighten(color, 75));
+  grad.addColorStop(0.4,  color);
+  grad.addColorStop(1,    darken(color, 55));
+  ctx.strokeStyle = grad;
+  ctx.lineWidth = lw;
+  // Stem
+  ctx.beginPath(); ctx.moveTo(0, len); ctx.lineTo(0, 0); ctx.stroke();
+  // Left arm
+  ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-len * 0.9, -len * 1.15); ctx.stroke();
+  // Right arm
+  ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo( len * 0.9, -len * 1.15); ctx.stroke();
+
+  // Segmentation markers on each arm (cell bodies along branches)
+  const drawSeg = (x1, y1, x2, y2) => {
+    const segs = 3;
+    for (let i = 1; i < segs; i++) {
+      const t = i / segs;
+      const cx = x1 + (x2 - x1) * t;
+      const cy = y1 + (y2 - y1) * t;
+      ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+      ctx.lineWidth = 0.6;
+      const ang = Math.atan2(y2 - y1, x2 - x1) + Math.PI / 2;
+      const px = Math.cos(ang) * lw * 0.45;
+      const py = Math.sin(ang) * lw * 0.45;
+      ctx.beginPath(); ctx.moveTo(cx - px, cy - py); ctx.lineTo(cx + px, cy + py); ctx.stroke();
+    }
+  };
+  drawSeg(0, len, 0, 0);
+  drawSeg(0, 0, -len * 0.9, -len * 1.15);
+  drawSeg(0, 0, len * 0.9, -len * 1.15);
+
+  // Knob caps
+  [[-len*0.9,-len*1.15],[len*0.9,-len*1.15],[0,len]].forEach(([cx,cy]) => {
+    const kg = ctx.createRadialGradient(cx - lw*0.25, cy - lw*0.25, 0, cx, cy, lw*0.6);
+    kg.addColorStop(0, lighten(color, 85));
+    kg.addColorStop(1, darken(color, 40));
+    ctx.fillStyle = kg;
+    ctx.beginPath(); ctx.arc(cx, cy, lw*0.55, 0, Math.PI*2); ctx.fill();
+  });
+
+  // Junction knob
+  const jg = ctx.createRadialGradient(-lw*0.3, -lw*0.3, 0, 0, 0, lw*0.7);
+  jg.addColorStop(0, lighten(color, 80));
+  jg.addColorStop(1, darken(color, 40));
+  ctx.fillStyle = jg;
+  ctx.beginPath(); ctx.arc(0, 0, lw*0.6, 0, Math.PI*2); ctx.fill();
+
+  ctx.restore();
+}
+
+function drawClusterMicro(color, r) {
+  // Candida: budding spheres / yeast cluster with deep SEM shading
+  const cells = [
+    [0, -r*0.25, r*0.62],
+    [-r*0.58, -r*0.05, r*0.52],
+    [r*0.58, -r*0.05, r*0.52],
+    [-r*0.1, r*0.55, r*0.58],
+    [r*0.5, r*0.6, r*0.4],
+    [-r*0.55, r*0.55, r*0.4],
+    [r*0.2, -r*0.85, r*0.34],
+    [-r*0.35, -r*0.85, r*0.3],
+  ];
+
+  ctx.save();
+
+  // Shadow pass
+  cells.forEach(([cx, cy, cr]) => {
+    ctx.fillStyle = 'rgba(0,0,0,0.3)';
+    ctx.beginPath(); ctx.arc(cx + 1.2, cy + 2, cr, 0, Math.PI*2); ctx.fill();
+  });
+
+  cells.forEach(([cx, cy, cr]) => {
+    // Deep SEM-like radial grad — strong contrast, rim shadow
+    const g = ctx.createRadialGradient(cx - cr*0.35, cy - cr*0.4, cr*0.05, cx, cy, cr * 1.05);
+    g.addColorStop(0,    lighten(color, 75));
+    g.addColorStop(0.25, lighten(color, 30));
+    g.addColorStop(0.65, color);
+    g.addColorStop(0.95, darken(color, 55));
+    g.addColorStop(1,    darken(color, 80));
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(cx, cy, cr, 0, Math.PI*2); ctx.fill();
+
+    // Surface texture (small pitting dots)
+    ctx.save();
+    ctx.beginPath(); ctx.arc(cx, cy, cr, 0, Math.PI*2); ctx.clip();
+    for (let i = 0; i < 4; i++) {
+      const ang = i * 1.7 + cx + cy;
+      const dx = Math.cos(ang) * cr * 0.45;
+      const dy = Math.sin(ang) * cr * 0.45;
+      ctx.fillStyle = 'rgba(0,0,0,0.18)';
+      ctx.beginPath(); ctx.arc(cx + dx, cy + dy, cr*0.08, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.restore();
+
+    // Specular pin
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.beginPath(); ctx.arc(cx - cr*0.32, cy - cr*0.38, cr*0.18, 0, Math.PI*2); ctx.fill();
+
+    // Rim stroke (depth)
+    ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+    ctx.lineWidth = 0.7;
+    ctx.beginPath(); ctx.arc(cx, cy, cr, 0, Math.PI*2); ctx.stroke();
+  });
+
+  // A few short hyphae (filaments) for Candida authenticity
+  ctx.strokeStyle = darken(color, 30);
+  ctx.lineWidth = 1.2;
+  ctx.lineCap = 'round';
+  const hyphae = [[r*0.95, -r*0.3, r*1.4, -r*0.7], [-r*0.95, -r*0.25, -r*1.5, -r*0.6]];
+  hyphae.forEach(([x1,y1,x2,y2]) => {
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.quadraticCurveTo((x1+x2)/2, y1 + (y2-y1)*0.5 + r*0.3, x2, y2); ctx.stroke();
+  });
+
+  ctx.restore();
+}
+
+// STYLIZED (cleaner, flat-ish)
+function drawRodStylized(color, r) {
+  const w = r * 0.55, h = r * 1.6;
+  const grad = ctx.createLinearGradient(-w, -h, w, h);
+  grad.addColorStop(0, lighten(color, 70));
+  grad.addColorStop(0.4, color);
+  grad.addColorStop(1, darken(color, 40));
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.roundRect(-w, -h, w*2, h*2, w);
+  ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,0.28)';
+  ctx.beginPath();
+  ctx.ellipse(-w*0.2, -h*0.5, w*0.35, h*0.3, -0.3, 0, Math.PI*2);
+  ctx.fill();
+}
+function drawBifidoStylized(color, r) {
+  const lw = r * 0.48;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  const grad = ctx.createLinearGradient(0, -r*1.4, 0, r);
+  grad.addColorStop(0, lighten(color, 60));
+  grad.addColorStop(1, darken(color, 30));
+  ctx.strokeStyle = grad;
+  ctx.lineWidth = lw;
+  ctx.beginPath(); ctx.moveTo(0, r*0.9); ctx.lineTo(0, -r*0.1); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, -r*0.1); ctx.lineTo(-r*0.85, -r*1.2); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, -r*0.1); ctx.lineTo(r*0.85, -r*1.2); ctx.stroke();
+  [[-r*0.85,-r*1.2],[r*0.85,-r*1.2],[0,r*0.9]].forEach(([cx,cy]) => {
+    ctx.fillStyle = lighten(color, 45);
+    ctx.beginPath(); ctx.arc(cx, cy, lw*0.52, 0, Math.PI*2); ctx.fill();
+  });
+}
+function drawClusterStylized(color, r) {
+  const positions = [
+    [0, -r*0.5, r*0.55],
+    [-r*0.55, 0, r*0.48],
+    [r*0.55, 0, r*0.48],
+    [0, r*0.55, r*0.5],
+    [-r*0.3, -r*0.9, r*0.35],
+    [r*0.3, -r*0.9, r*0.35],
+  ];
+  positions.forEach(([cx, cy, cr]) => {
+    const g = ctx.createRadialGradient(cx - cr*0.3, cy - cr*0.3, 0, cx, cy, cr);
+    g.addColorStop(0, lighten(color, 65));
+    g.addColorStop(0.5, color);
+    g.addColorStop(1, darken(color, 35));
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(cx, cy, cr, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.beginPath(); ctx.arc(cx - cr*0.28, cy - cr*0.28, cr*0.28, 0, Math.PI*2); ctx.fill();
+  });
+}
+
+function drawBubbles() {
+  const micro = TWEAKS_ACTIVE.bacteria === 'micro';
+  const useGlow = deepFlow; // shadowBlur only in deep flow (heavy otherwise)
+  bubbles.forEach(b => {
+    if (!b.alive) return;
+    ctx.save();
+    ctx.translate(b.x, b.y);
+    ctx.rotate((b.rot || 0) + Math.sin(b.flagellaPhase * 0.5) * 0.12);
+    const pulse = 1 + Math.sin(b.pulsePhase) * 0.08;
+    const squash = 1 + Math.cos(b.pulsePhase * 1.3) * 0.05;
+    ctx.scale(b.scale * pulse, b.scale * squash);
+    ctx.globalAlpha = b.opacity;
+    if (useGlow) {
+      ctx.shadowColor = b.glow;
+      ctx.shadowBlur = 12;
+    }
+
+    drawFlagella(b);
+
+    if (micro) {
+      if (b.shape === 'rod') drawRodMicro(b.color, b.r, b.pulsePhase);
+      else if (b.shape === 'bifido') drawBifidoMicro(b.color, b.r, b.pulsePhase);
+      else drawClusterMicro(b.color, b.r, b.pulsePhase);
+    } else {
+      if (b.shape === 'rod') drawRodStylized(b.color, b.r);
+      else if (b.shape === 'bifido') drawBifidoStylized(b.color, b.r);
+      else drawClusterStylized(b.color, b.r);
+    }
+
+    if (useGlow) ctx.shadowBlur = 0;
+    ctx.restore();
+  });
+}
+
+function drawFlagella(b) {
+  // Tail-like filaments that wriggle — behind body
+  ctx.save();
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = `rgba(255,255,255,0.25)`;
+  ctx.lineWidth = 0.7;
+  ctx.lineCap = 'round';
+  if (b.shape === 'rod') {
+    // 2 flagella at bottom
+    for (let i = -1; i <= 1; i += 2) {
+      ctx.beginPath();
+      ctx.moveTo(i * b.r * 0.15, b.r * 1.6);
+      for (let t = 0; t <= 1; t += 0.1) {
+        const tx = i * b.r * 0.15 + Math.sin(t * 6 + b.flagellaPhase + i) * b.r * 0.3;
+        const ty = b.r * 1.6 + t * b.r * 1.2;
+        ctx.lineTo(tx, ty);
+      }
+      ctx.stroke();
+    }
+  } else if (b.shape === 'bifido') {
+    // One short flagellum from stem
+    ctx.beginPath();
+    ctx.moveTo(0, b.r * 1.0);
+    for (let t = 0; t <= 1; t += 0.1) {
+      const tx = Math.sin(t * 5 + b.flagellaPhase) * b.r * 0.35;
+      const ty = b.r * 1.0 + t * b.r * 0.9;
+      ctx.lineTo(tx, ty);
+    }
+    ctx.stroke();
+  } else {
+    // Cluster has hyphae already — small wiggly filaments around
+    for (let i = 0; i < 3; i++) {
+      const ang = i * (Math.PI * 2 / 3) + b.flagellaPhase * 0.2;
+      const sx = Math.cos(ang) * b.r * 1.0;
+      const sy = Math.sin(ang) * b.r * 1.0;
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      for (let t = 0; t <= 1; t += 0.15) {
+        const tx = sx + Math.cos(ang) * t * b.r * 0.6 + Math.sin(t * 5 + b.flagellaPhase + i) * b.r * 0.18;
+        const ty = sy + Math.sin(ang) * t * b.r * 0.6 + Math.cos(t * 5 + b.flagellaPhase + i) * b.r * 0.18;
+        ctx.lineTo(tx, ty);
+      }
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
+}
+
+// ═══════════════════════════════════════
+// PARTICLES + TEXT
+// ═══════════════════════════════════════
 function spawnParticles(x, y, color, count) {
   for (let i = 0; i < count; i++) {
     const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
@@ -835,18 +1976,13 @@ function spawnParticles(x, y, color, count) {
       x, y,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
-      color,
-      life: 1,
-      r: 2 + Math.random() * 3,
+      color, life: 1, r: 2 + Math.random() * 3,
     });
   }
 }
-
-let floatingTexts = [];
 function spawnText(x, y, text, color) {
   floatingTexts.push({ x, y, text, color, life: 1, vy: -1.5 });
 }
-
 function updateParticles() {
   for (let i = particles.length - 1; i >= 0; i--) {
     const p = particles[i];
@@ -862,7 +1998,6 @@ function updateParticles() {
     if (t.life <= 0) floatingTexts.splice(i, 1);
   }
 }
-
 function drawParticles() {
   particles.forEach(p => {
     ctx.beginPath();
@@ -871,7 +2006,7 @@ function drawParticles() {
     ctx.fill();
   });
   floatingTexts.forEach(t => {
-    ctx.font = 'bold ' + Math.max(10, W * 0.018) + 'px Orbitron, monospace';
+    ctx.font = '600 ' + Math.max(11, W * 0.014) + 'px "JetBrains Mono", monospace';
     ctx.fillStyle = t.color + Math.floor(t.life * 200).toString(16).padStart(2, '0');
     ctx.textAlign = 'center';
     ctx.fillText(t.text, t.x, t.y);
@@ -879,101 +2014,43 @@ function drawParticles() {
   });
 }
 
-// ── DRAW BUBBLES ──
-function drawBubbles() {
-  bubbles.forEach(b => {
-    if (!b.alive) return;
-    ctx.save();
-    ctx.translate(b.x, b.y);
-    ctx.scale(b.scale, b.scale);
-    ctx.globalAlpha = b.opacity;
-
-    // Glow
-    ctx.shadowColor = b.glow;
-    ctx.shadowBlur = 15;
-
-    // Bubble body
-    const grad = ctx.createRadialGradient(-b.r * 0.3, -b.r * 0.3, 0, 0, 0, b.r);
-    grad.addColorStop(0, '#ffffff33');
-    grad.addColorStop(0.4, b.color + 'cc');
-    grad.addColorStop(1, b.color + '88');
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.arc(0, 0, b.r, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Border
-    ctx.strokeStyle = b.color;
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-
-    ctx.shadowBlur = 0;
-
-    // Label
-    ctx.font = 'bold ' + Math.floor(b.r * 0.65) + 'px Orbitron, monospace';
-    ctx.fillStyle = '#fff';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(b.label, 0, 0);
-
-    ctx.restore();
-  });
-}
-
-// ── NANO-G MOVEMENT ──
+// ═══════════════════════════════════════
+// NANO MOVEMENT
+// ═══════════════════════════════════════
 function updateNano() {
-  // Constrain to nerve path
-  const t = nano.targetX / W;
-  const nervePointY = getNerveY(Math.max(0, Math.min(1, t)));
-  
-  // Smooth follow
-  nano.x += (nano.targetX - nano.x) * 0.12;
-  nano.y += (nervePointY - nano.y) * 0.12;
-
-  // Keep on nerve
-  nano.y = nervePointY + (nano.y - nervePointY) * 0.5;
+  const t = Math.max(0, Math.min(1, nano.targetX / W));
+  const nervePointY = getNerveY(t);
+  nano.x += (nano.targetX - nano.x) * 0.13;
+  nano.y += (nervePointY - nano.y) * 0.13;
 }
 
-// ── BRAIN HEALTH BAR ──
-function drawBrainHealthBar() {
-  const bw = Math.min(200, W * 0.28);
-  const bh = 6;
-  const bx = W / 2 - bw / 2;
-  const by = H * 0.33;
-
-  ctx.fillStyle = 'rgba(255,255,255,0.08)';
-  ctx.roundRect(bx, by, bw, bh, 3);
-  ctx.fill();
-
-  const pct = brainHealth / 100;
-  const barColor = deepFlow ? '#fbbf24' : (pct > 0.6 ? '#4ade80' : pct > 0.3 ? '#facc15' : '#f87171');
-  ctx.fillStyle = barColor;
-  if (brainRedFlash > 0) { ctx.fillStyle = '#f87171'; brainRedFlash -= 0.05; }
-  ctx.roundRect(bx, by, bw * pct, bh, 3);
-  ctx.fill();
-
-  ctx.font = Math.max(8, W * 0.011) + 'px Orbitron, monospace';
-  ctx.fillStyle = 'rgba(255,255,255,0.4)';
-  ctx.textAlign = 'center';
-  ctx.fillText('BRAIN HEALTH ' + Math.round(brainHealth) + '%', W / 2, by - 4);
-  ctx.textAlign = 'left';
+// ═══════════════════════════════════════
+// HUD UPDATES
+// ═══════════════════════════════════════
+function updateHUD() {
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('comboVal').textContent = combo;
+  const fill = document.getElementById('brainFill');
+  fill.style.height = brainHealth + '%';
+  document.getElementById('brainVal').textContent = Math.round(brainHealth);
 }
 
-// ── MAIN LOOP ──
+// ═══════════════════════════════════════
+// MAIN LOOP
+// ═══════════════════════════════════════
 let lastTs = 0;
 function loop(ts) {
   if (!gameRunning) return;
   const dt = ts - lastTs;
   lastTs = ts;
+  pulsePhase += 0.04;
 
   ctx.clearRect(0, 0, W, H);
 
   drawBackground(ts);
   drawNeurons(ts);
-  drawBrainHealthBar();
 
-  // Nerve signal particles
-  if (Math.random() < 0.04) spawnNerveSignal();
+  if (Math.random() < 0.05) spawnNerveSignal();
   updateNerveSignals();
   drawNerve();
   drawNerveSignals();
@@ -981,7 +2058,6 @@ function loop(ts) {
   updateBubbles();
   drawBubbles();
 
-  // Deep flow timer
   if (deepFlow) {
     deepFlowTimer--;
     if (deepFlowTimer <= 0) {
@@ -995,27 +2071,27 @@ function loop(ts) {
 
   updateParticles();
   drawParticles();
-
-  // Update HUD
-  document.getElementById('scoreVal').textContent = score;
-  document.getElementById('comboVal').textContent = combo;
+  updateHUD();
 
   animId = requestAnimationFrame(loop);
 }
 
-// ── INPUT ──
+// ═══════════════════════════════════════
+// INPUT
+// ═══════════════════════════════════════
 function handlePointerMove(e) {
   if (!gameRunning) return;
   const rect = canvas.getBoundingClientRect();
   const cx = e.touches ? e.touches[0].clientX : e.clientX;
   nano.targetX = cx - rect.left;
 }
-
 canvas.addEventListener('mousemove', handlePointerMove);
 canvas.addEventListener('touchmove', handlePointerMove, { passive: true });
 canvas.addEventListener('touchstart', handlePointerMove, { passive: true });
 
-// ── TIMER ──
+// ═══════════════════════════════════════
+// TIMER
+// ═══════════════════════════════════════
 function startTimer() {
   timeLeft = 60;
   document.getElementById('timerVal').textContent = timeLeft;
@@ -1026,72 +2102,78 @@ function startTimer() {
   }, 1000);
 }
 
-// ── START ──
+// ═══════════════════════════════════════
+// START / END
+// ═══════════════════════════════════════
 function startGame() {
   showScreen('screen-game');
-  resize();
-
-  // Reset state
-  score = 0; combo = 0; maxCombo = 0;
-  goodPassed = 0; badBlocked = 0;
-  brainHealth = 20;
-  deepFlow = false;
-  deepFlowTimer = 0;
-  bubbles = [];
-  particles = [];
-  floatingTexts = [];
-  nerveSignals = [];
-  spawnTimer = 0;
-  document.getElementById('deep-flow-banner').classList.remove('show');
-
-  nano.x = W / 2;
-  nano.y = nerveY;
-  nano.targetX = W / 2;
-
-  gameRunning = true;
-  lastTs = performance.now();
-  animId = requestAnimationFrame(loop);
-  startTimer();
+  requestAnimationFrame(() => {
+    resize();
+    score = 0; combo = 0; maxCombo = 0;
+    goodPassed = 0; badBlocked = 0;
+    brainHealth = 5;
+    deepFlow = false; deepFlowTimer = 0;
+    bubbles = []; particles = []; floatingTexts = [];
+    nerveSignals = []; spawnTimer = 0;
+    brainRedFlash = 0;
+    document.getElementById('deep-flow-banner').classList.remove('show');
+    nano.x = W / 2; nano.y = nerveY; nano.targetX = W / 2;
+    gameRunning = true;
+    lastTs = performance.now();
+    animId = requestAnimationFrame(loop);
+    startTimer();
+  });
 }
 
-// ── END ──
 function endGame() {
   gameRunning = false;
   clearInterval(timerInterval);
   cancelAnimationFrame(animId);
 
-  // Results
   const pct = Math.round(brainHealth);
   document.getElementById('endScore').textContent = score;
-  document.getElementById('endGood').textContent = goodPassed;
+  document.getElementById('endHealth').innerHTML = pct + '<span style="font-size:0.45em; color:var(--ink-dim);">%</span>';
   document.getElementById('endBad').textContent = badBlocked;
-  document.getElementById('endMaxCombo').textContent = maxCombo;
+  document.getElementById('endMaxCombo').innerHTML = maxCombo + '<span style="font-size:0.45em; color:var(--ink-dim);">×</span>';
+  document.getElementById('endGoodLine').textContent = goodPassed;
+  document.getElementById('endBadLine').textContent = badBlocked;
+
+  const statusDot = document.getElementById('endStatusDot');
+  const statusTxt = document.getElementById('endStatus');
+  const titleEl = document.getElementById('endTitle');
+  const tagline = document.getElementById('endTagline');
+  const msg = document.getElementById('endMessage');
 
   if (brainHealth >= 70) {
-    document.getElementById('endStatus').textContent = '✓ BALANCE RESTORED';
-    document.getElementById('endTitle').textContent = 'Neural Sync\nComplete';
-    document.getElementById('endMessage').textContent = `Mood: ${pct}% · Cognitive Functions: Optimal · Gut microbiome: Thriving`;
+    statusDot.style.background = '#6ee087';
+    statusDot.style.boxShadow = '0 0 14px #6ee087';
+    statusTxt.textContent = '✓ Balance Restored';
+    titleEl.innerHTML = 'Neural sync <em>complete</em>';
+    tagline.textContent = 'The vagus channel is clear. The brain is listening.';
+    msg.textContent = `Mood index ${pct}% · cognitive functions in-band · microbiome thriving. The gatekeeper held.`;
   } else if (brainHealth >= 40) {
-    document.getElementById('endStatus').textContent = '~ PARTIAL SYNC';
-    document.getElementById('endTitle').textContent = 'Improvement\nDetected';
-    document.getElementById('endMessage').textContent = `Mood: ${pct}% · Some inflammation remains. Keep defending the nerve!`;
+    statusDot.style.background = '#e8c040';
+    statusDot.style.boxShadow = '0 0 14px #e8c040';
+    statusTxt.textContent = '~ Partial Sync';
+    titleEl.innerHTML = 'Signal <em>stabilizing</em>';
+    tagline.textContent = 'The channel is noisy but recovering.';
+    msg.textContent = `Mood index ${pct}% · residual inflammation detected. A second pass will sharpen the line.`;
   } else {
-    document.getElementById('endStatus').textContent = '✗ CYTOKINE OVERLOAD';
-    document.getElementById('endTitle').textContent = 'Neural\nDisrupted';
-    document.getElementById('endMessage').textContent = `Mood: ${pct}% · Too many cytokines reached the brain. Train harder!`;
+    statusDot.style.background = '#d9483f';
+    statusDot.style.boxShadow = '0 0 14px #d9483f';
+    statusTxt.textContent = '✗ Cytokine Overload';
+    titleEl.innerHTML = 'Neural <em>disrupted</em>';
+    tagline.textContent = 'Too many toxins crossed the gate.';
+    msg.textContent = `Mood index ${pct}% · the channel is inflamed. Retrain and re-run the protocol.`;
   }
 
   showScreen('screen-end');
 }
 
-function restartGame() {
-  startGame();
-}
+function restartGame() { startGame(); }
+function backToIntro() { showScreen('screen-intro'); }
 
-// ── RESIZE ──
-window.addEventListener('resize', () => {
-  if (gameRunning) resize();
-});
+window.addEventListener('resize', () => { if (gameRunning) resize(); });
 </script>
 </body>
 </html>
