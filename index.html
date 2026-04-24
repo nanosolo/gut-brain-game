@@ -1147,7 +1147,7 @@
       <div class="intro-role">
         ROLE / <b>Gatekeeper</b> &nbsp;·&nbsp; OBJECTIVE / <b>Restore neural sync in 60s</b>
       </div>
-      <button class="btn-start" onclick="showScreen('screen-status')">Deploy Nano-G</button>
+      <button class="btn-start" onclick="showScreen('screen-status')">Start Mission</button>
     </div>
   </div>
 </div>
@@ -1197,7 +1197,7 @@
 
     <div class="status-cta">
       <button class="btn-back-intro" onclick="showScreen('screen-intro')">← Back</button>
-      <button class="btn-deploy" onclick="startGame()">⚡ Deploy Nano-G Now</button>
+      <button class="btn-deploy" onclick="startGame()">⚡ Launch Mission</button>
     </div>
   </div>
 </div>
@@ -2025,7 +2025,7 @@ function spawnBubble() {
 function updateBubbles(dt) {
   spawnTimer += dt;
   const cfg = getLevelConfig(currentLevel);
-  const si = deepFlow ? cfg.spawnInt * 0.6 : cfg.spawnInt;
+  const si = cfg.spawnInt;
   if (spawnTimer >= si) {
     spawnBubble();
     if (Math.random() < 0.35 + (currentLevel - 1) * 0.03) spawnBubble();
@@ -2040,7 +2040,7 @@ function updateBubbles(dt) {
     b.pulsePhase  += b.pulseRate * dt;
     b.flagellaPhase += 0.35 * dt;
     b.x += (b.vx + Math.sin(b.wobble) * 0.45) * dt;
-    b.y += b.vy * (deepFlow ? 1.4 : 1) * dt;
+    b.y += b.vy * dt;
 
     const dx = b.x - nano.x, dy = b.y - nano.y;
     const dist = Math.sqrt(dx*dx + dy*dy);
@@ -2098,9 +2098,9 @@ function handleCollision(b) {
 }
 
 function checkDeepFlow() {
-  if (combo >= 5 && !deepFlow) {
+  if (combo >= 7 && !deepFlow) {
     deepFlow = true;
-    deepFlowTimer = 320;
+    deepFlowTimer = 480; // ~8 seconds at 60fps
     SFX.deepFlowSound();
     const banner = document.getElementById('deep-flow-banner');
     banner.classList.add('show');
