@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Gut–Brain // Vagus Protocol</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap');
 
   :root {
     --ink: #f4ebdc;
@@ -52,195 +52,176 @@
   .screen.active { opacity: 1; pointer-events: all; }
 
   /* ═══════════════════════════════════
-     INTRO
+     INTRO — NEURAL GUT LINK STYLE
      ═══════════════════════════════════ */
   #screen-intro {
     background:
-      radial-gradient(ellipse 80% 60% at 50% 30%, #2a1520 0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 50% 85%, #3a1a28 0%, transparent 60%),
-      #0a0608;
+      radial-gradient(ellipse 70% 80% at 50% 110%, rgba(80,30,120,0.45) 0%, transparent 60%),
+      radial-gradient(ellipse 100% 60% at 50% -10%, rgba(0,40,80,0.8) 0%, transparent 55%),
+      #06080f;
+    overflow: hidden;
   }
-  .intro-grain {
-    position: absolute; inset: 0; opacity: 0.35; pointer-events: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 0.9  0 0 0 0 0.8  0 0 0 0.11 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-    mix-blend-mode: overlay;
+
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
   }
-  .intro-vagus-bg {
-    position: absolute; inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    opacity: 0.55;
+  @keyframes titleGlow {
+    0%, 100% { text-shadow: 0 0 40px rgba(0,180,255,0.5), 0 0 80px rgba(0,180,255,0.2); }
+    50% { text-shadow: 0 0 70px rgba(0,200,255,0.95), 0 0 140px rgba(0,200,255,0.4); }
   }
+
+  .intro-neural-bg {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  }
+
   .intro-wrap {
     position: relative;
     z-index: 2;
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    grid-template-rows: auto auto;
-    gap: 0 4rem;
-    max-width: 1100px;
-    width: 92vw;
-    padding: 2rem;
-    align-items: center;
-  }
-  .intro-meta {
-    grid-column: 1 / 4;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--ink-dim);
-    letter-spacing: 0.12em;
-  }
-  .intro-meta b { color: var(--vagus); font-weight: 500; }
-  .intro-tag { display: flex; align-items: center; gap: 0.5rem; }
-  .intro-tag .dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--vagus);
-    box-shadow: 0 0 12px var(--vagus-glow);
-    animation: pulse 1.6s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
-
-  .intro-left { text-align: right; }
-  .intro-right { text-align: left; }
-  .intro-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--ink-fade);
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    margin-bottom: 0.6rem;
-  }
-  .intro-word {
-    font-family: 'Instrument Serif', serif;
-    font-size: clamp(2.8rem, 7vw, 5.5rem);
-    font-weight: 400;
-    color: var(--ink);
-    line-height: 0.95;
-    letter-spacing: -0.02em;
-  }
-  .intro-word em {
-    font-style: italic;
-    color: var(--vagus);
-  }
-  .intro-left .intro-word { color: #f6b4a0; }
-  .intro-right .intro-word { color: #b9c6ff; }
-
-  .intro-center {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    max-width: 900px;
+    width: 92vw;
+    padding: 1.5rem 2rem;
+    gap: 0;
+  }
+
+  /* A Biotech Game Concept by NANOBOTGROUP */
+  .intro-supertitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(150,190,255,0.5);
+    margin-bottom: 0.8rem;
+    text-align: center;
+  }
+  .intro-supertitle span { color: rgba(180,210,255,0.85); font-weight: 600; }
+
+  /* GUT ↔ BRAIN — sharp tech font */
+  .intro-hero {
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 0.5rem;
+    gap: 1.2rem;
+    margin-bottom: 0.5rem;
+    width: 100%;
   }
-  .intro-bridge {
-    width: 80px;
-    height: 80px;
-    position: relative;
-    margin-bottom: 0.6rem;
+  .intro-hero-word {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(3.5rem, 9vw, 6.5rem);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
-  .intro-bridge svg { width: 100%; height: 100%; overflow: visible; }
-  .intro-amp {
-    font-family: 'Instrument Serif', serif;
-    font-style: italic;
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    color: var(--vagus);
-    text-shadow: 0 0 30px rgba(244,194,74,0.4);
+  .intro-hero-word.gut {
+    color: #e8a060;
+    text-shadow: 0 0 30px rgba(232,160,96,0.4);
   }
-
-  .intro-body {
-    grid-column: 1 / 4;
-    margin-top: 3rem;
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 3rem;
-    align-items: start;
+  .intro-hero-word.brain {
+    color: #fff;
+    animation: titleGlow 3s ease-in-out infinite;
   }
-  .intro-copy {
-    font-size: 0.92rem;
-    line-height: 1.75;
-    color: rgba(244,235,220,0.78);
-    max-width: 460px;
-  }
-  .intro-copy .drop {
-    font-family: 'Instrument Serif', serif;
-    font-size: 2.6rem;
-    font-style: italic;
-    color: var(--vagus);
-    float: left;
-    line-height: 0.8;
-    margin: 0.25rem 0.5rem 0 0;
-  }
-  .intro-copy strong {
-    color: var(--ink);
-    font-weight: 600;
-  }
-  .intro-copy .u { color: var(--vagus); font-weight: 500; }
-  .intro-copy .b { color: #b9c6ff; font-weight: 500; }
-  .intro-copy .r { color: #f6b4a0; font-weight: 500; }
-
-  .intro-stats {
+  .intro-hero-connector {
     display: flex;
     flex-direction: column;
-    gap: 0;
-    border-left: 1px solid rgba(244,235,220,0.1);
-    padding-left: 2rem;
+    align-items: center;
+    gap: 0.1rem;
   }
-  .intro-stat {
-    padding: 0.9rem 0;
-    border-bottom: 1px dashed rgba(244,235,220,0.08);
-  }
-  .intro-stat:last-child { border-bottom: none; }
-  .intro-stat-num {
-    font-family: 'Instrument Serif', serif;
-    font-size: 2.2rem;
+  .intro-hero-arrow {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 600;
+    color: #00c8ff;
+    text-shadow: 0 0 20px rgba(0,200,255,0.7);
     line-height: 1;
-    color: var(--vagus);
-    font-weight: 400;
   }
-  .intro-stat-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.62rem;
-    color: var(--ink-dim);
-    letter-spacing: 0.12em;
+  .intro-hero-nerve {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.48rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    color: rgba(0,200,255,0.5);
     text-transform: uppercase;
-    margin-top: 0.35rem;
   }
 
+  /* Subtitle */
+  .intro-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(0.72rem, 1.8vw, 0.9rem);
+    font-weight: 300;
+    color: rgba(160,200,255,0.6);
+    text-align: center;
+    letter-spacing: 0.04em;
+    margin-bottom: 1.3rem;
+    line-height: 1.8;
+  }
+  .intro-subtitle strong { color: rgba(220,240,255,0.85); font-weight: 500; }
+
+  /* Gut-Brain Axis diagram */
+  .axis-diagram {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    margin-bottom: 0.8rem;
+  }
+  .axis-svg { width: 100%; height: auto; display: block; }
+  .axis-tooltip {
+    position: absolute;
+    background: rgba(6,8,15,0.88);
+    border: 1px solid rgba(0,180,255,0.2);
+    border-radius: 4px;
+    padding: 0.32rem 0.65rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.58rem;
+    color: rgba(180,210,255,0.75);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 10;
+    backdrop-filter: blur(6px);
+  }
+  .axis-tooltip strong { color: rgba(220,240,255,0.95); }
+
+  /* CTA row */
   .intro-cta {
-    grid-column: 1 / 4;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 2.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(244,235,220,0.08);
+    width: 100%;
+    max-width: 600px;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0,180,255,0.1);
   }
   .intro-role {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--ink-dim);
-    letter-spacing: 0.1em;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.58rem;
+    font-weight: 400;
+    color: rgba(150,190,255,0.4);
+    letter-spacing: 0.06em;
   }
-  .intro-role b { color: var(--ink); font-weight: 500; }
+  .intro-role b { color: rgba(200,225,255,0.7); font-weight: 600; }
 
+  /* START BUTTON — bordered cyan, like reference */
   .btn-start {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.8rem;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
     font-weight: 600;
-    letter-spacing: 0.22em;
-    color: #1a0a08;
-    background: var(--vagus);
-    border: none;
+    letter-spacing: 0.28em;
+    color: #00c8ff;
+    background: transparent;
+    border: 1.5px solid rgba(0,200,255,0.7);
     border-radius: 2px;
-    padding: 1rem 2.4rem;
+    padding: 0.75rem 2.2rem;
     cursor: pointer;
-    transition: all 0.35s cubic-bezier(.4,0,.2,1);
+    transition: all 0.3s;
     text-transform: uppercase;
-    box-shadow: 0 0 0 1px var(--vagus), 0 10px 40px rgba(244,194,74,0.3);
+    box-shadow: 0 0 20px rgba(0,200,255,0.1), inset 0 0 20px rgba(0,200,255,0.04);
     position: relative;
   }
   .btn-start::after {
@@ -249,8 +230,188 @@
     display: inline-block;
     transition: transform 0.3s;
   }
-  .btn-start:hover { box-shadow: 0 0 0 1px var(--vagus), 0 12px 60px rgba(244,194,74,0.6); }
-  .btn-start:hover::after { transform: translateX(6px); }
+  .btn-start:hover {
+    background: rgba(0,200,255,0.08);
+    border-color: rgba(0,200,255,1);
+    box-shadow: 0 0 40px rgba(0,200,255,0.3), inset 0 0 30px rgba(0,200,255,0.06);
+    color: #fff;
+  }
+  .btn-start:hover::after { transform: translateX(5px); }
+
+  /* ═══════════════════════════════════
+     STATUS SCREEN (stress briefing)
+     ═══════════════════════════════════ */
+  #screen-status {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(60,5,5,0.8) 0%, transparent 65%),
+      #06080f;
+  }
+  .status-wrap {
+    position: relative;
+    z-index: 2;
+    max-width: 760px;
+    width: 92vw;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .status-badge {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #d9483f;
+    padding: 0.4rem 1.1rem;
+    border: 1px solid rgba(217,72,63,0.5);
+    border-radius: 2px;
+    background: rgba(217,72,63,0.07);
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  .status-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(1.8rem, 5vw, 3.2rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    color: rgba(220,235,255,0.92);
+  }
+  .status-title em { font-style: italic; color: #e87a5d; font-weight: 700; }
+  .status-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: rgba(150,190,255,0.6);
+    max-width: 480px;
+  }
+  .status-desc strong { color: rgba(220,235,255,0.85); font-weight: 600; }
+  .status-indicators {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .status-ind {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.9rem 1.3rem;
+    border: 1px solid rgba(217,72,63,0.2);
+    border-radius: 4px;
+    min-width: 115px;
+    background: rgba(217,72,63,0.04);
+  }
+  .status-ind-icon { font-size: 1.5rem; }
+  .status-ind-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.52rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(217,72,63,0.8);
+  }
+  .status-ind-val {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: rgba(220,235,255,0.85);
+  }
+  .status-cast {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 700px;
+  }
+  .cast-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.28rem;
+    padding: 0.85rem 0.7rem 0.75rem;
+    border-radius: 6px;
+    min-width: 130px;
+    flex: 1;
+    max-width: 160px;
+    transition: transform 0.2s;
+  }
+  .cast-card:hover { transform: translateY(-3px); }
+  .pass-card  { background: rgba(110,224,135,0.06); border: 1px solid rgba(110,224,135,0.2); }
+  .block-card { background: rgba(217,72,63,0.06);  border: 1px solid rgba(217,72,63,0.2); }
+  .nano-card  { background: rgba(0,200,255,0.06);  border: 1px solid rgba(0,200,255,0.2); }
+  .cast-canvas {
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+  .cast-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: rgba(220,235,255,0.9);
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+  .cast-tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.52rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.18rem 0.55rem;
+    border-radius: 2px;
+  }
+  .pass-tag  { color: #6ee087; background: rgba(110,224,135,0.12); }
+  .block-tag { color: #d9483f; background: rgba(217,72,63,0.12); }
+  .nano-tag  { color: #00c8ff; background: rgba(0,200,255,0.12); }
+  .cast-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.56rem;
+    font-weight: 300;
+    color: rgba(150,190,255,0.5);
+    text-align: center;
+    line-height: 1.55;
+  }
+  .status-cta {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+  }
+  .btn-deploy {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    color: #111;
+    background: var(--vagus);
+    border: none;
+    border-radius: 2px;
+    padding: 0.85rem 2.2rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 0 0 1px var(--vagus), 0 8px 30px rgba(244,194,74,0.3);
+    transition: all 0.3s;
+  }
+  .btn-deploy:hover { box-shadow: 0 0 0 1px var(--vagus), 0 10px 50px rgba(244,194,74,0.55); }
+  .btn-back-intro {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    color: rgba(150,190,255,0.5);
+    background: transparent;
+    border: 1px solid rgba(150,190,255,0.15);
+    border-radius: 2px;
+    padding: 0.85rem 1.4rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+  .btn-back-intro:hover { color: rgba(200,225,255,0.8); border-color: rgba(150,190,255,0.35); }
 
   /* ═══════════════════════════════════
      GAME
@@ -278,24 +439,26 @@
   .hud-cell.right { text-align: right; }
   .hud-cell.center { text-align: center; flex: 0 0 auto; }
   .hud-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.2em;
-    color: var(--ink-fade);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.52rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: rgba(150,190,255,0.4);
     text-transform: uppercase;
   }
   .hud-val {
-    font-family: 'Instrument Serif', serif;
-    font-weight: 400;
-    color: var(--ink);
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    color: rgba(220,235,255,0.9);
   }
-  .hud-score .hud-val { font-size: 1.4rem; color: #b9c6ff; }
+  .hud-score .hud-val { font-size: 1.4rem; color: #00c8ff; }
   .hud-timer .hud-val {
     font-size: 2rem;
     line-height: 1;
-    text-shadow: 0 0 30px rgba(244,194,74,0.4);
+    color: rgba(220,235,255,0.95);
+    text-shadow: 0 0 20px rgba(0,200,255,0.3);
   }
-  .hud-combo .hud-val { font-size: 1.4rem; color: var(--vagus); font-style: italic; }
+  .hud-combo .hud-val { font-size: 1.4rem; color: var(--vagus); }
 
   /* Brain health rail */
   #brainRail {
@@ -321,21 +484,24 @@
     position: absolute;
     top: -30px;
     right: -8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.55rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.48rem;
+    font-weight: 600;
     letter-spacing: 0.2em;
-    color: var(--ink-fade);
+    color: rgba(150,190,255,0.35);
     white-space: nowrap;
     writing-mode: vertical-rl;
     transform: rotate(180deg);
+    text-transform: uppercase;
   }
   #brainRail .val {
     position: absolute;
     bottom: -28px;
     right: -14px;
-    font-family: 'Instrument Serif', serif;
+    font-family: 'Rajdhani', sans-serif;
     font-size: 1.1rem;
-    color: var(--ink);
+    font-weight: 600;
+    color: rgba(220,235,255,0.8);
   }
 
   #deep-flow-banner {
@@ -343,32 +509,103 @@
     top: 45%;
     left: 50%;
     transform: translate(-50%,-50%) scale(0.9);
-    font-family: 'Instrument Serif', serif;
-    font-style: italic;
+    font-family: 'Rajdhani', sans-serif;
     font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 700;
+    letter-spacing: 0.08em;
     color: var(--vagus);
     text-shadow:
       0 0 40px rgba(244,194,74,0.9),
       0 0 80px rgba(244,194,74,0.5);
-    letter-spacing: -0.01em;
     pointer-events: none;
     opacity: 0;
     z-index: 20;
     transition: opacity 0.5s ease, transform 0.5s cubic-bezier(.34,1.56,.64,1);
     text-align: center;
+    text-transform: uppercase;
   }
   #deep-flow-banner .sub {
     display: block;
-    font-family: 'JetBrains Mono', monospace;
-    font-style: normal;
-    font-size: 0.7rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
     letter-spacing: 0.4em;
-    color: var(--ink-dim);
+    color: rgba(150,190,255,0.6);
     margin-top: 0.5rem;
+    text-transform: uppercase;
   }
   #deep-flow-banner.show {
     opacity: 1;
     transform: translate(-50%,-50%) scale(1);
+  }
+
+  /* Level indicator */
+  #level-hud {
+    position: absolute;
+    bottom: 3.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    z-index: 10;
+    pointer-events: none;
+  }
+  #level-hud .lv-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.48rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(150,190,255,0.4);
+  }
+  #level-hud .lv-val {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: rgba(220,235,255,0.7);
+    line-height: 1;
+  }
+  #level-hud .lv-track {
+    width: 80px;
+    height: 2px;
+    background: rgba(150,190,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  #level-hud .lv-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #00c8ff, var(--vagus));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 0 6px rgba(0,200,255,0.5);
+  }
+
+  /* Level-up flash banner */
+  #levelup-banner {
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.85);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #00c8ff;
+    text-shadow: 0 0 30px rgba(0,200,255,0.8), 0 0 60px rgba(0,200,255,0.4);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 25;
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(.34,1.56,.64,1);
+    white-space: nowrap;
+  }
+  #levelup-banner.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    transition: opacity 0.2s ease, transform 0.2s cubic-bezier(.34,1.56,.64,1);
   }
 
   /* Legend */
@@ -393,12 +630,13 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.62rem;
-    color: var(--ink-dim);
-    letter-spacing: 0.06em;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 400;
+    color: rgba(150,190,255,0.5);
+    letter-spacing: 0.04em;
   }
-  .legend-item b { color: var(--ink); font-weight: 500; }
+  .legend-item b { color: rgba(200,225,255,0.75); font-weight: 600; }
   .legend-dot {
     width: 10px;
     height: 10px;
@@ -410,14 +648,14 @@
      ═══════════════════════════════════ */
   #screen-end {
     background:
-      radial-gradient(ellipse 70% 60% at 50% 40%, #15112e 0%, transparent 65%),
-      radial-gradient(ellipse 60% 50% at 50% 90%, #2a1028 0%, transparent 60%),
-      #0a0608;
+      radial-gradient(ellipse 70% 60% at 50% 40%, rgba(10,15,40,0.9) 0%, transparent 65%),
+      radial-gradient(ellipse 60% 50% at 50% 90%, rgba(20,8,30,0.7) 0%, transparent 60%),
+      #06080f;
   }
   .end-wrap {
     position: relative;
     z-index: 2;
-    max-width: 880px;
+    max-width: 860px;
     width: 90vw;
     padding: 2rem;
   }
@@ -426,24 +664,25 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.62rem;
-    color: var(--ink-fade);
-    letter-spacing: 0.18em;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.58rem;
+    font-weight: 500;
+    color: rgba(150,190,255,0.35);
+    letter-spacing: 0.22em;
     text-transform: uppercase;
   }
+  .end-head b { color: rgba(0,200,255,0.7); font-weight: 600; }
   .end-head .line {
     flex: 1;
     height: 1px;
-    background: rgba(244,235,220,0.1);
+    background: rgba(0,180,255,0.1);
     margin: 0 1rem;
   }
   .end-card {
-    border: 1px solid rgba(244,235,220,0.1);
+    border: 1px solid rgba(0,180,255,0.12);
     border-radius: 4px;
-    padding: 3rem 2.5rem;
-    background:
-      linear-gradient(180deg, rgba(244,235,220,0.02) 0%, transparent 100%);
+    padding: 2.5rem 2.5rem;
+    background: rgba(0,180,255,0.025);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
   }
@@ -451,11 +690,13 @@
     display: flex;
     align-items: center;
     gap: 0.7rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.25em;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.7rem;
+    color: rgba(150,190,255,0.55);
   }
   .end-status-dot {
     width: 8px; height: 8px; border-radius: 50%;
@@ -463,94 +704,127 @@
     box-shadow: 0 0 14px var(--gaba);
   }
   .end-title {
-    font-family: 'Instrument Serif', serif;
-    font-weight: 400;
-    font-size: clamp(2.2rem, 5.5vw, 4rem);
-    line-height: 1.02;
-    letter-spacing: -0.02em;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 5.5vw, 3.6rem);
+    line-height: 1.0;
+    letter-spacing: 0.03em;
     margin-bottom: 0.3rem;
+    color: rgba(220,235,255,0.92);
+    text-transform: uppercase;
   }
-  .end-title em { font-style: italic; color: var(--vagus); }
+  .end-title em { font-style: italic; color: var(--vagus); font-weight: 700; text-transform: none; }
   .end-tagline {
-    font-family: 'Instrument Serif', serif;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
     font-style: italic;
-    font-size: 1.15rem;
-    color: var(--ink-dim);
-    margin-bottom: 2.5rem;
+    color: rgba(150,190,255,0.5);
+    margin-bottom: 2rem;
+  }
+
+  /* Result banner — elegant strip above metrics */
+  .end-result-banner {
+    margin-bottom: 1.5rem;
+    padding: 0.9rem 0 1.1rem;
+    border-bottom: 1px solid rgba(0,180,255,0.08);
+    display: none;
+  }
+  .end-result-banner.show { display: block; }
+  .end-banner-title {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.4;
+    margin-bottom: 0.35rem;
+  }
+  .end-banner-title.win  { color: #6ee087; text-shadow: 0 0 20px rgba(110,224,135,0.3); }
+  .end-banner-title.partial { color: var(--vagus); }
+  .end-banner-title.fail { color: #e87a5d; }
+  .end-banner-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(150,190,255,0.4);
   }
 
   .end-metrics {
     display: grid;
-    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr 1fr;
     gap: 1.5rem;
-    padding: 1.8rem 0;
-    border-top: 1px solid rgba(244,235,220,0.1);
-    border-bottom: 1px solid rgba(244,235,220,0.1);
+    padding: 1.6rem 0;
+    border-top: 1px solid rgba(0,180,255,0.08);
+    border-bottom: 1px solid rgba(0,180,255,0.08);
   }
-  .end-metric {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-  }
+  .end-metric { display: flex; flex-direction: column; gap: 0.3rem; }
   .end-metric-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.58rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.54rem;
+    font-weight: 500;
     letter-spacing: 0.2em;
-    color: var(--ink-fade);
+    color: rgba(150,190,255,0.35);
     text-transform: uppercase;
   }
   .end-metric-val {
-    font-family: 'Instrument Serif', serif;
+    font-family: 'Rajdhani', sans-serif;
     font-size: 2.4rem;
+    font-weight: 700;
     line-height: 1;
-    color: var(--ink);
+    color: rgba(220,235,255,0.85);
   }
   .end-metric.hero .end-metric-val {
-    font-size: 3.8rem;
-    color: var(--vagus);
+    font-size: 3.6rem;
+    color: #00c8ff;
+    text-shadow: 0 0 20px rgba(0,200,255,0.35);
   }
   .end-metric-unit {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.68rem;
-    color: var(--ink-dim);
-    letter-spacing: 0.1em;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 400;
+    color: rgba(150,190,255,0.35);
+    letter-spacing: 0.08em;
   }
-
   .end-readout {
-    margin-top: 2rem;
-    font-size: 0.92rem;
-    line-height: 1.7;
-    color: rgba(244,235,220,0.72);
+    margin-top: 1.8rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(150,190,255,0.5);
     max-width: 560px;
   }
   .end-readout .key {
     display: inline-flex;
     gap: 0.4rem;
     align-items: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--ink-fade);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: rgba(100,150,220,0.45);
     margin-right: 0.9rem;
+    letter-spacing: 0.04em;
   }
-  .end-readout .key b { color: var(--ink); font-weight: 500; }
-
+  .end-readout .key b { color: rgba(200,220,255,0.65); font-weight: 600; }
   .end-actions {
     display: flex;
     gap: 0.8rem;
-    margin-top: 2.2rem;
+    margin-top: 2rem;
     justify-content: flex-end;
     align-items: center;
   }
   .btn-restart {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.75rem;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.85rem;
     font-weight: 600;
-    letter-spacing: 0.22em;
-    color: #1a0a08;
+    letter-spacing: 0.25em;
+    color: #111;
     background: var(--vagus);
     border: none;
     border-radius: 2px;
-    padding: 0.9rem 2rem;
+    padding: 0.8rem 2rem;
     cursor: pointer;
     transition: all 0.3s;
     text-transform: uppercase;
@@ -558,22 +832,21 @@
   }
   .btn-restart::after { content: ' ↻'; }
   .btn-restart:hover { box-shadow: 0 0 0 1px var(--vagus), 0 10px 44px rgba(244,194,74,0.5); }
-
   .btn-ghost {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
     letter-spacing: 0.15em;
-    color: var(--ink-dim);
+    color: rgba(150,190,255,0.5);
     background: transparent;
-    border: 1px solid rgba(244,235,220,0.15);
+    border: 1px solid rgba(150,190,255,0.15);
     border-radius: 2px;
-    padding: 0.9rem 1.4rem;
+    padding: 0.8rem 1.4rem;
     cursor: pointer;
     text-transform: uppercase;
     transition: all 0.3s;
   }
-  .btn-ghost:hover { color: var(--ink); border-color: rgba(244,235,220,0.35); }
-
+  .btn-ghost:hover { color: rgba(200,225,255,0.8); border-color: rgba(150,190,255,0.35); }
   /* ═══════════════════════════════════
      TWEAKS PANEL
      ═══════════════════════════════════ */
@@ -663,88 +936,268 @@
 
 <!-- ═══════ INTRO ═══════ -->
 <div id="screen-intro" class="screen active">
-  <div class="intro-grain"></div>
-  <svg class="intro-vagus-bg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
-    <defs>
-      <linearGradient id="nervebg" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#f4c24a" stop-opacity="0"/>
-        <stop offset="0.5" stop-color="#f4c24a" stop-opacity="0.5"/>
-        <stop offset="1" stop-color="#f4c24a" stop-opacity="0"/>
-      </linearGradient>
-    </defs>
-    <path d="M -50 400 Q 300 250, 600 400 T 1250 400" stroke="url(#nervebg)" stroke-width="2" fill="none" opacity="0.6"/>
-    <path d="M -50 400 Q 300 250, 600 400 T 1250 400" stroke="#f4c24a" stroke-width="0.5" fill="none" opacity="0.25" stroke-dasharray="3 8"/>
-  </svg>
+  <!-- Animated neural network background -->
+  <div class="intro-neural-bg">
+    <svg width="100%" height="100%" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;">
+      <defs>
+        <linearGradient id="nerve1" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#00c8ff" stop-opacity="0"/>
+          <stop offset="0.35" stop-color="#00c8ff" stop-opacity="0.6"/>
+          <stop offset="1" stop-color="#00c8ff" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="nerve2" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#7060ff" stop-opacity="0"/>
+          <stop offset="0.5" stop-color="#7060ff" stop-opacity="0.3"/>
+          <stop offset="1" stop-color="#00c8ff" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="blur1"><feGaussianBlur stdDeviation="4"/></filter>
+        <filter id="blur2"><feGaussianBlur stdDeviation="1.5"/></filter>
+      </defs>
+
+      <!-- Deep glow base -->
+      <ellipse cx="600" cy="500" rx="500" ry="300" fill="rgba(0,80,160,0.08)"/>
+      <ellipse cx="600" cy="300" rx="400" ry="200" fill="rgba(60,0,120,0.07)"/>
+
+      <!-- Main vagus nerve paths -->
+      <path d="M -50 500 Q 200 200, 600 380 T 1250 300" stroke="url(#nerve1)" stroke-width="2.5" fill="none"/>
+      <path d="M -50 500 Q 200 200, 600 380 T 1250 300" stroke="#00c8ff" stroke-width="0.8" fill="none" stroke-dasharray="5 15" opacity="0.5"/>
+      <!-- glow -->
+      <path d="M -50 500 Q 200 200, 600 380 T 1250 300" stroke="#00c8ff" stroke-width="25" fill="none" opacity="0.04" filter="url(#blur1)"/>
+
+      <!-- Secondary nerve strands -->
+      <path d="M -50 400 Q 300 150, 600 320 T 1250 200" stroke="url(#nerve2)" stroke-width="1.2" fill="none" opacity="0.45"/>
+      <path d="M -50 600 Q 350 400, 600 500 T 1250 450" stroke="url(#nerve2)" stroke-width="1" fill="none" opacity="0.3"/>
+      <path d="M 100 700 Q 400 500, 700 550 T 1250 580" stroke="#7060ff" stroke-width="0.8" fill="none" opacity="0.2" stroke-dasharray="3 10"/>
+
+      <!-- Neural nodes — pulsing -->
+      <circle cx="600" cy="380" r="5" fill="#00c8ff" opacity="0.7" filter="url(#blur2)"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/><animate attributeName="r" values="4;7;4" dur="2s" repeatCount="indefinite"/></circle>
+      <circle cx="600" cy="380" r="18" fill="none" stroke="#00c8ff" stroke-width="1" opacity="0.2"><animate attributeName="r" values="8;28;8" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite"/></circle>
+
+      <circle cx="250" cy="280" r="3" fill="#00c8ff" opacity="0.5"><animate attributeName="opacity" values="0.2;0.7;0.2" dur="3.1s" repeatCount="indefinite"/></circle>
+      <circle cx="900" cy="310" r="3" fill="#7060ff" opacity="0.4"><animate attributeName="opacity" values="0.2;0.65;0.2" dur="2.4s" repeatCount="indefinite"/></circle>
+      <circle cx="1050" cy="250" r="2.5" fill="#00c8ff" opacity="0.35"><animate attributeName="opacity" values="0.1;0.5;0.1" dur="4s" repeatCount="indefinite"/></circle>
+      <circle cx="150" cy="480" r="2" fill="#7060ff" opacity="0.3"><animate attributeName="opacity" values="0.1;0.45;0.1" dur="3.6s" repeatCount="indefinite"/></circle>
+      <circle cx="780" cy="200" r="2.5" fill="#00c8ff" opacity="0.3"><animate attributeName="opacity" values="0.15;0.55;0.15" dur="2.8s" repeatCount="indefinite"/></circle>
+
+      <!-- Connection lines between nodes -->
+      <line x1="250" y1="280" x2="600" y2="380" stroke="#00c8ff" stroke-width="0.5" opacity="0.12"/>
+      <line x1="900" y1="310" x2="600" y2="380" stroke="#7060ff" stroke-width="0.5" opacity="0.1"/>
+      <line x1="1050" y1="250" x2="900" y2="310" stroke="#00c8ff" stroke-width="0.4" opacity="0.1"/>
+      <line x1="780" y1="200" x2="600" y2="380" stroke="#00c8ff" stroke-width="0.4" opacity="0.08"/>
+    </svg>
+  </div>
 
   <div class="intro-wrap">
-    <div class="intro-meta">
-      <div class="intro-tag"><span class="dot"></span>NANO-G // GUT–BRAIN PROTOCOL</div>
-      <div>CH.01 · <b>VAGUS</b></div>
+    <!-- SUPER TITLE -->
+    <div class="intro-supertitle">
+      <span>NANOBOT</span> presents · Medical Game · A Biotech Concept
     </div>
 
-    <div class="intro-left">
-      <div class="intro-label">Source</div>
-      <div class="intro-word">Gut.</div>
-    </div>
-
-    <div class="intro-center">
-      <div class="intro-bridge">
-        <svg viewBox="0 0 80 80">
-          <defs>
-            <radialGradient id="orb" cx="0.35" cy="0.35">
-              <stop offset="0" stop-color="#ffd868"/>
-              <stop offset="0.5" stop-color="#f4c24a"/>
-              <stop offset="1" stop-color="#8c6a1f"/>
-            </radialGradient>
-          </defs>
-          <path d="M 5 40 Q 25 15, 40 40 T 75 40"
-                stroke="#f4c24a" stroke-width="1.4" fill="none" opacity="0.55"/>
-          <path d="M 5 40 Q 25 15, 40 40 T 75 40"
-                stroke="#ffd868" stroke-width="0.6" fill="none"/>
-          <circle cx="40" cy="40" r="7" fill="url(#orb)">
-            <animate attributeName="r" values="6.5;7.8;6.5" dur="2.2s" repeatCount="indefinite"/>
-          </circle>
-          <circle cx="40" cy="40" r="14" fill="none" stroke="#f4c24a" stroke-width="0.6" opacity="0.3">
-            <animate attributeName="r" values="8;22;8" dur="2.2s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0.6;0;0.6" dur="2.2s" repeatCount="indefinite"/>
-          </circle>
-        </svg>
+    <!-- GIANT HERO TITLE: GUT ↔ BRAIN -->
+    <div class="intro-hero">
+      <div class="intro-hero-word gut">GUT</div>
+      <div class="intro-hero-connector">
+        <div class="intro-hero-arrow">↔</div>
+        <div class="intro-hero-nerve">vagus nerve</div>
       </div>
-      <div class="intro-amp">↔</div>
+      <div class="intro-hero-word brain">BRAIN</div>
     </div>
 
-    <div class="intro-right">
-      <div class="intro-label">Target</div>
-      <div class="intro-word">Brain.</div>
+    <!-- SUBTITLE -->
+    <div class="intro-subtitle">
+      The gut-brain axis is a <strong>two-way communication pathway</strong>.<br>
+      The gut microbiome produces up to <strong>90% of serotonin</strong> — affecting mood, memory and focus.
     </div>
 
-    <div class="intro-body">
-      <p class="intro-copy">
-        <span class="drop">T</span>he <span class="u">Vagus Nerve</span> is a living cable, ~100 000 fibers thick, running from brainstem to colon. Roughly <strong>80% of traffic moves upward</strong> — from the gut's microbial factory toward the mind.<br><br>
-        When <span class="r">inflammatory cytokines</span> hijack this channel, mood flattens, focus fades, anxiety rises. When <span class="b">GABA</span> and <span class="u">acetylcholine</span> flow clean, the brain lights up.<br><br>
-        You are <strong>Nano-G</strong> — the gatekeeper stationed on the nerve. Pass the signal. Block the toxin.
-      </p>
-      <div class="intro-stats">
-        <div class="intro-stat">
-          <div class="intro-stat-num">500<span style="font-size:0.55em;">M</span></div>
-          <div class="intro-stat-label">Enteric neurons<br>in the gut wall</div>
-        </div>
-        <div class="intro-stat">
-          <div class="intro-stat-num">90<span style="font-size:0.55em;">%</span></div>
-          <div class="intro-stat-label">Of serotonin is<br>produced in the gut</div>
-        </div>
-        <div class="intro-stat">
-          <div class="intro-stat-num">100<span style="font-size:0.55em;">T</span></div>
-          <div class="intro-stat-label">Microbes colonizing<br>the intestinal flora</div>
-        </div>
+    <!-- GUT-BRAIN AXIS DIAGRAM -->
+    <div class="axis-diagram">
+      <svg class="axis-svg" viewBox="0 0 500 310" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glow-pink" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="glow-blue" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="glow-violet" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <style>
+            .arc-vagus  { stroke-dasharray: 7 11; animation: adash 2.2s linear infinite; }
+            .arc-neuro  { stroke-dasharray: 7 11; animation: adash 2.2s linear infinite reverse; }
+            .arc-dys    { stroke-dasharray: 7 11; animation: adash 2.6s linear infinite; }
+            @keyframes adash { to { stroke-dashoffset: -36; } }
+            .org { cursor: pointer; }
+            .org:hover .org-body { filter: brightness(1.2); }
+          </style>
+        </defs>
+
+        <!-- ════ CENTER LABEL ════ -->
+        <text x="250" y="146" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="16" font-weight="700" letter-spacing="1" fill="rgba(220,235,255,0.88)">GUT-BRAIN</text>
+        <text x="250" y="164" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="16" font-weight="700" letter-spacing="1" fill="rgba(220,235,255,0.88)">AXIS</text>
+
+        <!-- ════ ARC 1: Vagus nerve — Gut → Brain (left arc) ════ -->
+        <path class="arc-vagus" d="M 138,208 Q 60,130 190,62" fill="none" stroke="#e87a5d" stroke-width="2" opacity="0.8"/>
+        <circle r="4" fill="#e87a5d" filter="url(#glow-pink)">
+          <animateMotion dur="2.2s" repeatCount="indefinite" path="M 138,208 Q 60,130 190,62"/>
+        </circle>
+
+        <!-- ════ ARC 2: Neuromediators — Brain → Microbiome (right arc) ════ -->
+        <path class="arc-neuro" d="M 310,62 Q 440,130 362,208" fill="none" stroke="#7060ff" stroke-width="2" opacity="0.8"/>
+        <circle r="4" fill="#7060ff" filter="url(#glow-violet)">
+          <animateMotion dur="2.2s" repeatCount="indefinite" begin="0.4s" path="M 310,62 Q 440,130 362,208"/>
+        </circle>
+
+        <!-- ════ ARC 3: Dysbiosis — Microbiome → Gut (bottom arc) ════ -->
+        <path class="arc-dys" d="M 340,255 Q 250,300 162,255" fill="none" stroke="#00c8ff" stroke-width="2" opacity="0.75"/>
+        <circle r="3.5" fill="#00c8ff" filter="url(#glow-blue)">
+          <animateMotion dur="2.6s" repeatCount="indefinite" begin="0.7s" path="M 340,255 Q 250,300 162,255"/>
+        </circle>
+
+        <!-- ════ BRAIN — top center ════ -->
+        <g class="org organ-brain" transform="translate(190,8)">
+          <g class="org-body">
+            <!-- left hemisphere -->
+            <path d="M60,16 C36,16 16,28 16,46 C16,60 26,70 40,74 C40,80 46,84 60,84 C74,84 80,80 80,74 C94,70 104,60 104,46 C104,28 84,16 60,16Z" fill="#e8a0b4"/>
+            <!-- gyri -->
+            <path d="M30,38 Q40,30 50,38 Q58,46 48,52" fill="none" stroke="#c07090" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M62,22 Q70,30 66,40" fill="none" stroke="#c07090" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M74,36 Q86,34 90,44 Q88,54 78,56" fill="none" stroke="#c07090" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M36,56 Q46,62 50,72" fill="none" stroke="#c07090" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M66,56 Q76,60 72,70" fill="none" stroke="#c07090" stroke-width="1.4" stroke-linecap="round"/>
+            <line x1="60" y1="16" x2="60" y2="84" stroke="#b06080" stroke-width="0.8" opacity="0.35"/>
+            <!-- cerebellum -->
+            <ellipse cx="60" cy="80" rx="18" ry="10" fill="#d4916a" opacity="0.85"/>
+            <!-- specular -->
+            <ellipse cx="42" cy="30" rx="12" ry="8" fill="rgba(255,255,255,0.18)" transform="rotate(-15,42,30)"/>
+          </g>
+          <text x="60" y="102" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(200,220,255,0.6)" letter-spacing="1.5">BRAIN</text>
+        </g>
+
+        <!-- ════ GUT — bottom left ════ -->
+        <g class="org organ-gut" transform="translate(62,168)">
+          <g class="org-body">
+            <!-- outer colon -->
+            <path d="M44,8 C22,8 6,22 6,40 C6,56 16,68 32,72 C32,84 40,92 52,92 C60,92 66,88 68,80 C80,82 94,74 96,60 C100,44 90,28 76,24 C74,12 62,8 44,8Z" fill="#e8a0a0" opacity="0.92"/>
+            <!-- inner loops -->
+            <path d="M36,28 Q50,20 60,32 Q68,42 56,52 Q44,60 52,70 Q58,78 50,84" fill="none" stroke="#c87070" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M28,42 Q36,34 46,42 Q52,50 42,58" fill="none" stroke="#c87070" stroke-width="2.8" stroke-linecap="round"/>
+            <!-- specular -->
+            <ellipse cx="28" cy="22" rx="12" ry="8" fill="rgba(255,255,255,0.18)" transform="rotate(-20,28,22)"/>
+          </g>
+          <text x="51" y="108" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(200,220,255,0.6)" letter-spacing="1.5">GUT</text>
+        </g>
+
+        <!-- ════ MICROBIOME — bottom right ════ -->
+        <g class="org organ-micro" transform="translate(318,162)">
+          <g class="org-body">
+            <circle cx="52" cy="50" r="48" fill="#f2d5b5" opacity="0.9"/>
+            <clipPath id="mc"><circle cx="52" cy="50" r="48"/></clipPath>
+            <g clip-path="url(#mc)">
+              <!-- wall -->
+              <rect x="4" y="64" width="96" height="18" fill="#e8a0a0" opacity="0.65"/>
+              <!-- cilia -->
+              <line x1="12" y1="64" x2="12" y2="44" stroke="#c87070" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="21" y1="64" x2="21" y2="42" stroke="#c87070" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="30" y1="64" x2="30" y2="45" stroke="#c87070" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="39" y1="64" x2="39" y2="43" stroke="#c87070" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="48" y1="64" x2="48" y2="44" stroke="#c87070" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="57" y1="64" x2="57" y2="42" stroke="#c87070" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="66" y1="64" x2="66" y2="45" stroke="#c87070" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="75" y1="64" x2="75" y2="43" stroke="#c87070" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="84" y1="64" x2="84" y2="44" stroke="#c87070" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="93" y1="64" x2="93" y2="42" stroke="#c87070" stroke-width="2.2" stroke-linecap="round"/>
+              <!-- rod (lacto) -->
+              <rect x="22" y="18" width="8" height="20" rx="4" fill="#6ee087" opacity="0.92"/>
+              <!-- bifido Y -->
+              <circle cx="46" cy="34" r="5.5" fill="#e8c040" opacity="0.9"/>
+              <line x1="46" y1="29" x2="46" y2="22" stroke="#e8c040" stroke-width="1.8"/>
+              <line x1="46" y1="22" x2="40" y2="16" stroke="#e8c040" stroke-width="1.8"/>
+              <line x1="46" y1="22" x2="52" y2="16" stroke="#e8c040" stroke-width="1.8"/>
+              <!-- cluster (candida) -->
+              <circle cx="70" cy="26" r="7" fill="#d9483f" opacity="0.85"/>
+              <circle cx="77" cy="33" r="4.5" fill="#d9483f" opacity="0.7"/>
+              <circle cx="63" cy="33" r="4.5" fill="#d9483f" opacity="0.7"/>
+            </g>
+            <circle cx="52" cy="50" r="48" fill="none" stroke="#c09878" stroke-width="1.2" opacity="0.5"/>
+            <!-- specular -->
+            <ellipse cx="30" cy="24" rx="14" ry="9" fill="rgba(255,255,255,0.16)" transform="rotate(-15,30,24)"/>
+          </g>
+          <text x="52" y="112" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="rgba(200,220,255,0.6)" letter-spacing="1.5">MICROBIOME</text>
+        </g>
+      </svg>
+
+      <!-- Hover tooltips -->
+      <div class="axis-tooltip" id="tip-brain" style="top:2%;left:50%;transform:translateX(-50%)">
+        🧠 <strong>Brain</strong> — receives signals via vagus nerve, releases neuromediators
+      </div>
+      <div class="axis-tooltip" id="tip-gut" style="bottom:18%;left:4%">
+        🫁 <strong>Gut</strong> — 500M enteric neurons, 90% of serotonin made here
+      </div>
+      <div class="axis-tooltip" id="tip-micro" style="bottom:18%;right:4%">
+        🦠 <strong>Microbiome</strong> — 100T microbes, dysbiosis triggers cytokine flood
       </div>
     </div>
 
+    <!-- CTA -->
     <div class="intro-cta">
       <div class="intro-role">
         ROLE / <b>Gatekeeper</b> &nbsp;·&nbsp; OBJECTIVE / <b>Restore neural sync in 60s</b>
       </div>
-      <button class="btn-start" onclick="startGame()">Deploy Nano-G</button>
+      <button class="btn-start" onclick="showScreen('screen-status')">Deploy Nano-G</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ STATUS / STRESS SCREEN ═══════ -->
+<div id="screen-status" class="screen">
+  <div class="status-wrap">
+    <div class="status-badge">⚠ STATUS: NEURAL DYSREGULATION DETECTED</div>
+    <div class="status-title">
+      Patient under stress.<br>
+      Gut–Brain axis <em>disconnected.</em>
+    </div>
+    <div class="status-desc">
+      <strong>Dysbiosis detected</strong> — cytokines are flooding the vagus nerve.<br>
+      Neuromediators blocked. Brain health dropping.<br><br>
+      Nano-G, you are the last line of defense.<br>
+      <strong>Restore neural balance before cognitive collapse.</strong>
+    </div>
+
+    <!-- CAST: animated canvas heroes -->
+    <div class="status-cast">
+      <div class="cast-card pass-card">
+        <canvas class="cast-canvas" id="cast-rod" width="80" height="90"></canvas>
+        <div class="cast-name">Lactobacillus</div>
+        <div class="cast-tag pass-tag">▲ PASS IT</div>
+        <div class="cast-desc">Produces GABA<br>calms anxiety · boosts focus</div>
+      </div>
+      <div class="cast-card pass-card">
+        <canvas class="cast-canvas" id="cast-bifido" width="80" height="90"></canvas>
+        <div class="cast-name">Bifidobacterium</div>
+        <div class="cast-tag pass-tag">▲ PASS IT</div>
+        <div class="cast-desc">Releases ACh<br>memory · cognition support</div>
+      </div>
+      <div class="cast-card block-card">
+        <canvas class="cast-canvas" id="cast-cluster" width="80" height="90"></canvas>
+        <div class="cast-name">Candida</div>
+        <div class="cast-tag block-tag">✕ BLOCK IT</div>
+        <div class="cast-desc">Cytokine toxin<br>hijacks vagus · kills mood</div>
+      </div>
+      <div class="cast-card nano-card">
+        <canvas class="cast-canvas" id="cast-nano" width="80" height="90"></canvas>
+        <div class="cast-name">Nano-G</div>
+        <div class="cast-tag nano-tag">◈ YOU</div>
+        <div class="cast-desc">Guard the nerve<br>restore neural sync</div>
+      </div>
+    </div>
+
+    <div class="status-cta">
+      <button class="btn-back-intro" onclick="showScreen('screen-intro')">← Back</button>
+      <button class="btn-deploy" onclick="startGame()">⚡ Deploy Nano-G Now</button>
     </div>
   </div>
 </div>
@@ -779,6 +1232,14 @@
     <span class="sub">neural sync engaged</span>
   </div>
 
+  <div id="levelup-banner">LEVEL 1</div>
+
+  <div id="level-hud">
+    <div class="lv-label">Level</div>
+    <div class="lv-val" id="levelVal">1</div>
+    <div class="lv-track"><div class="lv-bar" id="levelBar"></div></div>
+  </div>
+
   <div id="legend">
     <div class="legend-item"><div class="legend-dot" style="background:#6ee087"></div><b>Lactobacillus</b> → GABA &nbsp;pass</div>
     <div class="legend-item"><div class="legend-dot" style="background:#e8c040"></div><b>Bifidobacterium</b> → ACh &nbsp;pass</div>
@@ -796,6 +1257,12 @@
     </div>
 
     <div class="end-card">
+      <!-- Result Banner -->
+      <div class="end-result-banner" id="endResultBanner">
+        <div class="end-banner-title" id="endBannerTitle"></div>
+        <div class="end-banner-sub" id="endBannerSub"></div>
+      </div>
+
       <div class="end-status-row">
         <div class="end-status-dot" id="endStatusDot"></div>
         <span id="endStatus">Balance Restored</span>
@@ -821,6 +1288,10 @@
           <div class="end-metric-label">Max Combo</div>
           <div class="end-metric-val" id="endMaxCombo">0<span style="font-size:0.45em; color:var(--ink-dim);">×</span></div>
         </div>
+        <div class="end-metric">
+          <div class="end-metric-label">Level Reached</div>
+          <div class="end-metric-val" id="endLevel">1</div>
+        </div>
       </div>
 
       <p class="end-readout" id="endReadout">
@@ -833,7 +1304,7 @@
 
       <div class="end-actions">
         <button class="btn-ghost" onclick="backToIntro()">Briefing</button>
-        <button class="btn-restart" onclick="restartGame()">Run Again</button>
+        <button id="btnRestart" class="btn-restart" onclick="restartGame()">Next Level →</button>
       </div>
     </div>
   </div>
@@ -967,11 +1438,30 @@ let deepFlow = false;
 let deepFlowTimer = 0;
 let timerInterval;
 
+// ── LEVEL SYSTEM ──
+let currentLevel = 1;  // persists across rounds, resets only on backToIntro()
+const MAX_LEVEL = 10;
+// Speed curve: level 1 = slow, level 10 = fast
+// vy base goes from 1.2 → 4.8, spawn interval from 70 → 22 frames
+function getLevelConfig(lvl) {
+  const t = (lvl - 1) / (MAX_LEVEL - 1); // 0..1
+  // vy is fraction of screen height per frame (at 60fps)
+  // level 1: ~5% H/sec → comfortable intro pace
+  // level 10: ~22% H/sec → challenging
+  const hFrac = H || 600; // fallback if H not set yet
+  return {
+    vyBase:    hFrac * (0.0008 + t * 0.0028),  // 0.048%→0.36% H per frame
+    vyRand:    hFrac * (0.0003 + t * 0.0008),
+    spawnInt:  Math.round(55 - t * 35),         // 55→20 frames between spawns
+    badChance: 0.28 + t * 0.14,
+  };
+}
+
 let nano = { x: 0, y: 0, targetX: 0, targetY: 0, size: 20 };
 let nerveY = 0;
 let bubbles = [];
 let spawnTimer = 0;
-let spawnInterval = 38;
+let spawnInterval = 70;
 let neurons = [];
 let brainHealth = 0;
 let brainRedFlash = 0;
@@ -1206,9 +1696,9 @@ function drawNerve() {
 function spawnNerveSignal() {
   nerveSignals.push({ t: 0, speed: 0.004 + Math.random() * 0.003, size: 2 + Math.random() * 2 });
 }
-function updateNerveSignals() {
+function updateNerveSignals(dt) {
   for (let i = nerveSignals.length - 1; i >= 0; i--) {
-    nerveSignals[i].t += nerveSignals[i].speed;
+    nerveSignals[i].t += nerveSignals[i].speed * dt;
     if (nerveSignals[i].t > 1) nerveSignals.splice(i, 1);
   }
 }
@@ -1507,23 +1997,24 @@ const TYPES = [
 ];
 
 function spawnBubble() {
+  const cfg = getLevelConfig(currentLevel);
   const rand = Math.random();
   let pick;
-  if (rand < 0.36) pick = TYPES[0];
-  else if (rand < 0.68) pick = TYPES[1];
+  if (rand < (1 - cfg.badChance) * 0.53) pick = TYPES[0];
+  else if (rand < (1 - cfg.badChance)) pick = TYPES[1];
   else pick = TYPES[2];
 
   const x = W * 0.08 + Math.random() * W * 0.84;
   bubbles.push({
     ...pick,
     x, y: -10,
-    vy: 3.2 + Math.random() * 1.8,
+    vy: cfg.vyBase + Math.random() * cfg.vyRand,
     vx: (Math.random() - 0.5) * 0.8,
     wobble: Math.random() * Math.PI * 2,
     rot: Math.random() * Math.PI * 2,
     rotSpeed: (Math.random() - 0.5) * 0.055,
-    scale: 0.3,
-    opacity: 0,
+    scale: 1,
+    opacity: 1,
     alive: true,
     pulsePhase: Math.random() * Math.PI * 2,
     pulseRate: 0.09 + Math.random() * 0.06,
@@ -1531,26 +2022,25 @@ function spawnBubble() {
   });
 }
 
-function updateBubbles() {
-  spawnTimer++;
-  const si = deepFlow ? spawnInterval * 0.6 : spawnInterval;
+function updateBubbles(dt) {
+  spawnTimer += dt;
+  const cfg = getLevelConfig(currentLevel);
+  const si = deepFlow ? cfg.spawnInt * 0.6 : cfg.spawnInt;
   if (spawnTimer >= si) {
     spawnBubble();
-    if (Math.random() < 0.45) spawnBubble();
+    if (Math.random() < 0.35 + (currentLevel - 1) * 0.03) spawnBubble();
     spawnTimer = 0;
   }
 
   for (let i = bubbles.length - 1; i >= 0; i--) {
     const b = bubbles[i];
     if (!b.alive) { bubbles.splice(i, 1); continue; }
-    b.wobble += 0.09;
-    b.rot += b.rotSpeed;
-    b.pulsePhase += b.pulseRate;
-    b.flagellaPhase += 0.35;
-    b.x += b.vx + Math.sin(b.wobble) * 0.45;
-    b.y += b.vy * (deepFlow ? 1.4 : 1);
-    b.scale = Math.min(1, b.scale + 0.05);
-    b.opacity = Math.min(1, b.opacity + 0.06);
+    b.wobble      += 0.09 * dt;
+    b.rot         += b.rotSpeed * dt;
+    b.pulsePhase  += b.pulseRate * dt;
+    b.flagellaPhase += 0.35 * dt;
+    b.x += (b.vx + Math.sin(b.wobble) * 0.45) * dt;
+    b.y += b.vy * (deepFlow ? 1.4 : 1) * dt;
 
     const dx = b.x - nano.x, dy = b.y - nano.y;
     const dist = Math.sqrt(dx*dx + dy*dy);
@@ -1566,12 +2056,15 @@ function updateBubbles() {
         goodPassed++;
         combo++;
         if (combo > maxCombo) maxCombo = combo;
+        if (b.shape === 'rod') SFX.passGABA(); else SFX.passACh();
+        SFX.comboTick(combo);
         checkDeepFlow();
         spawnParticles(b.x, nerveY + 20, b.color, 6);
         spawnText(b.x, nerveY + 10, '+10 PASSED', b.color);
       } else {
         brainHealth = Math.max(0, brainHealth - 10);
         combo = 0;
+        SFX.cytoPassed();
         deepFlow = false;
         document.getElementById('deep-flow-banner').classList.remove('show');
         spawnText(b.x, nerveY + 10, 'CYTOKINE!', '#d9483f');
@@ -1590,12 +2083,15 @@ function handleCollision(b) {
     badBlocked++;
     combo++;
     if (combo > maxCombo) maxCombo = combo;
+    SFX.blockCyto();
+    SFX.comboTick(combo);
     checkDeepFlow();
     spawnParticles(b.x, b.y, b.color, 12);
     spawnText(b.x, b.y - 10, '+15 BLOCKED', '#d9483f');
   } else {
     brainHealth = Math.max(0, brainHealth - 4);
     combo = 0;
+    SFX.deflect();
     spawnParticles(b.x, b.y, '#888', 4);
     spawnText(b.x, b.y - 10, 'DEFLECTED', '#888');
   }
@@ -1605,6 +2101,7 @@ function checkDeepFlow() {
   if (combo >= 5 && !deepFlow) {
     deepFlow = true;
     deepFlowTimer = 320;
+    SFX.deepFlowSound();
     const banner = document.getElementById('deep-flow-banner');
     banner.classList.add('show');
     setTimeout(() => banner.classList.remove('show'), 2400);
@@ -1983,18 +2480,18 @@ function spawnParticles(x, y, color, count) {
 function spawnText(x, y, text, color) {
   floatingTexts.push({ x, y, text, color, life: 1, vy: -1.5 });
 }
-function updateParticles() {
+function updateParticles(dt) {
   for (let i = particles.length - 1; i >= 0; i--) {
     const p = particles[i];
-    p.x += p.vx; p.y += p.vy;
-    p.vy += 0.08;
-    p.life -= 0.03;
+    p.x += p.vx * dt; p.y += p.vy * dt;
+    p.vy += 0.08 * dt;
+    p.life -= 0.03 * dt;
     if (p.life <= 0) particles.splice(i, 1);
   }
   for (let i = floatingTexts.length - 1; i >= 0; i--) {
     const t = floatingTexts[i];
-    t.y += t.vy;
-    t.life -= 0.025;
+    t.y += t.vy * dt;
+    t.life -= 0.025 * dt;
     if (t.life <= 0) floatingTexts.splice(i, 1);
   }
 }
@@ -2017,11 +2514,13 @@ function drawParticles() {
 // ═══════════════════════════════════════
 // NANO MOVEMENT
 // ═══════════════════════════════════════
-function updateNano() {
+function updateNano(dt) {
   const t = Math.max(0, Math.min(1, nano.targetX / W));
   const nervePointY = getNerveY(t);
-  nano.x += (nano.targetX - nano.x) * 0.13;
-  nano.y += (nervePointY - nano.y) * 0.13;
+  // Exponential smoothing scaled to dt so speed is consistent at any framerate
+  const ease = 1 - Math.pow(1 - 0.13, dt);
+  nano.x += (nano.targetX - nano.x) * ease;
+  nano.y += (nervePointY - nano.y) * ease;
 }
 
 // ═══════════════════════════════════════
@@ -2041,35 +2540,38 @@ function updateHUD() {
 let lastTs = 0;
 function loop(ts) {
   if (!gameRunning) return;
-  const dt = ts - lastTs;
+  const rawDt = ts - lastTs;
   lastTs = ts;
-  pulsePhase += 0.04;
+  // Clamp dt: ignore huge spikes (tab switch, first frame) and cap at 3 frames
+  // Normalize to 1.0 = one 60fps frame
+  const dt = Math.min(rawDt, 50) / 16.667;
+  pulsePhase += 0.04 * dt;
 
   ctx.clearRect(0, 0, W, H);
 
   drawBackground(ts);
   drawNeurons(ts);
 
-  if (Math.random() < 0.05) spawnNerveSignal();
-  updateNerveSignals();
+  if (Math.random() < 0.05 * dt) spawnNerveSignal();
+  updateNerveSignals(dt);
   drawNerve();
   drawNerveSignals();
 
-  updateBubbles();
+  updateBubbles(dt);
   drawBubbles();
 
   if (deepFlow) {
-    deepFlowTimer--;
+    deepFlowTimer -= dt;
     if (deepFlowTimer <= 0) {
       deepFlow = false;
       document.getElementById('deep-flow-banner').classList.remove('show');
     }
   }
 
-  updateNano();
+  updateNano(dt);
   drawNanoG(nano.x, nano.y, nano.size, true);
 
-  updateParticles();
+  updateParticles(dt);
   drawParticles();
   updateHUD();
 
@@ -2088,6 +2590,9 @@ function handlePointerMove(e) {
 canvas.addEventListener('mousemove', handlePointerMove);
 canvas.addEventListener('touchmove', handlePointerMove, { passive: true });
 canvas.addEventListener('touchstart', handlePointerMove, { passive: true });
+// Resume AudioContext on first interaction (browser policy)
+document.addEventListener('pointerdown', () => SFX.resume(), { once: false });
+document.addEventListener('keydown', () => SFX.resume(), { once: false });
 
 // ═══════════════════════════════════════
 // TIMER
@@ -2095,11 +2600,28 @@ canvas.addEventListener('touchstart', handlePointerMove, { passive: true });
 function startTimer() {
   timeLeft = 60;
   document.getElementById('timerVal').textContent = timeLeft;
+  updateLevelHUD();
   timerInterval = setInterval(() => {
     timeLeft--;
     document.getElementById('timerVal').textContent = timeLeft;
     if (timeLeft <= 0) endGame();
   }, 1000);
+}
+
+function updateLevelHUD() {
+  const el = document.getElementById('levelVal');
+  if (el) el.textContent = currentLevel;
+  const bar = document.getElementById('levelBar');
+  if (bar) bar.style.width = ((currentLevel - 1) / (MAX_LEVEL - 1) * 100) + '%';
+}
+
+function showLevelUp(lvl) {
+  const banner = document.getElementById('levelup-banner');
+  if (!banner) return;
+  banner.textContent = lvl >= MAX_LEVEL ? 'MAX SPEED' : `LEVEL ${lvl}`;
+  banner.classList.add('show');
+  SFX.levelUp();
+  setTimeout(() => banner.classList.remove('show'), 1800);
 }
 
 // ═══════════════════════════════════════
@@ -2120,8 +2642,13 @@ function startGame() {
     nano.x = W / 2; nano.y = nerveY; nano.targetX = W / 2;
     gameRunning = true;
     lastTs = performance.now();
+    // Warm-up: draw one blank frame so JIT compiles before player sees anything
+    ctx.clearRect(0, 0, W, H);
     animId = requestAnimationFrame(loop);
     startTimer();
+    SFX.gameStart();
+    // Show level banner at start of each round (except level 1)
+    if (currentLevel > 1) showLevelUp(currentLevel);
   });
 }
 
@@ -2135,14 +2662,31 @@ function endGame() {
   document.getElementById('endHealth').innerHTML = pct + '<span style="font-size:0.45em; color:var(--ink-dim);">%</span>';
   document.getElementById('endBad').textContent = badBlocked;
   document.getElementById('endMaxCombo').innerHTML = maxCombo + '<span style="font-size:0.45em; color:var(--ink-dim);">×</span>';
+  document.getElementById('endLevel').textContent = currentLevel;
   document.getElementById('endGoodLine').textContent = goodPassed;
   document.getElementById('endBadLine').textContent = badBlocked;
+
+  // Show next level on the restart button
+  const nextLvl = Math.min(MAX_LEVEL, currentLevel + 1);
+  const restartBtn = document.getElementById('btnRestart');
+  if (restartBtn) {
+    if (currentLevel >= MAX_LEVEL) {
+      restartBtn.textContent = 'Run Again ↻';
+    } else {
+      restartBtn.textContent = `Next Level (${nextLvl}) →`;
+    }
+  }
 
   const statusDot = document.getElementById('endStatusDot');
   const statusTxt = document.getElementById('endStatus');
   const titleEl = document.getElementById('endTitle');
   const tagline = document.getElementById('endTagline');
   const msg = document.getElementById('endMessage');
+
+  const banner = document.getElementById('endResultBanner');
+  const bannerTitle = document.getElementById('endBannerTitle');
+  const bannerSub = document.getElementById('endBannerSub');
+  banner.classList.add('show');
 
   if (brainHealth >= 70) {
     statusDot.style.background = '#6ee087';
@@ -2151,6 +2695,11 @@ function endGame() {
     titleEl.innerHTML = 'Neural sync <em>complete</em>';
     tagline.textContent = 'The vagus channel is clear. The brain is listening.';
     msg.textContent = `Mood index ${pct}% · cognitive functions in-band · microbiome thriving. The gatekeeper held.`;
+    banner.className = 'end-result-banner show win';
+    bannerTitle.className = 'end-banner-title win';
+    bannerTitle.textContent = 'Balance restored. The vagus channel is clear.';
+    bannerSub.textContent = `mood index ${pct}% · neuromediators flowing · microbiome thriving`;
+    SFX.gameWin();
   } else if (brainHealth >= 40) {
     statusDot.style.background = '#e8c040';
     statusDot.style.boxShadow = '0 0 14px #e8c040';
@@ -2158,6 +2707,11 @@ function endGame() {
     titleEl.innerHTML = 'Signal <em>stabilizing</em>';
     tagline.textContent = 'The channel is noisy but recovering.';
     msg.textContent = `Mood index ${pct}% · residual inflammation detected. A second pass will sharpen the line.`;
+    banner.className = 'end-result-banner show partial';
+    bannerTitle.className = 'end-banner-title partial';
+    bannerTitle.textContent = 'Signal stabilizing. The channel is noisy but recovering.';
+    bannerSub.textContent = `mood index ${pct}% · residual inflammation · run again to sharpen the line`;
+    SFX.gamePartial();
   } else {
     statusDot.style.background = '#d9483f';
     statusDot.style.boxShadow = '0 0 14px #d9483f';
@@ -2165,13 +2719,471 @@ function endGame() {
     titleEl.innerHTML = 'Neural <em>disrupted</em>';
     tagline.textContent = 'Too many toxins crossed the gate.';
     msg.textContent = `Mood index ${pct}% · the channel is inflamed. Retrain and re-run the protocol.`;
+    banner.className = 'end-result-banner show fail';
+    bannerTitle.className = 'end-banner-title fail';
+    bannerTitle.textContent = 'Cytokine overload. The gut–brain axis has been severed.';
+    bannerSub.textContent = `mood index ${pct}% · channel inflamed · retrain and re-run the protocol`;
+    SFX.gameFail();
   }
 
   showScreen('screen-end');
 }
 
-function restartGame() { startGame(); }
-function backToIntro() { showScreen('screen-intro'); }
+function restartGame() {
+  // Advance to next level before starting
+  currentLevel = Math.min(MAX_LEVEL, currentLevel + 1);
+  startGame();
+}
+function backToIntro() {
+  currentLevel = 1; // reset level when going back to intro
+  showScreen('screen-intro');
+}
+
+// ═══════════════════════════════════════
+// SOUND ENGINE (Web Audio API)
+// ═══════════════════════════════════════
+const SFX = (() => {
+  let actx = null;
+  let masterGain = null;
+
+  function init() {
+    if (actx) return;
+    actx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = actx.createGain();
+    masterGain.gain.value = 0.55;
+    masterGain.connect(actx.destination);
+  }
+
+  function resume() {
+    if (actx && actx.state === 'suspended') actx.resume();
+  }
+
+  // Low-level helpers
+  function osc(type, freq, when, dur, gainVal, destNode) {
+    const o = actx.createOscillator();
+    const g = actx.createGain();
+    o.type = type;
+    o.frequency.setValueAtTime(freq, when);
+    g.gain.setValueAtTime(gainVal, when);
+    g.gain.exponentialRampToValueAtTime(0.001, when + dur);
+    o.connect(g); g.connect(destNode || masterGain);
+    o.start(when); o.stop(when + dur + 0.01);
+    return { o, g };
+  }
+
+  function filter(type, freq, q) {
+    const f = actx.createBiquadFilter();
+    f.type = type; f.frequency.value = freq; f.Q.value = q;
+    f.connect(masterGain);
+    return f;
+  }
+
+  // ── PASS good bacteria (GABA — green rod) ──
+  // Soft ascending chime: two harmonics, gentle attack
+  function passGABA() {
+    init(); resume();
+    const now = actx.currentTime;
+    osc('sine', 523, now, 0.35, 0.18);       // C5
+    osc('sine', 784, now + 0.06, 0.28, 0.28, masterGain); // G5 slightly delayed
+    osc('sine', 1047, now + 0.12, 0.18, 0.22, masterGain); // C6 tail
+  }
+
+  // ── PASS good bacteria (ACh — yellow bifido) ──
+  // Warmer, slightly different chord
+  function passACh() {
+    init(); resume();
+    const now = actx.currentTime;
+    osc('sine', 440, now, 0.16, 0.18);        // A4
+    osc('triangle', 660, now + 0.05, 0.3, 0.18); // E5
+    osc('sine', 880, now + 0.1, 0.22, 0.14);  // A5
+  }
+
+  // ── BLOCK Candida (cytokine blocked) ──
+  // Sharp thwack + high pitched zap
+  function blockCyto() {
+    init(); resume();
+    const now = actx.currentTime;
+    // Impact thud
+    const f = actx.createBiquadFilter();
+    f.type = 'lowpass'; f.frequency.value = 300; f.Q.value = 8;
+    f.connect(masterGain);
+    const o = actx.createOscillator();
+    const g = actx.createGain();
+    o.type = 'sawtooth';
+    o.frequency.setValueAtTime(180, now);
+    o.frequency.exponentialRampToValueAtTime(40, now + 0.12);
+    g.gain.setValueAtTime(0.5, now);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    o.connect(f); g.connect(masterGain);
+    o.connect(g); o.start(now); o.stop(now + 0.2);
+    // Zap overlay
+    osc('square', 1200, now, 0.08, 0.12);
+    osc('square', 600, now + 0.04, 0.1, 0.1);
+  }
+
+  // ── DEFLECTED (hit good bacteria by mistake) ──
+  // Dull thud, low and brief
+  function deflect() {
+    init(); resume();
+    const now = actx.currentTime;
+    osc('triangle', 120, now, 0.2, 0.2);
+    osc('sine', 80, now + 0.02, 0.15, 0.15);
+  }
+
+  // ── CYTOKINE passes through (brain damage) ──
+  // Harsh descending buzz
+  function cytoPassed() {
+    init(); resume();
+    const now = actx.currentTime;
+    const o = actx.createOscillator();
+    const g = actx.createGain();
+    o.type = 'sawtooth';
+    o.frequency.setValueAtTime(320, now);
+    o.frequency.exponentialRampToValueAtTime(60, now + 0.45);
+    g.gain.setValueAtTime(0.3, now);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+    o.connect(g); g.connect(masterGain);
+    o.start(now); o.stop(now + 0.55);
+  }
+
+  // ── DEEP FLOW activated ──
+  // Rising shimmer chord
+  function deepFlowSound() {
+    init(); resume();
+    const now = actx.currentTime;
+    [261, 329, 392, 523].forEach((freq, i) => {
+      osc('sine', freq, now + i * 0.07, 0.7, 0.12);
+    });
+    // sustained pad
+    const o = actx.createOscillator();
+    const g = actx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(130, now + 0.3);
+    g.gain.setValueAtTime(0.0, now + 0.3);
+    g.gain.linearRampToValueAtTime(0.08, now + 0.6);
+    g.gain.linearRampToValueAtTime(0.0, now + 1.8);
+    o.connect(g); g.connect(masterGain);
+    o.start(now + 0.3); o.stop(now + 2);
+  }
+
+  // ── LEVEL UP ──
+  // Short punchy ascending arpeggio
+  function levelUp() {
+    init(); resume();
+    const now = actx.currentTime;
+    [392, 523, 659, 784].forEach((freq, i) => {
+      osc('square', freq, now + i * 0.08, 0.18, 0.14);
+      osc('sine',   freq, now + i * 0.08, 0.22, 0.1);
+    });
+  }
+
+  // ── COMBO tick (every combo increment) ──
+  // Tiny crisp tick, pitch rises with combo
+  function comboTick(comboCount) {
+    init(); resume();
+    const now = actx.currentTime;
+    const freq = Math.min(1800, 400 + comboCount * 60);
+    osc('sine', freq, now, 0.08, 0.09);
+  }
+
+  // ── GAME START ──
+  // Quick energising sweep
+  function gameStart() {
+    init(); resume();
+    const now = actx.currentTime;
+    const o = actx.createOscillator();
+    const g = actx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(220, now);
+    o.frequency.exponentialRampToValueAtTime(880, now + 0.35);
+    g.gain.setValueAtTime(0.18, now);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+    o.connect(g); g.connect(masterGain);
+    o.start(now); o.stop(now + 0.5);
+  }
+
+  // ── GAME OVER — WIN ──
+  // Triumphant ascending resolution
+  function gameWin() {
+    init(); resume();
+    const now = actx.currentTime;
+    const melody = [523, 659, 784, 1047];
+    melody.forEach((freq, i) => {
+      osc('sine',     freq,     now + i * 0.13, 0.5, 0.15);
+      osc('triangle', freq * 2, now + i * 0.13, 0.3, 0.06);
+    });
+    osc('sine', 1047, now + 0.6, 0.8, 0.18);
+  }
+
+  // ── GAME OVER — FAIL ──
+  // Descending sad tones
+  function gameFail() {
+    init(); resume();
+    const now = actx.currentTime;
+    [523, 415, 330, 262].forEach((freq, i) => {
+      osc('sine', freq, now + i * 0.18, 0.4, 0.16);
+    });
+  }
+
+  // ── GAME OVER — PARTIAL ──
+  function gamePartial() {
+    init(); resume();
+    const now = actx.currentTime;
+    osc('sine', 523, now, 0.35, 0.14);
+    osc('sine', 440, now + 0.2, 0.35, 0.14);
+    osc('sine', 494, now + 0.42, 0.5, 0.16);
+  }
+
+  return { passGABA, passACh, blockCyto, deflect, cytoPassed, deepFlowSound, levelUp, comboTick, gameStart, gameFail, gameWin, gamePartial, resume, init };
+})();
+// ═══════════════════════════════════════
+(function() {
+  let castAnimId = null;
+
+  function startCastAnim() {
+    if (castAnimId) return;
+    let phase = 0;
+    function frame() {
+      phase += 0.04;
+      drawCastRod(phase);
+      drawCastBifido(phase);
+      drawCastCluster(phase);
+      drawCastNano(phase);
+      castAnimId = requestAnimationFrame(frame);
+    }
+    castAnimId = requestAnimationFrame(frame);
+  }
+
+  function stopCastAnim() {
+    if (castAnimId) { cancelAnimationFrame(castAnimId); castAnimId = null; }
+  }
+
+  // Hook into showScreen to start/stop
+  const _origShowScreen = showScreen;
+  window.showScreen = function(id) {
+    _origShowScreen(id);
+    if (id === 'screen-status') { setTimeout(startCastAnim, 100); }
+    else { stopCastAnim(); }
+  };
+
+  function getCtx(id) {
+    const c = document.getElementById(id);
+    return c ? c.getContext('2d') : null;
+  }
+
+  // ── ROD (Lactobacillus) ──
+  function drawCastRod(phase) {
+    const c = document.getElementById('cast-rod'); if (!c) return;
+    const cx2 = c.getContext('2d');
+    cx2.clearRect(0, 0, 80, 90);
+    const flagP = phase * 2.5;
+    const pulse = 1 + Math.sin(phase * 1.2) * 0.06;
+    const color = '#6ee087';
+    cx2.save();
+    cx2.translate(40, 42);
+    cx2.rotate(Math.sin(phase * 0.4) * 0.08);
+    cx2.scale(pulse, pulse);
+    // glow
+    cx2.shadowColor = 'rgba(110,224,135,0.7)';
+    cx2.shadowBlur = 14;
+    // flagella
+    cx2.strokeStyle = 'rgba(110,224,135,0.45)';
+    cx2.lineWidth = 1;
+    cx2.lineCap = 'round';
+    for (let i = -1; i <= 1; i += 2) {
+      cx2.beginPath();
+      cx2.moveTo(i * 6, 26);
+      for (let t2 = 0; t2 <= 1; t2 += 0.1) {
+        cx2.lineTo(i * 6 + Math.sin(t2 * 6 + flagP + i) * 5, 26 + t2 * 18);
+      }
+      cx2.stroke();
+    }
+    cx2.shadowBlur = 0;
+    // body — reuse game's drawRodMicro logic inline
+    const w = 8, h = 26;
+    const drop = cx2.createLinearGradient(-w, -h, w, h);
+    drop.addColorStop(0, '#b8f5c8'); drop.addColorStop(0.5, color); drop.addColorStop(1, '#2d7a45');
+    cx2.fillStyle = 'rgba(0,0,0,0.3)';
+    cx2.beginPath(); cx2.roundRect(-w+1.5, -h+2, w*2, h*2, w); cx2.fill();
+    cx2.fillStyle = drop;
+    cx2.beginPath(); cx2.roundRect(-w, -h, w*2, h*2, w); cx2.fill();
+    // bands
+    cx2.save(); cx2.beginPath(); cx2.roundRect(-w, -h, w*2, h*2, w); cx2.clip();
+    cx2.strokeStyle = 'rgba(0,0,0,0.15)'; cx2.lineWidth = 0.7;
+    for (let i = 1; i < 8; i++) {
+      const y = -h + (h*2*i/8);
+      cx2.beginPath(); cx2.moveTo(-w-1, y); cx2.quadraticCurveTo(0, y-1, w+1, y); cx2.stroke();
+    }
+    cx2.restore();
+    // specular
+    cx2.fillStyle = 'rgba(255,255,255,0.42)';
+    cx2.beginPath(); cx2.ellipse(-w*0.3, -h*0.5, w*0.35, h*0.28, -0.3, 0, Math.PI*2); cx2.fill();
+    cx2.restore();
+  }
+
+  // ── BIFIDO (Bifidobacterium) ──
+  function drawCastBifido(phase) {
+    const c = document.getElementById('cast-bifido'); if (!c) return;
+    const cx2 = c.getContext('2d');
+    cx2.clearRect(0, 0, 80, 90);
+    const color = '#e8c040';
+    const pulse = 1 + Math.sin(phase * 1.1 + 1) * 0.06;
+    cx2.save();
+    cx2.translate(40, 52);
+    cx2.rotate(Math.sin(phase * 0.35 + 1) * 0.07);
+    cx2.scale(pulse, pulse);
+    cx2.shadowColor = 'rgba(232,192,64,0.7)'; cx2.shadowBlur = 14;
+    cx2.lineCap = 'round'; cx2.lineJoin = 'round';
+    const lw = 7, len = 20;
+    const grad = cx2.createLinearGradient(0, -len*1.4, 0, len);
+    grad.addColorStop(0, '#f5e090'); grad.addColorStop(0.5, color); grad.addColorStop(1, '#8a6008');
+    // shadow
+    cx2.strokeStyle = 'rgba(0,0,0,0.3)'; cx2.lineWidth = lw;
+    cx2.beginPath(); cx2.moveTo(1.5, len+2); cx2.lineTo(1.5, 1.5); cx2.stroke();
+    cx2.beginPath(); cx2.moveTo(1.5, 1.5); cx2.lineTo(-len*0.9+1.5, -len*1.1+2); cx2.stroke();
+    cx2.beginPath(); cx2.moveTo(1.5, 1.5); cx2.lineTo(len*0.9+1.5, -len*1.1+2); cx2.stroke();
+    // body
+    cx2.strokeStyle = grad; cx2.lineWidth = lw;
+    cx2.beginPath(); cx2.moveTo(0, len); cx2.lineTo(0, 0); cx2.stroke();
+    cx2.beginPath(); cx2.moveTo(0, 0); cx2.lineTo(-len*0.9, -len*1.1); cx2.stroke();
+    cx2.beginPath(); cx2.moveTo(0, 0); cx2.lineTo(len*0.9, -len*1.1); cx2.stroke();
+    // knob caps
+    [[-len*0.9,-len*1.1],[len*0.9,-len*1.1],[0,len]].forEach(([cx3,cy3]) => {
+      const kg = cx2.createRadialGradient(cx3-lw*.25, cy3-lw*.25, 0, cx3, cy3, lw*.6);
+      kg.addColorStop(0, '#f5e090'); kg.addColorStop(1, '#8a6008');
+      cx2.fillStyle = kg; cx2.shadowBlur = 0;
+      cx2.beginPath(); cx2.arc(cx3, cy3, lw*.55, 0, Math.PI*2); cx2.fill();
+    });
+    // junction
+    const jg = cx2.createRadialGradient(-lw*.3, -lw*.3, 0, 0, 0, lw*.7);
+    jg.addColorStop(0, '#f5e090'); jg.addColorStop(1, '#8a6008');
+    cx2.fillStyle = jg;
+    cx2.beginPath(); cx2.arc(0, 0, lw*.6, 0, Math.PI*2); cx2.fill();
+    cx2.restore();
+  }
+
+  // ── CLUSTER (Candida) ──
+  function drawCastCluster(phase) {
+    const c = document.getElementById('cast-cluster'); if (!c) return;
+    const cx2 = c.getContext('2d');
+    cx2.clearRect(0, 0, 80, 90);
+    const color = '#d9483f';
+    const pulse = 1 + Math.sin(phase * 1.3 + 2) * 0.05;
+    cx2.save();
+    cx2.translate(40, 44);
+    cx2.scale(pulse, pulse);
+    cx2.shadowColor = 'rgba(217,72,63,0.7)'; cx2.shadowBlur = 14;
+    const r = 14;
+    const cells = [
+      [0,-r*.25,r*.62], [-r*.55,-r*.05,r*.5], [r*.55,-r*.05,r*.5],
+      [-r*.1,r*.52,r*.56], [r*.48,r*.58,r*.38], [-r*.52,r*.53,r*.38],
+      [r*.18,-r*.82,r*.32], [-r*.33,-r*.82,r*.28],
+    ];
+    // shadow pass
+    cells.forEach(([ccx,ccy,cr]) => {
+      cx2.shadowBlur = 0; cx2.fillStyle = 'rgba(0,0,0,0.28)';
+      cx2.beginPath(); cx2.arc(ccx+1.2, ccy+2, cr, 0, Math.PI*2); cx2.fill();
+    });
+    cx2.shadowBlur = 8;
+    cells.forEach(([ccx,ccy,cr]) => {
+      const g = cx2.createRadialGradient(ccx-cr*.35, ccy-cr*.4, cr*.05, ccx, ccy, cr*1.05);
+      g.addColorStop(0, '#f08080'); g.addColorStop(0.3, color); g.addColorStop(1, '#6b1212');
+      cx2.fillStyle = g;
+      cx2.beginPath(); cx2.arc(ccx, ccy, cr, 0, Math.PI*2); cx2.fill();
+      cx2.fillStyle = 'rgba(255,255,255,0.5)';
+      cx2.beginPath(); cx2.arc(ccx-cr*.32, ccy-cr*.38, cr*.18, 0, Math.PI*2); cx2.fill();
+      cx2.strokeStyle = 'rgba(0,0,0,0.28)'; cx2.lineWidth = 0.7;
+      cx2.beginPath(); cx2.arc(ccx, ccy, cr, 0, Math.PI*2); cx2.stroke();
+    });
+    // hyphae
+    cx2.shadowBlur = 0;
+    cx2.strokeStyle = '#a33020'; cx2.lineWidth = 1.3; cx2.lineCap = 'round';
+    [[r*.9,-r*.3,r*1.35,-r*.65],[-r*.9,-r*.25,-r*1.4,-r*.6]].forEach(([x1,y1,x2,y2]) => {
+      cx2.beginPath(); cx2.moveTo(x1,y1); cx2.quadraticCurveTo((x1+x2)/2,y1+(y2-y1)*.5+r*.25,x2,y2); cx2.stroke();
+    });
+    cx2.restore();
+  }
+
+  // ── NANO-G — exact same paths as main game ──
+  function drawCastNano(phase) {
+    const c = document.getElementById('cast-nano'); if (!c) return;
+    const cx2 = c.getContext('2d');
+    cx2.clearRect(0, 0, 80, 90);
+
+    const hover = Math.sin(phase * 1.8) * 2;
+    const breathX = 1 + Math.sin(phase * 1.1) * 0.04;
+    const breathY = 1 + Math.sin(phase * 0.8 + 1.2) * 0.04;
+    const sway = Math.sin(phase * 0.6) * 0.06;
+
+    cx2.save();
+    cx2.translate(40, 45 + hover);
+    cx2.rotate(sway);
+    cx2.scale(breathX, breathY);
+
+    const color     = '#4a6cf7';
+    const colorMid  = '#3856d8';
+    const colorDark = '#1a2464';
+
+    cx2.shadowColor = color;
+    cx2.shadowBlur = 14;
+
+    // Scale to fit canvas — game draws at size=20, s=(size*2)/250
+    // We want it ~36px tall, so size≈22
+    const size = 22;
+    const s = (size * 2) / 250;
+    cx2.scale(s, s);
+    cx2.translate(-147.5, -125);
+
+    const PATH_BODY = 'M 76.5,-0.5 C 82.5,-0.5 88.5,-0.5 94.5,-0.5C 117.677,5.18074 131.51,19.8474 136,43.5C 135.765,59.1538 137.765,74.4871 142,89.5C 154.689,110.591 173.189,118.757 197.5,114C 219.083,105.852 229.749,90.1853 229.5,67C 227.378,52.164 227.211,37.3307 229,22.5C 232.887,10.1084 241.054,2.4417 253.5,-0.5C 258.5,-0.5 263.5,-0.5 268.5,-0.5C 282.824,4.15448 291.491,13.8211 294.5,28.5C 294.5,31.5 294.5,34.5 294.5,37.5C 293.061,44.0494 290.228,50.0494 286,55.5C 275.541,65.6192 266.208,76.6192 258,88.5C 247.613,104.099 244.28,121.099 248,139.5C 252.931,151.959 257.264,164.625 261,177.5C 264.395,206.542 253.562,228.375 228.5,243C 221.598,245.915 214.598,248.081 207.5,249.5C 202.5,249.5 197.5,249.5 192.5,249.5C 167.579,245.761 150.412,232.095 141,208.5C 139.683,203.9 138.683,199.234 138,194.5C 137.881,181.126 137.215,167.793 136,154.5C 132.876,140.745 126.042,129.245 115.5,120C 101.607,108.912 85.9402,101.246 68.5,97C 43.2978,86.1075 32.4644,66.9408 36,39.5C 41.4584,17.874 54.9584,4.5407 76.5,-0.5 Z';
+    const PATH_DOT  = 'M 37.5,249.5 C 35.8333,249.5 34.1667,249.5 32.5,249.5C 15.4054,247.409 4.40542,238.076 -0.5,221.5C -0.5,216.167 -0.5,210.833 -0.5,205.5C 8.26458,181.829 24.9313,173.662 49.5,181C 67.6844,191.21 73.851,206.377 68,226.5C 62.0092,239.892 51.8425,247.559 37.5,249.5 Z';
+
+    const p1 = new Path2D(PATH_BODY);
+    const p2 = new Path2D(PATH_DOT);
+
+    const grad = cx2.createLinearGradient(147, -10, 147, 260);
+    grad.addColorStop(0, colorMid);
+    grad.addColorStop(0.45, color);
+    grad.addColorStop(1, colorDark);
+    cx2.fillStyle = grad;
+    cx2.fill(p1); cx2.fill(p2);
+
+    // inner highlight
+    cx2.save();
+    cx2.clip(p1);
+    const hg = cx2.createRadialGradient(90, 40, 5, 120, 80, 160);
+    hg.addColorStop(0, 'rgba(255,255,255,0.4)');
+    hg.addColorStop(0.4, 'rgba(255,255,255,0.1)');
+    hg.addColorStop(1, 'rgba(0,0,0,0)');
+    cx2.fillStyle = hg;
+    cx2.fillRect(-10, -10, 310, 270);
+    cx2.restore();
+
+    // rim
+    cx2.save();
+    cx2.clip(p1);
+    cx2.strokeStyle = 'rgba(255,255,255,0.25)';
+    cx2.lineWidth = 6;
+    cx2.stroke(p1);
+    cx2.restore();
+
+    cx2.restore();
+  }
+
+  // Auto-start if status screen is already active
+  if (document.getElementById('screen-status').classList.contains('active')) {
+    setTimeout(startCastAnim, 100);
+  }
+})();
+
+// ── AXIS DIAGRAM TOOLTIPS ──
+document.querySelectorAll('.organ-brain, .organ-gut, .organ-micro').forEach(el => {
+  const tipId = el.classList.contains('organ-brain') ? 'tip-brain'
+              : el.classList.contains('organ-gut')   ? 'tip-gut' : 'tip-micro';
+  const tip = document.getElementById(tipId);
+  if (!tip) return;
+  el.addEventListener('mouseenter', () => tip.style.opacity = '1');
+  el.addEventListener('mouseleave', () => tip.style.opacity = '0');
+});
 
 window.addEventListener('resize', () => { if (gameRunning) resize(); });
 </script>
