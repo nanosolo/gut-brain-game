@@ -64,11 +64,7 @@
       radial-gradient(ellipse 70% 80% at 50% 110%, rgba(80,30,120,0.45) 0%, transparent 60%),
       radial-gradient(ellipse 100% 60% at 50% -10%, rgba(0,40,80,0.8) 0%, transparent 55%),
       #06080f;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    justify-content: flex-start;
-    padding-top: max(1.5rem, env(safe-area-inset-top));
-    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+    overflow: hidden;
   }
 
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
@@ -95,6 +91,7 @@
     width: 92vw;
     padding: 0.8rem 2rem;
     gap: 0;
+    transform-origin: center center;
   }
 
   /* A Biotech Game Concept by NANOBOTGROUP */
@@ -254,6 +251,8 @@
     background:
       radial-gradient(ellipse 80% 60% at 50% 40%, rgba(60,5,5,0.8) 0%, transparent 65%),
       #06080f;
+    overflow: hidden;
+    justify-content: center;
   }
   .status-wrap {
     position: relative;
@@ -265,6 +264,7 @@
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    transform-origin: center center;
   }
   .status-badge {
     font-family: 'Inter', sans-serif;
@@ -670,6 +670,7 @@
     max-width: 860px;
     width: 90vw;
     padding: 2rem;
+    transform-origin: center center;
   }
   .end-head {
     display: flex;
@@ -932,11 +933,8 @@
   }
 
   #screen-end, #screen-status, #screen-leaderboard {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    justify-content: flex-start;
-    padding-top: max(1.5rem, env(safe-area-inset-top));
-    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+    overflow: hidden;
+    justify-content: center;
   }
     background:
       radial-gradient(ellipse 80% 70% at 50% 40%, rgba(0,40,80,0.85) 0%, transparent 65%),
@@ -3412,7 +3410,43 @@ document.querySelectorAll('.organ-brain, .organ-gut, .organ-micro').forEach(el =
   el.addEventListener('mouseleave', () => tip.style.opacity = '0');
 });
 
-window.addEventListener('resize', () => { if (gameRunning) resize(); });
+window.addEventListener('resize', () => { if (gameRunning) resize(); autoScaleScreens(); });
+
+// ── AUTO-SCALE: fit content to viewport without scrolling ──
+function autoScaleScreens() {
+  const pairs = [
+    { wrap: document.querySelector('.status-wrap'),      padding: 32 },
+    { wrap: document.querySelector('.end-wrap'),         padding: 32 },
+    { wrap: document.querySelector('#screen-leaderboard > div'), padding: 32 },
+    { wrap: document.querySelector('.intro-wrap'),       padding: 32 },
+  ];
+
+  const vh = window.innerHeight;
+  const vw = window.innerWidth;
+
+  pairs.forEach(({ wrap, padding }) => {
+    if (!wrap) return;
+    // Reset scale first to measure natural size
+    wrap.style.transform = 'none';
+    const naturalH = wrap.scrollHeight;
+    const naturalW = wrap.scrollWidth;
+    const availH = vh - padding * 2;
+    const availW = vw - padding * 2;
+    const scaleH = naturalH > availH ? availH / naturalH : 1;
+    const scaleW = naturalW > availW ? availW / naturalW : 1;
+    const scale = Math.min(scaleH, scaleW, 1);
+    wrap.style.transform = scale < 1 ? `scale(${scale.toFixed(3)})` : 'none';
+  });
+}
+
+// Run on load
+document.addEventListener('DOMContentLoaded', () => setTimeout(autoScaleScreens, 100));
+// Also run when screens become active
+const _origShowScreen2 = showScreen;
+showScreen = function(id) {
+  _origShowScreen2(id);
+  setTimeout(autoScaleScreens, 50);
+};
 </script>
 </body>
 </html>
