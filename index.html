@@ -2171,11 +2171,12 @@ function drawNeurons(ts) {
 // ═══════════════════════════════════════
 // Responsive sizes — bigger on small screens for easier tapping
 function getResponsiveSizes() {
-  const isMobile = W < 481;
-  const isTablet = W >= 481 && W < 721;
+  // Scale bacteria relative to screen width — smaller screen = smaller bacteria
+  const bacteriaR = Math.round(W * 0.022);   // ~15px at 680px, ~11px at 480px
+  const nanoSize  = Math.round(W * 0.030);   // ~20px at 680px, ~14px at 480px
   return {
-    bacteriaR: isMobile ? 20 : isTablet ? 17 : 15,
-    nanoSize:  isMobile ? 26 : isTablet ? 22 : 20,
+    bacteriaR: Math.max(9, Math.min(bacteriaR, 18)),
+    nanoSize:  Math.max(12, Math.min(nanoSize, 22)),
   };
 }
 
