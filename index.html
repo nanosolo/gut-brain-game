@@ -667,9 +667,9 @@
   .end-wrap {
     position: relative;
     z-index: 2;
-    max-width: 860px;
+    max-width: 680px;
     width: 90vw;
-    padding: 2rem;
+    padding: 2rem 0;
     transform-origin: center center;
     margin: auto;
   }
@@ -694,8 +694,8 @@
   }
   .end-card {
     border: 1px solid rgba(0,180,255,0.12);
-    border-radius: 4px;
-    padding: 2.5rem 2.5rem;
+    border-radius: 6px;
+    padding: 2.8rem 3rem;
     background: rgba(0,180,255,0.025);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -779,13 +779,9 @@
       grid-template-columns: 1.3fr 1fr 1fr;
       gap: 1rem;
     }
-    .end-metrics .end-metric:nth-child(4),
-    .end-metrics .end-metric:nth-child(5) {
-      grid-column: auto;
-    }
     .end-metric.hero .end-metric-val { font-size: 2.8rem; }
     .end-metric-val { font-size: 2rem; }
-    .end-card { padding: 1.5rem; }
+    .end-card { padding: 1.8rem 1.5rem; }
   }
   .end-metric { display: flex; flex-direction: column; gap: 0.3rem; }
   .end-metric-label {
@@ -1336,7 +1332,7 @@
       border: 1px solid rgba(0,200,255,0.4);
       border-radius: 2px;
       background: rgba(0,200,255,0.06);
-      margin-bottom: 2rem;
+      margin-bottom: 1.2rem;
     ">◈ VAGUS PROTOCOL — SECTOR 1 CLEARED</div>
 
     <!-- Main card -->
@@ -3444,6 +3440,8 @@ function autoScaleScreens() {
     if (!wrap) return;
     // Reset scale first to measure natural size
     wrap.style.transform = 'none';
+    wrap.style.marginTop = '';
+    wrap.style.marginBottom = '';
     const naturalH = wrap.scrollHeight;
     const naturalW = wrap.scrollWidth;
     const availH = vh - padding * 2;
@@ -3452,15 +3450,12 @@ function autoScaleScreens() {
     const scaleW = naturalW > availW ? availW / naturalW : 1;
     const scale = Math.min(scaleH, scaleW, 1);
     if (scale < 1) {
-      // Compensate for the space freed by shrinking so element stays centered
       const shrinkH = naturalH * (1 - scale);
-      wrap.style.transform = `scale(${scale.toFixed(3)}) translateY(0)`;
+      wrap.style.transform = `scale(${scale.toFixed(3)})`;
       wrap.style.marginTop = `${-(shrinkH / 2)}px`;
       wrap.style.marginBottom = `${-(shrinkH / 2)}px`;
     } else {
       wrap.style.transform = 'none';
-      wrap.style.marginTop = '';
-      wrap.style.marginBottom = '';
     }
   });
 }
