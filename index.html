@@ -229,6 +229,7 @@
     text-transform: uppercase;
     box-shadow: 0 0 20px rgba(0,200,255,0.1), inset 0 0 20px rgba(0,200,255,0.04);
     position: relative;
+    white-space: nowrap;
   }
   .btn-start::after {
     content: '→';
@@ -236,6 +237,7 @@
     display: inline-block;
     transition: transform 0.3s;
   }
+  .btn-start { transition: color 0.3s, background 0.3s, border-color 0.3s, box-shadow 0.3s; }
   .btn-start:hover {
     background: rgba(0,200,255,0.08);
     border-color: rgba(0,200,255,1);
@@ -257,14 +259,16 @@
   .status-wrap {
     position: relative;
     z-index: 2;
-    max-width: 760px;
-    width: 92vw;
+    max-width: 860px;
+    width: 95vw;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
     transform-origin: center center;
+    margin: auto;
+    padding: 1.5rem 0;
   }
   .status-badge {
     font-family: 'Inter', sans-serif;
@@ -405,6 +409,7 @@
     box-shadow: 0 0 0 1px var(--vagus), 0 8px 30px rgba(244,194,74,0.3);
     transition: all 0.3s;
   }
+  .btn-deploy { transition: box-shadow 0.3s; }
   .btn-deploy:hover { box-shadow: 0 0 0 1px var(--vagus), 0 10px 50px rgba(244,194,74,0.55); }
   .btn-back-intro {
     font-family: 'Inter', sans-serif;
@@ -420,6 +425,7 @@
     text-transform: uppercase;
     transition: all 0.3s;
   }
+  .btn-back-intro { transition: color 0.3s, border-color 0.3s; }
   .btn-back-intro:hover { color: rgba(200,225,255,0.8); border-color: rgba(150,190,255,0.35); }
 
   /* ═══════════════════════════════════
@@ -667,8 +673,8 @@
   .end-wrap {
     position: relative;
     z-index: 2;
-    max-width: 680px;
-    width: 90vw;
+    max-width: 860px;
+    width: 95vw;
     padding: 2rem 0;
     transform-origin: center center;
     margin: auto;
@@ -784,6 +790,7 @@
     .end-card { padding: 1.8rem 1.5rem; }
   }
   .end-metric { display: flex; flex-direction: column; gap: 0.3rem; }
+  .end-metrics { align-items: end; }
   .end-metric-label {
     font-family: 'Inter', sans-serif;
     font-size: 0.54rem;
@@ -827,11 +834,13 @@
     font-family: 'Inter', sans-serif;
     font-size: 0.68rem;
     font-weight: 500;
-    color: rgba(100,150,220,0.45);
+    color: rgba(150,190,255,0.65);
     margin-right: 0.9rem;
     letter-spacing: 0.04em;
   }
-  .end-readout .key b { color: rgba(200,220,255,0.65); font-weight: 600; }
+  .end-readout .key b { color: rgba(220,235,255,0.85); font-weight: 600; }
+  #endGoodLine, #endBadLine { color: rgba(220,235,255,0.9); font-weight: 600; }
+  #endMessage { color: rgba(180,210,255,0.75); }
   .end-actions {
     display: flex;
     gap: 0.8rem;
@@ -855,22 +864,24 @@
     box-shadow: 0 0 0 1px var(--vagus), 0 8px 30px rgba(244,194,74,0.25);
   }
   .btn-restart::after { content: ' ↻'; }
+  .btn-restart { transition: box-shadow 0.3s; }
   .btn-restart:hover { box-shadow: 0 0 0 1px var(--vagus), 0 10px 44px rgba(244,194,74,0.5); }
   .btn-ghost {
     font-family: 'Inter', sans-serif;
     font-size: 0.65rem;
-    font-weight: 500;
+    font-weight: 700;
     letter-spacing: 0.15em;
-    color: rgba(150,190,255,0.5);
-    background: transparent;
-    border: 1px solid rgba(150,190,255,0.15);
+    color: #0a1a0f;
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    border: none;
     border-radius: 2px;
     padding: 0.8rem 1.4rem;
     cursor: pointer;
     text-transform: uppercase;
+    box-shadow: 0 0 18px rgba(46,204,113,0.45), 0 4px 15px rgba(0,0,0,0.3);
     transition: all 0.3s;
   }
-  .btn-ghost:hover { color: rgba(200,225,255,0.8); border-color: rgba(150,190,255,0.35); }
+  .btn-ghost:hover { background: linear-gradient(135deg, #3ddb80, #2ecc71); box-shadow: 0 0 28px rgba(46,204,113,0.65), 0 4px 20px rgba(0,0,0,0.3); transform: translateY(-1px); }
   /* ═══════════════════════════════════
      TWEAKS PANEL
      ═══════════════════════════════════ */
@@ -944,9 +955,10 @@
   }
 
   #screen-end, #screen-status, #screen-leaderboard {
-    overflow: hidden;
-    justify-content: center;
+    overflow-y: auto;
+    justify-content: flex-start;
   }
+  #screen-leaderboard {
     background:
       radial-gradient(ellipse 80% 70% at 50% 40%, rgba(0,40,80,0.85) 0%, transparent 65%),
       radial-gradient(ellipse 60% 50% at 50% 90%, rgba(20,8,50,0.7) 0%, transparent 60%),
@@ -1313,12 +1325,14 @@
   <div style="
     position: relative;
     z-index: 2;
-    max-width: 680px;
-    width: 90vw;
+    max-width: 860px;
+    width: 95vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0;
+    margin: auto;
+    padding: 1.5rem 0;
   ">
     <!-- Badge -->
     <div data-sector-badge style="
@@ -1407,14 +1421,19 @@
       <!-- Science claim -->
       <div style="
         font-family: 'Inter', sans-serif;
-        font-size: 0.85rem;
-        font-weight: 500;
+        font-size: clamp(0.95rem, 2.2vw, 1.15rem);
+        font-weight: 600;
         line-height: 1.7;
-        color: rgba(220,235,255,0.88);
-        max-width: 460px;
+        color: #fff;
+        max-width: 520px;
         margin: 0 auto 0.7rem;
+        padding: 1rem 1.4rem;
+        background: rgba(0,200,255,0.07);
+        border: 1px solid rgba(0,200,255,0.25);
+        border-radius: 6px;
+        text-align: center;
       ">
-        Scientifically proven: Game-based simulations for HCPs yield significantly higher learning outcomes compared to traditional methods in 78% of cases.
+        <span style="color: #f4c24a; font-style: italic;">Scientifically proven:</span> Game-based simulations for HCPs yield significantly higher learning outcomes compared to traditional methods in <span style="color: #6ee087; font-weight: 700;">78% of cases.</span>
       </div>
 
       <!-- Footnote reference -->
@@ -1430,7 +1449,7 @@
 
       <!-- CTA buttons -->
       <div style="display: flex; gap: 0.8rem; justify-content: center; align-items: center;">
-        <button class="btn-ghost" onclick="window.open('https://nanobotmedical.com/', '_blank')">Learn More</button>
+        <button class="btn-ghost" onclick="window.open('https://meetings.hubspot.com/n-stetsiuk?uuid=40405510-b0a9-43b1-8cb6-4682a4008540', '_blank')">Learn More</button>
         <button class="btn-deploy" onclick="proceedAfterLeaderboard()" style="font-size: 0.82rem; padding: 0.85rem 2rem;">
           Continue → Level 2
         </button>
@@ -1620,7 +1639,7 @@ function showScreen(id) {
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-let W, H, animId;
+let W, H, DPR = 1, animId;
 let gameRunning = false;
 let score = 0, combo = 0, maxCombo = 0;
 let goodPassed = 0, badBlocked = 0;
@@ -1747,8 +1766,12 @@ function drawNanoG(x, y, size, glowing) {
 // RESIZE + BUILD
 // ═══════════════════════════════════════
 function resize() {
-  W = canvas.width = canvas.offsetWidth;
-  H = canvas.height = canvas.offsetHeight;
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = canvas.offsetWidth;
+  H = canvas.offsetHeight;
+  canvas.width = W * DPR;
+  canvas.height = H * DPR;
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   nerveY = H * 0.54;
   buildNeurons();
   buildVilli();
@@ -2750,6 +2773,7 @@ function loop(ts) {
   const dt = Math.min(rawDt, 50) / 16.667;
   pulsePhase += 0.04 * dt;
 
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   ctx.clearRect(0, 0, W, H);
 
   drawBackground(ts);
@@ -2963,9 +2987,12 @@ function updateLeaderboardScreen() {
   const label = document.getElementById('lb-top-label');
   if (label) label.textContent = `YOU — TOP ${topPct}%`;
 
-  // Update continue button
+  // Update continue button — always visible
   const btn = document.querySelector('#screen-leaderboard .btn-deploy');
-  if (btn) btn.textContent = `Continue → Level ${currentLevel}`;
+  if (btn) {
+    btn.style.display = '';
+    btn.textContent = `Continue → Level ${currentLevel}`;
+  }
 }
 
 function proceedAfterLeaderboard() {
