@@ -1514,7 +1514,8 @@
       </p>
 
       <div class="end-actions">
-        <button id="btnRestart" class="btn-restart" onclick="restartGame()">Next Level →</button>
+        <button id="btnLearnMoreEnd" class="btn-ghost" style="display:none;" onclick="window.open('https://meetings.hubspot.com/n-stetsiuk?uuid=40405510-b0a9-43b1-8cb6-4682a4008540', '_blank')">Learn More</button>
+        <button id="btnRestart" class="btn-restart" onclick="restartGame()">Next →</button>
       </div>
     </div>
   </div>
@@ -1650,7 +1651,7 @@ let timerInterval;
 
 // ── LEVEL SYSTEM ──
 let currentLevel = 1;  // persists across rounds, resets only on backToIntro()
-const MAX_LEVEL = 10;
+const MAX_LEVEL = 3;
 // Speed curve: level 1 = slow, level 10 = fast
 // vy base goes from 1.2 → 4.8, spawn interval from 70 → 22 frames
 function getLevelConfig(lvl) {
@@ -2894,16 +2895,11 @@ function endGame() {
   document.getElementById('endGoodLine').textContent = goodPassed;
   document.getElementById('endBadLine').textContent = badBlocked;
 
-  // Show next level on the restart button
-  const nextLvl = Math.min(MAX_LEVEL, currentLevel + 1);
+  // Always show Next button
   const restartBtn = document.getElementById('btnRestart');
-  if (restartBtn) {
-    if (currentLevel >= MAX_LEVEL) {
-      restartBtn.textContent = 'Run Again ↻';
-    } else {
-      restartBtn.textContent = `Next Level (${nextLvl}) →`;
-    }
-  }
+  const learnMoreEnd = document.getElementById('btnLearnMoreEnd');
+  if (restartBtn) { restartBtn.style.display = ''; restartBtn.textContent = 'Next →'; }
+  if (learnMoreEnd) learnMoreEnd.style.display = 'none';
 
   const statusDot = document.getElementById('endStatusDot');
   const statusTxt = document.getElementById('endStatus');
@@ -2958,16 +2954,17 @@ function endGame() {
 }
 
 function restartGame() {
-  // After every level → show leaderboard before continuing
-  currentLevel = Math.min(MAX_LEVEL, currentLevel + 1);
-  updateLeaderboardScreen();
+  const completedLevel = currentLevel;
+  currentLevel = currentLevel + 1; // не ограничиваем MAX_LEVEL чтобы корректно детектить конец
+  updateLeaderboardScreen(completedLevel);
   showScreen('screen-leaderboard');
 }
 
-function updateLeaderboardScreen() {
+function updateLeaderboardScreen(completedLevel) {
+  if (completedLevel === undefined) completedLevel = currentLevel - 1;
   // Update sector badge
   const badge = document.querySelector('#screen-leaderboard [data-sector-badge]');
-  if (badge) badge.textContent = `◈ VAGUS PROTOCOL — SECTOR ${currentLevel - 1} CLEARED`;
+  if (badge) badge.textContent = `◈ VAGUS PROTOCOL — SECTOR ${completedLevel} CLEARED`;
 
   // Random percentile 75–85
   const pct = Math.floor(Math.random() * 11) + 75;
@@ -2987,11 +2984,15 @@ function updateLeaderboardScreen() {
   const label = document.getElementById('lb-top-label');
   if (label) label.textContent = `YOU — TOP ${topPct}%`;
 
-  // Update continue button — always visible
+  // Update continue button — hide after last level
   const btn = document.querySelector('#screen-leaderboard .btn-deploy');
   if (btn) {
-    btn.style.display = '';
-    btn.textContent = `Continue → Level ${currentLevel}`;
+    if (completedLevel >= MAX_LEVEL) {
+      btn.style.display = 'none';
+    } else {
+      btn.style.display = '';
+      btn.textContent = `Continue → Level ${currentLevel}`;
+    }
   }
 }
 
@@ -3496,5 +3497,67 @@ showScreen = function(id) {
   setTimeout(autoScaleScreens, 50);
 };
 </script>
+
+<div id="screen-final" class="screen">
+  <div style="
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    width: 92vw;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0;
+  ">
+    <!-- Icon -->
+    <div style="font-size: 3.8rem; margin-bottom: 1.6rem; filter: drop-shadow(0 0 24px rgba(46,204,113,0.6));">🧠</div>
+
+    <!-- Headline -->
+    <div style="
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: rgba(220,235,255,0.95);
+      line-height: 1.2;
+      margin-bottom: 1.2rem;
+    ">Гравці засвоюють<br><span style="color:#2ecc71; text-shadow: 0 0 30px rgba(46,204,113,0.5);">краще</span></div>
+
+    <!-- Main claim -->
+    <div style="
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      font-weight: 400;
+      line-height: 1.75;
+      color: rgba(200,220,255,0.82);
+      max-width: 560px;
+      margin-bottom: 1rem;
+      padding: 1.4rem 1.8rem;
+      background: rgba(46,204,113,0.07);
+      border: 1px solid rgba(46,204,113,0.25);
+      border-radius: 8px;
+    ">
+      Дослідження показують: люди, які навчаються через ігрові симуляції, <strong style="color:#fff;">запам'ятовують інформацію на 40% краще</strong> та застосовують знання ефективніше в реальних ситуаціях.
+    </div>
+
+    <!-- Source -->
+    <div style="
+      font-family: 'Inter', sans-serif;
+      font-size: 0.58rem;
+      color: rgba(150,190,255,0.35);
+      letter-spacing: 0.05em;
+      margin-bottom: 2.4rem;
+    ">* Gong et al., 2019 · Serious Games in Health Professions Education</div>
+
+    <!-- Learn More button -->
+    <button class="btn-ghost" onclick="window.open('https://meetings.hubspot.com/n-stetsiuk?uuid=40405510-b0a9-43b1-8cb6-4682a4008540', '_blank')" style="font-size: 0.75rem; padding: 1rem 2.4rem;">
+      Learn More
+    </button>
+  </div>
+</div>
+
 </body>
 </html>
